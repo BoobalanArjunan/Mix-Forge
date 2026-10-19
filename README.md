@@ -55,6 +55,7 @@ mixes/index.csv      one line per mix
 | `--seed N` | same seed, same files (byte for byte) |
 | `--subtype` | `FLOAT` (default, never clips), `PCM_16` or `PCM_24` |
 | `--max-songs N` | only the first `N` songs, for a quick trial |
+| `--html FILE` | write an interactive HTML listening audit report with multi-track players |
 
 Rules mixforge follows:
 

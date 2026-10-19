@@ -8,6 +8,7 @@ from pathlib import Path
 from ._version import __version__
 from .core import MixforgeError, parse_bleed
 from .data import DEFAULT_EXCLUDE, SUBTYPES, make_dataset
+from .report import to_html
 from .verify import verify_folder
 
 
@@ -47,10 +48,12 @@ def main(argv=None) -> int:
                    help=f"file name to ignore (default: {', '.join(DEFAULT_EXCLUDE)}); can repeat")
     m.add_argument("--peak", type=float, default=0.98, help="loudest allowed peak before turning everything down (default 0.98)")
     m.add_argument("--json", action="store_true", help="print JSON instead of text")
+    m.add_argument("--html", metavar="FILE", help="write an interactive HTML listening audit report")
 
     v = sub.add_parser("verify", help="re-check mixes: mixture = sum of stems, bleed = recipe")
     v.add_argument("folder", help="a folder written by 'mixforge make' (or one mix)")
     v.add_argument("--json", action="store_true", help="print JSON instead of text")
+    v.add_argument("--html", metavar="FILE", help="write an interactive HTML listening audit report")
 
     a = ap.parse_args(argv)
     if a.cmd not in ("make", "verify"):
@@ -63,20 +66,31 @@ def main(argv=None) -> int:
                 gains_db=_gains(a.gain), bleed=[parse_bleed(b) for b in (a.bleed or [])], seed=a.seed,
                 subtype=a.subtype, sr=a.sr, exclude=tuple(a.exclude) if a.exclude else DEFAULT_EXCLUDE,
                 peak_limit=a.peak, max_songs=a.max_songs)
+            if a.html:
+                v_res = verify_folder(Path(a.out))
+                html_content = to_html(v_res, out_path=Path(a.html), base_dir=Path(a.out))
+                Path(a.html).parent.mkdir(parents=True, exist_ok=True)
+                Path(a.html).write_text(html_content, encoding="utf-8")
             if a.json:
                 print(json.dumps({"out": str(res.out), "songs": res.songs, "mixes": res.mixes, "notes": res.notes}, indent=2))
             else:
                 print(f"wrote {len(res.mixes)} mix(es) from {res.songs} song(s) to {res.out}")
                 for n in res.notes:
                     print(f"note: {n}")
+                if a.html:
+                    print(f"wrote HTML report to {a.html}")
                 print(f"check them with: mixforge verify {res.out}")
             return 0
         res = verify_folder(Path(a.folder))
     except (MixforgeError, OSError) as e:
         print(f"error: {e}", file=sys.stderr)
         return 2
+    if a.html:
+        html_content = to_html(res, out_path=Path(a.html), base_dir=Path(a.folder))
+        Path(a.html).parent.mkdir(parents=True, exist_ok=True)
+        Path(a.html).write_text(html_content, encoding="utf-8")
     if a.json:
-        print(json.dumps({"ok": res.ok, "checks": [vars(c) for c in res.checks]}, indent=2))
+        print(json.dumps({"ok": res.ok, "checks": [{k: v for k, v in vars(c).items() if k != "path"} for c in res.checks]}, indent=2))
     else:
         for c in res.checks:
             print(f"{'PASS' if c.ok else 'FAIL'}  {c.mix}")
@@ -84,6 +98,8 @@ def main(argv=None) -> int:
                 print(f"      {p}")
         bad = sum(not c.ok for c in res.checks)
         print(f"{len(res.checks) - bad} of {len(res.checks)} mixes OK")
+        if a.html:
+            print(f"wrote HTML report to {a.html}")
     return 0 if res.ok else 1
 
 

@@ -534,3 +534,25 @@ def test_version_flag(capsys):
     with pytest.raises(SystemExit) as e:
         main(["--version"])
     assert e.value.code == 0 and mixforge.__version__ in capsys.readouterr().out
+
+
+def test_cli_html_report_generation(tmp_path):
+    song = write_song(tmp_path / "song", sec=1.0)
+    out = tmp_path / "out"
+    html_out = tmp_path / "reports" / "mix_report.html"
+    rc = main(["make", str(song), "--out", str(out), "--bleed", "drums>vocals:-20", "--html", str(html_out)])
+    assert rc == 0
+    assert html_out.exists()
+    content = html_out.read_text(encoding="utf-8")
+    assert "Mix-Forge Inspection &amp; Verification Report" in content
+    assert "mixture.wav" in content
+    assert "PASS" in content
+    assert "Leaky Version (with Injected Bleed)" in content
+
+    # Test verify --html
+    verify_html = tmp_path / "reports" / "verify_report.html"
+    rc_v = main(["verify", str(out), "--html", str(verify_html)])
+    assert rc_v == 0
+    assert verify_html.exists()
+    v_content = verify_html.read_text(encoding="utf-8")
+    assert "ALL MIXES MATHEMATICALLY VERIFIED" in v_content
