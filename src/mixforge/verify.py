@@ -19,6 +19,7 @@ class MixCheck:
     ok: bool
     problems: list[str] = field(default_factory=list)
     max_sum_error: float | None = None
+    path: Path | None = None
 
 
 @dataclass
@@ -51,7 +52,7 @@ def verify_mix(folder: Path) -> MixCheck:
         names = list(recipe["stems"])
         sr, n, ch = int(recipe["sample_rate"]), int(recipe["samples"]), int(recipe["channels"])
     except Exception as e:
-        return MixCheck(folder.name, False, [f"recipe.json missing or unreadable: {e}"])
+        return MixCheck(folder.name, False, [f"recipe.json missing or unreadable: {e}"], path=folder)
 
     def load(path: Path):
         if not path.exists():
@@ -101,7 +102,7 @@ def verify_mix(folder: Path) -> MixCheck:
                     err = float(np.abs(got - expected[name]).max())
                     if err > tol_l:
                         problems.append(f"leaky/{name}.wav does not match the recipe's bleed (largest difference {err:.2e})")
-    return MixCheck(folder.name, not problems, problems, max_err)
+    return MixCheck(folder.name, not problems, problems, max_err, path=folder)
 
 
 def verify_folder(folder: Path) -> VerifyResult:

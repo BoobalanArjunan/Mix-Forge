@@ -23,6 +23,7 @@ import numpy as np
 import soundfile as sf
 
 from mixforge import Bleed, make_dataset, make_mix, verify_folder
+from mixforge.report import to_html
 from mixforge.data import find_songs, load_song
 
 BLEEDS = [Bleed("drums", "vocals", -26.0, 4000.0), Bleed("bass", "other", -30.0), Bleed("vocals", "other", -20.0)]
@@ -86,6 +87,10 @@ def main():
             continue
         t_make = time.time() - t0
         ver = verify_folder(d)
+        try:
+            (out / f"report_{subtype}.html").write_text(to_html(ver, out_path=out / f"report_{subtype}.html", base_dir=d), encoding="utf-8")
+        except Exception:
+            pass
         bad = [c for c in ver.checks if not c.ok]
         meas, lows, notes_seen = [], [], {}
         for mdir in sorted(p for p in d.iterdir() if p.is_dir()):
