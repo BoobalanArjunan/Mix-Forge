@@ -1,0 +1,59 @@
+{
+  "mixforge": "0.1.0a1",
+  "song": "Acoustic_Session",
+  "seed": [
+    0,
+    0,
+    1
+  ],
+  "sample_rate": 44100,
+  "channels": 1,
+  "samples": 264600,
+  "seconds": 6.0,
+  "offset_samples": 78479,
+  "source_samples": 352800,
+  "peak_limit": 0.98,
+  "peak_scale": 1.0,
+  "stems": {
+    "bass": {
+      "gain_db": -0.8717,
+      "rms_dbfs": -17.8614,
+      "silent": false
+    },
+    "drums": {
+      "gain_db": 0.6158,
+      "rms_dbfs": -33.2152,
+      "silent": false
+    },
+    "other": {
+      "gain_db": -1.684,
+      "rms_dbfs": -19.9231,
+      "silent": false
+    },
+    "vocals": {
+      "gain_db": -2.6973,
+      "rms_dbfs": -24.7043,
+      "silent": false
+    }
+  },
+  "bleed": [
+    {
+      "source": "drums",
+      "target": "vocals",
+      "requested_db": -24.0,
+      "lowpass_hz": 3500.0,
+      "measured_db_vs_source": -31.6755,
+      "leak_vs_target_db": -40.1864
+    },
+    {
+      "source": "bass",
+      "target": "other",
+      "requested_db": -28.0,
+      "lowpass_hz": null,
+      "measured_db_vs_source": -28.0,
+      "leak_vs_target_db": -25.9383
+    }
+  ],
+  "notes": [],
+  "subtype": "FLOAT"
+}

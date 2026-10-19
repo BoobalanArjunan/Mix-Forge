@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mix-Forge Verification &amp; Listening Report</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: #020617;
+      color: #f1f5f9;
+      margin: 0;
+      padding: 30px 20px;
+      line-height: 1.5;
+    }
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    header {
+      margin-bottom: 25px;
+      border-bottom: 1px solid #1e293b;
+      padding-bottom: 20px;
+    }
+    .hero {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+    .badge {
+      display: inline-block;
+      padding: 6px 16px;
+      border-radius: 9999px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      letter-spacing: 0.05em;
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+      margin-top: 20px;
+    }
+    .stat-card {
+      background: #0f172a;
+      border: 1px solid #1e293b;
+      border-radius: 8px;
+      padding: 12px 16px;
+    }
+    .stat-label {
+      font-size: 0.75rem;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .stat-value {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #38bdf8;
+      margin-top: 2px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="hero">
+        <div>
+          <h1 style="margin:0;font-size:1.75rem;color:#f8fafc;">Mix-Forge Inspection &amp; Verification Report</h1>
+          <p style="margin:4px 0 0 0;color:#94a3b8;font-size:0.9rem;">Ground-Truth Multi-Track Listening &amp; Bleed Integrity Audit</p>
+        </div>
+        <div class="badge" style="background: linear-gradient(135deg, #10b981, #059669); color: white;">PASS &mdash; ALL MIXES MATHEMATICALLY VERIFIED</div>
+      </div>
+      <p style="margin:12px 0 0 0;color:#cbd5e1;font-size:0.9rem;">Every mixture matches the exact linear sum of its answer-key stems within numerical precision.</p>
+      
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-label">Total Mixes Verified</div>
+          <div class="stat-value">4</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Mathematical Passes</div>
+          <div class="stat-value" style="color:#10b981;">4</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Failures / Anomalies</div>
+          <div class="stat-value" style="color:#64748b;">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Answer-Key Guarantee</div>
+          <div class="stat-value" style="font-size:1.1rem;color:#a855f7;">Mixture = &Sigma; Stems</div>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      
+        <div style="background:#0f172a;border:1px solid #334155;border-radius:12px;padding:20px;margin-bottom:20px;box-shadow:0 4px 6px -1px rgba(0,0,0,0.3);">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;border-bottom:1px solid #1e293b;padding-bottom:12px;margin-bottom:16px;">
+            <div>
+              <div style="display:flex;align-items:center;gap:10px;">
+                <h3 style="margin:0;font-size:1.15rem;color:#f8fafc;">0000_Acoustic_Session_000</h3>
+                <span style="background:#10b981;color:white;padding:3px 10px;border-radius:12px;font-size:0.75rem;font-weight:700;">PASS</span>
+              </div>
+              <div style="font-size:0.8rem;color:#94a3b8;margin-top:4px;">
+                Duration: <strong>6.00s</strong> &bull; Sample Rate: <strong>44100 Hz</strong> &bull; Channels: <strong>Mono</strong> &bull; Peak Scale: <strong>1.0000</strong>
+              </div>
+            </div>
+            <div style="text-align:right;">
+              <div style="font-size:0.75rem;color:#94a3b8;">Max Sum Error:</div>
+              <div style="font-family:monospace;font-size:0.85rem;color:#38bdf8;">4.62e-08</div>
+            </div>
+          </div>
+
+          <div style="margin-bottom:16px;background:#1e293b;border-radius:8px;padding:12px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+              <strong style="color:#f8fafc;font-size:0.9rem;">Full Mix (Sum of Stems):</strong>
+              <span style="font-size:0.75rem;color:#64748b;">mixture.wav</span>
+            </div>
+            <audio controls preload="none" src="mixes/0000_Acoustic_Session_000/mixture.wav" style="width:100%;height:36px;"></audio>
+          </div>
+
+          <div style="margin-bottom:16px;">
+            <h4 style="margin:0 0 10px 0;font-size:0.9rem;color:#94a3b8;text-transform:uppercase;letter-spacing:0.05em;">Isolated Stems & Bleed Inspection</h4>
+            <div style="display:grid;grid-template-columns:repeat(auto-fill, minmax(280px, 1fr));gap:12px;">
+              
+            <div style="background:#1e293b;border:1px solid #334155;border-radius:8px;padding:12px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+                <span style="font-weight:700;color:#f1f5f9;font-size:0.9rem;">BASS</span>
+                <span style="font-size:0.75rem;color:#94a3b8;">Gain: -1.8 dB</span>
+              </div>
+              <div style="font-size:0.75rem;color:#cbd5e1;margin-bottom:4px;">Clean Answer-Key Stem:</div>
+              <audio controls preload="none" src="mixes/0000_Acoustic_Session_000/stems/bass.wav" style="width:100%;height:32px;"></audio>
+              
+                <div style="margin-top:10px;padding:8px;background:rgba(59,130,246,0.08);border-radius:6px;border-left:3px solid #3b82f6;">
+                  <div style="font-size:0.78rem;font-weight:600;color:#93c5fd;margin-bottom:4px;">
+                    Leaky Version (with Injected Bleed)
+                    
+                  </div>
+                  <audio controls preload="none" src="mixes/0000_Acoustic_Session_000/leaky/bass.wav" style="width:100%;height:32px;"></audio>
+                  <div style="font-size:0.7rem;color:#94a3b8;margin-top:2px;">Compare directly against clean bass above to audit bleed suppression.</div>
+                </div>
+                
+            </div>
+            
+            <div style="background:#1e293b;border:1px solid #334155;border-radius:8px;padding:12px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+                <span style="font-weight:700;color:#f1f5f9;font-size:0.9rem;">DRUMS</span>
+                <span style="font-size:0.75rem;color:#94a3b8;">Gain: -3.7 dB</span>
+              </div>
+              <div style="font-size:0.75rem;color:#cbd5e1;margin-bottom:4px;">Clean Answer-Key Stem:</div>
+              <audio controls preload="none" src="mixes/0000_Acoustic_Session_000/stems/drums.wav" style="width:100%;height:32px;"></audio>
+              
+                <div style="margin-top:10px;padding:8px;background:rgba(59,130,246,0.08);border-radius:6px;border-left:3px solid #3b82f6;">
+                  <div style="font-size:0.78rem;font-weight:600;color:#93c5fd;margin-bottom:4px;">
+                    Leaky Version (with Injected Bleed)
+                    
+                  </div>
+                  <audio controls preload="none" src="mixes/0000_Acoustic_Session_000/leaky/drums.wav" style="width:100%;height:32px;"></audio>
+                  <div style="font-size:0.7rem;color:#94a3b8;margin-top:2px;">Compare directly against clean drums above to audit bleed suppression.</div>
+                </div>
+                
+            </div>
+            
+            <div style="background:#1e293b;border:1px solid #334155;border-radius:8px;padding:12px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+                <span style="font-weight:700;color:#f1f5f9;font-size:0.9rem;">OTHER</span>
+                <span style="font-size:0.75rem;color:#94a3b8;">Gain: -3.9 dB</span>
+              </div>
+              <div style="font-size:0.75rem;color:#cbd5e1;margin-bottom:4px;">Clean Answer-Key Stem:</div>
+              <audio controls preload="none" src="mixes/0000_Acoustic_Session_000/stems/other.wav" style="width:100%;height:32px;"></audio>
+              
+                <div style="margin-top:10px;padding:8px;background:rgba(59,130,246,0.08);border-radius:6px;border-left:3px solid #3b82f6;">
+                  <div style="font-size:0.78rem;font-weight:600;color:#93c5fd;margin-bottom:4px;">
+                    Leaky Version (with Injected Bleed)
+                    <span style="background:#3b82f6;color:white;padding:2px 8px;border-radius:10px;font-size:0.7rem;">+ bass bleed (-28.0 dB)</span>
+                  </div>
+                  <audio controls preload="none" src="mixes/0000_Acoustic_Session_000/leaky/other.wav" style="width:100%;height:32px;"></audio>
+                  <div style="font-size:0.7rem;color:#94a3b8;margin-top:2px;">Compare directly against clean other above to audit bleed suppression.</div>
+                </div>
+                
+            </div>
+            
+            <div style="background:#1e293b;border:1px solid #334155;border-radius:8px;padding:12px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+                <span style="font-weight:700;color:#f1f5f9;font-size:0.9rem;">VOCALS</span>
+                <span style="font-size:0.75rem;color:#94a3b8;">Gain: +2.5 dB</span>
+              </div>
+              <div style="font-size:0.75rem;color:#cbd5e1;margin-bottom:4px;">Clean Answer-Key Stem:</div>
+              <audio controls preload="none" src="mixes/0000_Acoustic_Session_000/stems/vocals.wav" style="width:100%;height:32px;"></audio>
+              
+                <div style="margin-top:10px;padding:8px;background:rgba(59,130,246,0.08);border-radius:6px;border-left:3px solid #3b82f6;">
+                  <div style="font-size:0.78rem;font-weight:600;color:#93c5fd;margin-bottom:4px;">
+                    Leaky Version (with Injected Bleed)
+                    <span style="background:#3b82f6;color:white;padding:2px 8px;border-radius:10px;font-size:0.7rem;">+ drums bleed (-24.0 dB @ 3500.0Hz LP)</span>
+                  </div>
+                  <audio controls preload="none" src="mixes/0000_Acoustic_Session_000/leaky/vocals.wav" style="width:100%;height:32px;"></audio>
+                  <div style="font-size:0.7rem;color:#94a3b8;margin-top:2px;">Compare directly against clean vocals above to audit bleed suppression.</div>
+                </div>
+                
+            </div>
+            
+            </div>
+          </div>
+
+          
+
+          <details style="margin-top:12px;background:#090d16;border:1px solid #1e293b;border-radius:6px;padding:8px 12px;">
+            <summary style="cursor:pointer;font-size:0.8rem;color:#64748b;font-weight:600;">Inspect Recipe JSON</summary>
+            <pre style="margin:8px 0 0 0;font-family:monospace;font-size:0.75rem;color:#94a3b8;overflow-x:auto;">{
+  &quot;mixforge&quot;: &quot;0.1.0a1&quot;,
+  &quot;song&quot;: &quot;Acoustic_Session&quot;,
+  &quot;seed&quot;: [
+    0,
+    0,
+    0
+  ],
+  &quot;sample_rate&quot;: 44100,
+  &quot;channels&quot;: 1,
+  &quot;samples&quot;: 264600,
+  &quot;seconds&quot;: 6.0,
+  &quot;offset_samples&quot;: 75025,
+  &quot;source_samples&quot;: 352800,
+  &quot;peak_limit&quot;: 0.98,
+  &quot;peak_scale&quot;: 1.0,
+  &quot;stems&quot;: {
+    &quot;bass&quot;: {
+      &quot;gain_db&quot;: -1.8417,
+      &quot;rms_dbfs&quot;: -18.8314,
+      &quot;silent&quot;: false
+    },
+    &quot;drums&quot;: {
+      &quot;gain_db&quot;: -3.6722,
+      &quot;rms_dbfs&quot;: -37.4992,
+      &quot;silent&quot;: false
+    },
+    &quot;other&quot;: {
+      &quot;gain_db&quot;: -3.8678,
+      &quot;rms_dbfs&quot;: -22.1069,
+      &quot;silent&quot;: false
+    },
+    &quot;vocals&quot;: {
+      &quot;gain_db&quot;: 2.5062,
+      &quot;rms_dbfs&quot;: -19.5002,
+      &quot;silent&quot;: false
+    }
+  },
+  &quot;bleed&quot;: [
+    {
+      &quot;source&quot;: &quot;drums&quot;,
+      &quot;target&quot;: &quot;vocals&quot;,
+      &quot;requested_db&quot;: -24.0,
+      &quot;lowpass_hz&quot;: 3500.0,
+      &quot;measured_db_vs_source&quot;: -31.7308,
+      &quot;leak_vs_target_db&quot;: -49.7297
+    },
+    {
+      &quot;source&quot;: &quot;bass&quot;,
+      &quot;target&quot;: &quot;other&quot;,
+      &quot;requested_db&quot;: -28.0,
+      &quot;lowpass_hz&quot;: null,
+      &quot;measured_db_vs_source&quot;: -28.0,
+      &quot;leak_vs_target_db&quot;: -24.7245
+    }
+  ],
+  &quot;notes&quot;: [],
+  &quot;subtype&quot;: &quot;FLOAT&quot;
+}</pre>
+          </details>
+        </div>
+        
+        <div style="background:#0f172a;border:1px solid #334155;border-radius:12px;padding:20px;margin-bottom:20px;box-shadow:0 4px 6px -1px rgba(0,0,0,0.3);">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;border-bottom:1px solid #1e293b;padding-bottom:12px;margin-bottom:16px;">
+            <div>
+              <div style="display:flex;align-items:center;gap:10px;">
+                <h3 style="margin:0;font-size:1.15rem;color:#f8fafc;">0000_Acoustic_Session_001</h3>
+                <span style="background:#10b981;color:white;padding:3px 10px;border-radius:12px;font-size:0.75rem;font-weight:700;">PASS</span>
+              </div>
+              <div style="font-size:0.8rem;color:#94a3b8;margin-top:4px;">
+                Duration: <strong>6.00s</strong> &bull; Sample Rate: <strong>44100 Hz</strong> &bull; Channels: <strong>Mono</strong> &bull; Peak Scale: <strong>1.0000</strong>
+              </div>
+            </div>
+            <div style="text-align:right;">
+              <div style="font-size:0.75rem;color:#94a3b8;">Max Sum Error:</div>
+              <div style="font-family:monospace;font-size:0.85rem;color:#38bdf8;">4.51e-08</div>
+            </div>
+          </div>
+
+          <div style="margin-bottom:16px;background:#1e293b;border-radius:8px;padding:12px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+              <strong style="color:#f8fafc;font-size:0.9rem;">Full Mix (Sum of Stems):</strong>
+              <span style="font-size:0.75rem;color:#64748b;">mixture.wav</span>
+            </div>
+            <audio controls preload="none" src="mixes/0000_Acoustic_Session_001/mixture.wav" style="width:100%;height:36px;"></audio>
+          </div>
+
+          <div style="margin-bottom:16px;">
+            <h4 style="margin:0 0 10px 0;font-size:0.9rem;color:#94a3b8;text-transform:uppercase;letter-spacing:0.05em;">Isolated Stems & Bleed Inspection</h4>
+            <div style="display:grid;grid-template-columns:repeat(auto-fill, minmax(280px, 1fr));gap:12px;">
+              
+            <div style="background:#1e293b;border:1px solid #334155;border-radius:8px;padding:12px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+                <span style="font-weight:700;color:#f1f5f9;font-size:0.9rem;">BASS</span>
+                <span style="font-size:0.75rem;color:#94a3b8;">Gain: -0.9 dB</span>
+              </div>
+              <div style="font-size:0.75rem;color:#cbd5e1;margin-bottom:4px;">Clean Answer-Key Stem:</div>
+              <audio controls preload="none" src="mixes/0000_Acoustic_Session_001/stems/bass.wav" style="width:100%;height:32px;"></audio>
+              
+                <div style="margin-top:10px;padding:8px;background:rgba(59,130,246,0.08);border-radius:6px;border-left:3px solid #3b82f6;">
+                  <div style="font-size:0.78rem;font-weight:600;color:#93c5fd;margin-bottom:4px;">
+                    Leaky Version (with Injected Bleed)
+                    
+                  </div>
+                  <audio controls preload="none" src="mixes/0000_Acoustic_Session_001/leaky/bass.wav" style="width:100%;height:32px;"></audio>
+                  <div style="font-size:0.7rem;color:#94a3b8;margin-top:2px;">Compare directly against clean bass above to audit bleed suppression.</div>
+                </div>
+                
+            </div>
+            
+            <div style="background:#1e293b;border:1px solid #334155;border-radius:8px;padding:12px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+                <span style="font-weight:700;color:#f1f5f9;font-size:0.9rem;">DRUMS</span>
+                <span style="font-size:0.75rem;color:#94a3b8;">Gain: +0.6 dB</span>
+              </div>
+              <div style="font-size:0.75rem;color:#cbd5e1;margin-bottom:4px;">Clean Answer-Key Stem:</div>
+              <audio controls preload="none" src="mixes/0000_Acoustic_Session_001/stems/drums.wav" style="width:100%;height:32px;"></audio>
+              
+                <div style="margin-top:10px;padding:8px;background:rgba(59,130,246,0.08);border-radius:6px;border-left:3px solid #3b82f6;">
+                  <div style="font-size:0.78rem;font-weight:600;color:#93c5fd;margin-bottom:4px;">
+                    Leaky Version (with Injected Bleed)
+                    
+                  </div>
+                  <audio controls preload="none" src="mixes/0000_Acoustic_Session_001/leaky/drums.wav" style="width:100%;height:32px;"></audio>
+                  <div style="font-size:0.7rem;color:#94a3b8;margin-top:2px;">Compare directly against clean drums above to audit bleed suppression.</div>
+                </div>
+                
+            </div>
+            
+            <div style="background:#1e293b;border:1px solid #334155;border-radius:8px;padding:12px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+                <span style="font-weight:700;color:#f1f5f9;font-size:0.9rem;">OTHER</span>
+                <span style="font-size:0.75rem;color:#94a3b8;">Gain: -1.7 dB</span>
+              </div>
+              <div style="font-size:0.75rem;color:#cbd5e1;margin-bottom:4px;">Clean Answer-Key Stem:</div>
+              <audio controls preload="none" src="mixes/0000_Acoustic_Session_001/stems/other.wav" style="width:100%;height:32px;"></audio>
+              
+                <div style="margin-top:10px;padding:8px;background:rgba(59,130,246,0.08);border-radius:6px;border-left:3px solid #3b82f6;">
+                  <div style="font-size:0.78rem;font-weight:600;color:#93c5fd;margin-bottom:4px;">
+                    Leaky Version (with Injected Bleed)
+                    <span style="background:#3b82f6;color:white;padding:2px 8px;border-radius:10px;font-size:0.7rem;">+ bass bleed (-28.0 dB)</span>
+                  </div>
+                  <audio controls preload="none" src="mixes/0000_Acoustic_Session_001/leaky/other.wav" style="width:100%;height:32px;"></audio>
+                  <div style="font-size:0.7rem;color:#94a3b8;margin-top:2px;">Compare directly against clean other above to audit bleed suppression.</div>
+                </div>
+                
+            </div>
+            
+            <div style="background:#1e293b;border:1px solid #334155;border-radius:8px;padding:12px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+                <span style="font-weight:700;color:#f1f5f9;font-size:0.9rem;">VOCALS</span>
+                <span style="font-size:0.75rem;color:#94a3b8;">Gain: -2.7 dB</span>
+              </div>
+              <div style="font-size:0.75rem;color:#cbd5e1;margin-bottom:4px;">Clean Answer-Key Stem:</div>
+              <audio controls preload="none" src="mixes/0000_Acoustic_Session_001/stems/vocals.wav" style="width:100%;height:32px;"></audio>
+              
+                <div style="margin-top:10px;padding:8px;background:rgba(59,130,246,0.08);border-radius:6px;border-left:3px solid #3b82f6;">
+                  <div style="font-size:0.78rem;font-weight:600;color:#93c5fd;margin-bottom:4px;">
+                    Leaky Version (with Injected Bleed)
+                    <span style="background:#3b82f6;color:white;padding:2px 8px;border-radius:10px;font-size:0.7rem;">+ drums bleed (-24.0 dB @ 3500.0Hz LP)</span>
+                  </div>
+                  <audio controls preload="none" src="mixes/0000_Acoustic_Session_001/leaky/vocals.wav" style="width:100%;height:32px;"></audio>
+                  <div style="font-size:0.7rem;color:#94a3b8;margin-top:2px;">Compare directly against clean vocals above to audit bleed suppression.</div>
+                </div>
+                
+            </div>
+            
+            </div>
+          </div>
+
+          
+
+          <details style="margin-top:12px;background:#090d16;border:1px solid #1e293b;border-radius:6px;padding:8px 12px;">
+            <summary style="cursor:pointer;font-size:0.8rem;color:#64748b;font-weight:600;">Inspect Recipe JSON</summary>
+            <pre style="margin:8px 0 0 0;font-family:monospace;font-size:0.75rem;color:#94a3b8;overflow-x:auto;">{
+  &quot;mixforge&quot;: &quot;0.1.0a1&quot;,
+  &quot;song&quot;: &quot;Acoustic_Session&quot;,
+  &quot;seed&quot;: [
+    0,
+    0,
+    1
+  ],
+  &quot;sample_rate&quot;: 44100,
+  &quot;channels&quot;: 1,
+  &quot;samples&quot;: 264600,
+  &quot;seconds&quot;: 6.0,
+  &quot;offset_samples&quot;: 78479,
+  &quot;source_samples&quot;: 352800,
+  &quot;peak_limit&quot;: 0.98,
+  &quot;peak_scale&quot;: 1.0,
+  &quot;stems&quot;: {
+    &quot;bass&quot;: {
+      &quot;gain_db&quot;: -0.8717,
+      &quot;rms_dbfs&quot;: -17.8614,
+      &quot;silent&quot;: false
+    },
+    &quot;drums&quot;: {
+      &quot;gain_db&quot;: 0.6158,
+      &quot;rms_dbfs&quot;: -33.2152,
+      &quot;silent&quot;: false
+    },
+    &quot;other&quot;: {
+      &quot;gain_db&quot;: -1.684,
+      &quot;rms_dbfs&quot;: -19.9231,
+      &quot;silent&quot;: false
+    },
+    &quot;vocals&quot;: {
+      &quot;gain_db&quot;: -2.6973,
+      &quot;rms_dbfs&quot;: -24.7043,
+      &quot;silent&quot;: false
+    }
+  },
+  &quot;bleed&quot;: [
+    {
+      &quot;source&quot;: &quot;drums&quot;,
+      &quot;target&quot;: &quot;vocals&quot;,
+      &quot;requested_db&quot;: -24.0,
+      &quot;lowpass_hz&quot;: 3500.0,
+      &quot;measured_db_vs_source&quot;: -31.6755,
+      &quot;leak_vs_target_db&quot;: -40.1864
+    },
+    {
+      &quot;source&quot;: &quot;bass&quot;,
+      &quot;target&quot;: &quot;other&quot;,
+      &quot;requested_db&quot;: -28.0,
+      &quot;lowpass_hz&quot;: null,
+      &quot;measured_db_vs_source&quot;: -28.0,
+      &quot;leak_vs_target_db&quot;: -25.9383
+    }
+  ],
+  &quot;notes&quot;: [],
+  &quot;subtype&quot;: &quot;FLOAT&quot;
+}</pre>
+          </details>
+        </div>
+        
+        <div style="background:#0f172a;border:1px solid #334155;border-radius:12px;padding:20px;margin-bottom:20px;box-shadow:0 4px 6px -1px rgba(0,0,0,0.3);">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;border-bottom:1px solid #1e293b;padding-bottom:12px;margin-bottom:16px;">
+            <div>
+              <div style="display:flex;align-items:center;gap:10px;">
+                <h3 style="margin:0;font-size:1.15rem;color:#f8fafc;">0001_Funk_Groove_000</h3>
+                <span style="background:#10b981;color:white;padding:3px 10px;border-radius:12px;font-size:0.75rem;font-weight:700;">PASS</span>
+              </div>
+              <div style="font-size:0.8rem;color:#94a3b8;margin-top:4px;">
+                Duration: <strong>6.00s</strong> &bull; Sample Rate: <strong>44100 Hz</strong> &bull; Channels: <strong>Mono</strong> &bull; Peak Scale: <strong>1.0000</strong>
+              </div>
+            </div>
+            <div style="text-align:right;">
+              <div style="font-size:0.75rem;color:#94a3b8;">Max Sum Error:</div>
+              <div style="font-family:monospace;font-size:0.85rem;color:#38bdf8;">5.16e-08</div>
+            </div>
+          </div>
+
+          <div style="margin-bottom:16px;background:#1e293b;border-radius:8px;padding:12px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+              <strong style="color:#f8fafc;font-size:0.9rem;">Full Mix (Sum of Stems):</strong>
+              <span style="font-size:0.75rem;color:#64748b;">mixture.wav</span>
+            </div>
+            <audio controls preload="none" src="mixes/0001_Funk_Groove_000/mixture.wav" style="width:100%;height:36px;"></audio>
+          </div>
+
+          <div style="margin-bottom:16px;">
+            <h4 style="margin:0 0 10px 0;font-size:0.9rem;color:#94a3b8;text-transform:uppercase;letter-spacing:0.05em;">Isolated Stems & Bleed Inspection</h4>
+            <div style="display:grid;grid-template-columns:repeat(auto-fill, minmax(280px, 1fr));gap:12px;">
+              
+            <div style="background:#1e293b;border:1px solid #334155;border-radius:8px;padding:12px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+                <span style="font-weight:700;color:#f1f5f9;font-size:0.9rem;">BASS</span>
+                <span style="font-size:0.75rem;color:#94a3b8;">Gain: +0.5 dB</span>
+              </div>
+              <div style="font-size:0.75rem;color:#cbd5e1;margin-bottom:4px;">Clean Answer-Key Stem:</div>
+              <audio controls preload="none" src="mixes/0001_Funk_Groove_000/stems/bass.wav" style="width:100%;height:32px;"></audio>
+              
+                <div style="margin-top:10px;padding:8px;background:rgba(59,130,246,0.08);border-radius:6px;border-left:3px solid #3b82f6;">
+                  <div style="font-size:0.78rem;font-weight:600;color:#93c5fd;margin-bottom:4px;">
+                    Leaky Version (with Injected Bleed)
+                    
+                  </div>
+                  <audio controls preload="none" src="mixes/0001_Funk_Groove_000/leaky/bass.wav" style="width:100%;height:32px;"></audio>
+                  <div style="font-size:0.7rem;color:#94a3b8;margin-top:2px;">Compare directly against clean bass above to audit bleed suppression.</div>
+                </div>
+                
+            </div>
+            
+            <div style="background:#1e293b;border:1px solid #334155;border-radius:8px;padding:12px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+                <span style="font-weight:700;color:#f1f5f9;font-size:0.9rem;">DRUMS</span>
+                <span style="font-size:0.75rem;color:#94a3b8;">Gain: +2.4 dB</span>
+              </div>
+              <div style="font-size:0.75rem;color:#cbd5e1;margin-bottom:4px;">Clean Answer-Key Stem:</div>
+              <audio controls preload="none" src="mixes/0001_Funk_Groove_000/stems/drums.wav" style="width:100%;height:32px;"></audio>
+              
+                <div style="margin-top:10px;padding:8px;background:rgba(59,130,246,0.08);border-radius:6px;border-left:3px solid #3b82f6;">
+                  <div style="font-size:0.78rem;font-weight:600;color:#93c5fd;margin-bottom:4px;">
+                    Leaky Version (with Injected Bleed)
+                    
+                  </div>
+                  <audio controls preload="none" src="mixes/0001_Funk_Groove_000/leaky/drums.wav" style="width:100%;height:32px;"></audio>
+                  <div style="font-size:0.7rem;color:#94a3b8;margin-top:2px;">Compare directly against clean drums above to audit bleed suppression.</div>
+                </div>
+                
+            </div>
+            
+            <div style="background:#1e293b;border:1px solid #334155;border-radius:8px;padding:12px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+                <span style="font-weight:700;color:#f1f5f9;font-size:0.9rem;">OTHER</span>
+                <span style="font-size:0.75rem;color:#94a3b8;">Gain: +3.7 dB</span>
+              </div>
+              <div style="font-size:0.75rem;color:#cbd5e1;margin-bottom:4px;">Clean Answer-Key Stem:</div>
+              <audio controls preload="none" src="mixes/0001_Funk_Groove_000/stems/other.wav" style="width:100%;height:32px;"></audio>
+              
+                <div style="margin-top:10px;padding:8px;background:rgba(59,130,246,0.08);border-radius:6px;border-left:3px solid #3b82f6;">
+                  <div style="font-size:0.78rem;font-weight:600;color:#93c5fd;margin-bottom:4px;">
+                    Leaky Version (with Injected Bleed)
+                    <span style="background:#3b82f6;color:white;padding:2px 8px;border-radius:10px;font-size:0.7rem;">+ bass bleed (-28.0 dB)</span>
+                  </div>
+                  <audio controls preload="none" src="mixes/0001_Funk_Groove_000/leaky/other.wav" style="width:100%;height:32px;"></audio>
+                  <div style="font-size:0.7rem;color:#94a3b8;margin-top:2px;">Compare directly against clean other above to audit bleed suppression.</div>
+                </div>
+                
+            </div>
+            
+            <div style="background:#1e293b;border:1px solid #334155;border-radius:8px;padding:12px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+                <span style="font-weight:700;color:#f1f5f9;font-size:0.9rem;">VOCALS</span>
+                <span style="font-size:0.75rem;color:#94a3b8;">Gain: -3.5 dB</span>
+              </div>
+              <div style="font-size:0.75rem;color:#cbd5e1;margin-bottom:4px;">Clean Answer-Key Stem:</div>
+              <audio controls preload="none" src="mixes/0001_Funk_Groove_000/stems/vocals.wav" style="width:100%;height:32px;"></audio>
+              
+                <div style="margin-top:10px;padding:8px;background:rgba(59,130,246,0.08);border-radius:6px;border-left:3px solid #3b82f6;">
+                  <div style="font-size:0.78rem;font-weight:600;color:#93c5fd;margin-bottom:4px;">
+                    Leaky Version (with Injected Bleed)
+                    <span style="background:#3b82f6;color:white;padding:2px 8px;border-radius:10px;font-size:0.7rem;">+ drums bleed (-24.0 dB @ 3500.0Hz LP)</span>
+                  </div>
+                  <audio controls preload="none" src="mixes/0001_Funk_Groove_000/leaky/vocals.wav" style="width:100%;height:32px;"></audio>
+                  <div style="font-size:0.7rem;color:#94a3b8;margin-top:2px;">Compare directly against clean vocals above to audit bleed suppression.</div>
+                </div>
+                
+            </div>
+            
+            </div>
+          </div>
+
+          
+
+          <details style="margin-top:12px;background:#090d16;border:1px solid #1e293b;border-radius:6px;padding:8px 12px;">
+            <summary style="cursor:pointer;font-size:0.8rem;color:#64748b;font-weight:600;">Inspect Recipe JSON</summary>
+            <pre style="margin:8px 0 0 0;font-family:monospace;font-size:0.75rem;color:#94a3b8;overflow-x:auto;">{
+  &quot;mixforge&quot;: &quot;0.1.0a1&quot;,
+  &quot;song&quot;: &quot;Funk_Groove&quot;,
+  &quot;seed&quot;: [
+    0,
+    1,
+    0
+  ],
+  &quot;sample_rate&quot;: 44100,
+  &quot;channels&quot;: 1,
+  &quot;samples&quot;: 264600,
+  &quot;seconds&quot;: 6.0,
+  &quot;offset_samples&quot;: 46054,
+  &quot;source_samples&quot;: 352800,
+  &quot;peak_limit&quot;: 0.98,
+  &quot;peak_scale&quot;: 1.0,
+  &quot;stems&quot;: {
+    &quot;bass&quot;: {
+      &quot;gain_db&quot;: 0.4571,
+      &quot;rms_dbfs&quot;: -16.5326,
+      &quot;silent&quot;: false
+    },
+    &quot;drums&quot;: {
+      &quot;gain_db&quot;: 2.4073,
+      &quot;rms_dbfs&quot;: -31.3852,
+      &quot;silent&quot;: false
+    },
+    &quot;other&quot;: {
+      &quot;gain_db&quot;: 3.6521,
+      &quot;rms_dbfs&quot;: -14.587,
+      &quot;silent&quot;: false
+    },
+    &quot;vocals&quot;: {
+      &quot;gain_db&quot;: -3.5311,
+      &quot;rms_dbfs&quot;: -25.5337,
+      &quot;silent&quot;: false
+    }
+  },
+  &quot;bleed&quot;: [
+    {
+      &quot;source&quot;: &quot;drums&quot;,
+      &quot;target&quot;: &quot;vocals&quot;,
+      &quot;requested_db&quot;: -24.0,
+      &quot;lowpass_hz&quot;: 3500.0,
+      &quot;measured_db_vs_source&quot;: -31.8649,
+      &quot;leak_vs_target_db&quot;: -37.7165
+    },
+    {
+      &quot;source&quot;: &quot;bass&quot;,
+      &quot;target&quot;: &quot;other&quot;,
+      &quot;requested_db&quot;: -28.0,
+      &quot;lowpass_hz&quot;: null,
+      &quot;measured_db_vs_source&quot;: -28.0,
+      &quot;leak_vs_target_db&quot;: -29.9456
+    }
+  ],
+  &quot;notes&quot;: [],
+  &quot;subtype&quot;: &quot;FLOAT&quot;
+}</pre>
+          </details>
+        </div>
+        
+        <div style="background:#0f172a;border:1px solid #334155;border-radius:12px;padding:20px;margin-bottom:20px;box-shadow:0 4px 6px -1px rgba(0,0,0,0.3);">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;border-bottom:1px solid #1e293b;padding-bottom:12px;margin-bottom:16px;">
+            <div>
+              <div style="display:flex;align-items:center;gap:10px;">
+                <h3 style="margin:0;font-size:1.15rem;color:#f8fafc;">0001_Funk_Groove_001</h3>
+                <span style="background:#10b981;color:white;padding:3px 10px;border-radius:12px;font-size:0.75rem;font-weight:700;">PASS</span>
+              </div>
+              <div style="font-size:0.8rem;color:#94a3b8;margin-top:4px;">
+                Duration: <strong>6.00s</strong> &bull; Sample Rate: <strong>44100 Hz</strong> &bull; Channels: <strong>Mono</strong> &bull; Peak Scale: <strong>1.0000</strong>
+              </div>
+            </div>
+            <div style="text-align:right;">
+              <div style="font-size:0.75rem;color:#94a3b8;">Max Sum Error:</div>
+              <div style="font-family:monospace;font-size:0.85rem;color:#38bdf8;">5.05e-08</div>
+            </div>
+          </div>
+
+          <div style="margin-bottom:16px;background:#1e293b;border-radius:8px;padding:12px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+              <strong style="color:#f8fafc;font-size:0.9rem;">Full Mix (Sum of Stems):</strong>
+              <span style="font-size:0.75rem;color:#64748b;">mixture.wav</span>
+            </div>
+            <audio controls preload="none" src="mixes/0001_Funk_Groove_001/mixture.wav" style="width:100%;height:36px;"></audio>
+          </div>
+
+          <div style="margin-bottom:16px;">
+            <h4 style="margin:0 0 10px 0;font-size:0.9rem;color:#94a3b8;text-transform:uppercase;letter-spacing:0.05em;">Isolated Stems & Bleed Inspection</h4>
+            <div style="display:grid;grid-template-columns:repeat(auto-fill, minmax(280px, 1fr));gap:12px;">
+              
+            <div style="background:#1e293b;border:1px solid #334155;border-radius:8px;padding:12px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+                <span style="font-weight:700;color:#f1f5f9;font-size:0.9rem;">BASS</span>
+                <span style="font-size:0.75rem;color:#94a3b8;">Gain: -2.0 dB</span>
+              </div>
+              <div style="font-size:0.75rem;color:#cbd5e1;margin-bottom:4px;">Clean Answer-Key Stem:</div>
+              <audio controls preload="none" src="mixes/0001_Funk_Groove_001/stems/bass.wav" style="width:100%;height:32px;"></audio>
+              
+                <div style="margin-top:10px;padding:8px;background:rgba(59,130,246,0.08);border-radius:6px;border-left:3px solid #3b82f6;">
+                  <div style="font-size:0.78rem;font-weight:600;color:#93c5fd;margin-bottom:4px;">
+                    Leaky Version (with Injected Bleed)
+                    
+                  </div>
+                  <audio controls preload="none" src="mixes/0001_Funk_Groove_001/leaky/bass.wav" style="width:100%;height:32px;"></audio>
+                  <div style="font-size:0.7rem;color:#94a3b8;margin-top:2px;">Compare directly against clean bass above to audit bleed suppression.</div>
+                </div>
+                
+            </div>
+            
+            <div style="background:#1e293b;border:1px solid #334155;border-radius:8px;padding:12px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+                <span style="font-weight:700;color:#f1f5f9;font-size:0.9rem;">DRUMS</span>
+                <span style="font-size:0.75rem;color:#94a3b8;">Gain: -2.2 dB</span>
+              </div>
+              <div style="font-size:0.75rem;color:#cbd5e1;margin-bottom:4px;">Clean Answer-Key Stem:</div>
+              <audio controls preload="none" src="mixes/0001_Funk_Groove_001/stems/drums.wav" style="width:100%;height:32px;"></audio>
+              
+                <div style="margin-top:10px;padding:8px;background:rgba(59,130,246,0.08);border-radius:6px;border-left:3px solid #3b82f6;">
+                  <div style="font-size:0.78rem;font-weight:600;color:#93c5fd;margin-bottom:4px;">
+                    Leaky Version (with Injected Bleed)
+                    
+                  </div>
+                  <audio controls preload="none" src="mixes/0001_Funk_Groove_001/leaky/drums.wav" style="width:100%;height:32px;"></audio>
+                  <div style="font-size:0.7rem;color:#94a3b8;margin-top:2px;">Compare directly against clean drums above to audit bleed suppression.</div>
+                </div>
+                
+            </div>
+            
+            <div style="background:#1e293b;border:1px solid #334155;border-radius:8px;padding:12px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+                <span style="font-weight:700;color:#f1f5f9;font-size:0.9rem;">OTHER</span>
+                <span style="font-size:0.75rem;color:#94a3b8;">Gain: +3.4 dB</span>
+              </div>
+              <div style="font-size:0.75rem;color:#cbd5e1;margin-bottom:4px;">Clean Answer-Key Stem:</div>
+              <audio controls preload="none" src="mixes/0001_Funk_Groove_001/stems/other.wav" style="width:100%;height:32px;"></audio>
+              
+                <div style="margin-top:10px;padding:8px;background:rgba(59,130,246,0.08);border-radius:6px;border-left:3px solid #3b82f6;">
+                  <div style="font-size:0.78rem;font-weight:600;color:#93c5fd;margin-bottom:4px;">
+                    Leaky Version (with Injected Bleed)
+                    <span style="background:#3b82f6;color:white;padding:2px 8px;border-radius:10px;font-size:0.7rem;">+ bass bleed (-28.0 dB)</span>
+                  </div>
+                  <audio controls preload="none" src="mixes/0001_Funk_Groove_001/leaky/other.wav" style="width:100%;height:32px;"></audio>
+                  <div style="font-size:0.7rem;color:#94a3b8;margin-top:2px;">Compare directly against clean other above to audit bleed suppression.</div>
+                </div>
+                
+            </div>
+            
+            <div style="background:#1e293b;border:1px solid #334155;border-radius:8px;padding:12px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+                <span style="font-weight:700;color:#f1f5f9;font-size:0.9rem;">VOCALS</span>
+                <span style="font-size:0.75rem;color:#94a3b8;">Gain: -1.3 dB</span>
+              </div>
+              <div style="font-size:0.75rem;color:#cbd5e1;margin-bottom:4px;">Clean Answer-Key Stem:</div>
+              <audio controls preload="none" src="mixes/0001_Funk_Groove_001/stems/vocals.wav" style="width:100%;height:32px;"></audio>
+              
+                <div style="margin-top:10px;padding:8px;background:rgba(59,130,246,0.08);border-radius:6px;border-left:3px solid #3b82f6;">
+                  <div style="font-size:0.78rem;font-weight:600;color:#93c5fd;margin-bottom:4px;">
+                    Leaky Version (with Injected Bleed)
+                    <span style="background:#3b82f6;color:white;padding:2px 8px;border-radius:10px;font-size:0.7rem;">+ drums bleed (-24.0 dB @ 3500.0Hz LP)</span>
+                  </div>
+                  <audio controls preload="none" src="mixes/0001_Funk_Groove_001/leaky/vocals.wav" style="width:100%;height:32px;"></audio>
+                  <div style="font-size:0.7rem;color:#94a3b8;margin-top:2px;">Compare directly against clean vocals above to audit bleed suppression.</div>
+                </div>
+                
+            </div>
+            
+            </div>
+          </div>
+
+          
+
+          <details style="margin-top:12px;background:#090d16;border:1px solid #1e293b;border-radius:6px;padding:8px 12px;">
+            <summary style="cursor:pointer;font-size:0.8rem;color:#64748b;font-weight:600;">Inspect Recipe JSON</summary>
+            <pre style="margin:8px 0 0 0;font-family:monospace;font-size:0.75rem;color:#94a3b8;overflow-x:auto;">{
+  &quot;mixforge&quot;: &quot;0.1.0a1&quot;,
+  &quot;song&quot;: &quot;Funk_Groove&quot;,
+  &quot;seed&quot;: [
+    0,
+    1,
+    1
+  ],
+  &quot;sample_rate&quot;: 44100,
+  &quot;channels&quot;: 1,
+  &quot;samples&quot;: 264600,
+  &quot;seconds&quot;: 6.0,
+  &quot;offset_samples&quot;: 59470,
+  &quot;source_samples&quot;: 352800,
+  &quot;peak_limit&quot;: 0.98,
+  &quot;peak_scale&quot;: 1.0,
+  &quot;stems&quot;: {
+    &quot;bass&quot;: {
+      &quot;gain_db&quot;: -1.9659,
+      &quot;rms_dbfs&quot;: -18.9556,
+      &quot;silent&quot;: false
+    },
+    &quot;drums&quot;: {
+      &quot;gain_db&quot;: -2.1824,
+      &quot;rms_dbfs&quot;: -35.9659,
+      &quot;silent&quot;: false
+    },
+    &quot;other&quot;: {
+      &quot;gain_db&quot;: 3.4032,
+      &quot;rms_dbfs&quot;: -14.8359,
+      &quot;silent&quot;: false
+    },
+    &quot;vocals&quot;: {
+      &quot;gain_db&quot;: -1.3293,
+      &quot;rms_dbfs&quot;: -23.149,
+      &quot;silent&quot;: false
+    }
+  },
+  &quot;bleed&quot;: [
+    {
+      &quot;source&quot;: &quot;drums&quot;,
+      &quot;target&quot;: &quot;vocals&quot;,
+      &quot;requested_db&quot;: -24.0,
+      &quot;lowpass_hz&quot;: 3500.0,
+      &quot;measured_db_vs_source&quot;: -31.8676,
+      &quot;leak_vs_target_db&quot;: -44.6845
+    },
+    {
+      &quot;source&quot;: &quot;bass&quot;,
+      &quot;target&quot;: &quot;other&quot;,
+      &quot;requested_db&quot;: -28.0,
+      &quot;lowpass_hz&quot;: null,
+      &quot;measured_db_vs_source&quot;: -28.0,
+      &quot;leak_vs_target_db&quot;: -32.1197
+    }
+  ],
+  &quot;notes&quot;: [],
+  &quot;subtype&quot;: &quot;FLOAT&quot;
+}</pre>
+          </details>
+        </div>
+        
+    </main>
+
+    <footer style="margin-top:40px;padding-top:20px;border-top:1px solid #1e293b;text-align:center;font-size:0.8rem;color:#64748b;">
+      Generated by <strong>mixforge</strong> &bull; Developed by <strong>Boobalan Arjunan</strong> &bull; ComposerMind Labs
+    </footer>
+  </div>
+</body>
+</html>
