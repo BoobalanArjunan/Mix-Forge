@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mixforge"
+version = "0.1.0a1"
+description = "Build test mixes with a known answer key: mix separate stems at known levels, add a known amount of bleed, and keep the exact originals plus a recipe. For testing music source separation."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Boobalan Arjunan" }]
+maintainers = [{ name = "Boobalan Arjunan" }]
+keywords = ["audio", "music", "source-separation", "stems", "ground-truth", "synthetic-data", "bleed", "evaluation", "machine-learning"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Science/Research",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Topic :: Multimedia :: Sound/Audio :: Analysis",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = ["numpy", "scipy", "soundfile"]
+
+[project.optional-dependencies]
+dev = ["pytest>=7"]
+
+[project.urls]
+Homepage = "https://github.com/BoobalanArjunan/mixforge"
+Issues = "https://github.com/BoobalanArjunan/mixforge/issues"
+Source = "https://github.com/BoobalanArjunan/mixforge"
+
+[project.scripts]
+mixforge = "mixforge.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
