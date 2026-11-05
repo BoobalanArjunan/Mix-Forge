@@ -1,0 +1,116 @@
+{
+  "pipeline": {
+    "FLOAT": {
+      "mixes": 40,
+      "verify_failed": 0,
+      "problems": [],
+      "max_sum_error": 6.51925802230835e-08,
+      "bleed_plain_max_error_db": 0.0,
+      "bleed_lowpass_extra_db_min_max": [
+        -1.21,
+        -0.0
+      ],
+      "notes": {
+        "mix would clip": 15
+      },
+      "seconds": 8.5
+    },
+    "PCM_16": {
+      "mixes": 40,
+      "verify_failed": 0,
+      "problems": [],
+      "max_sum_error": 9.1552734375e-05,
+      "bleed_plain_max_error_db": 0.0,
+      "bleed_lowpass_extra_db_min_max": [
+        -1.21,
+        -0.0
+      ],
+      "notes": {
+        "mix would clip": 15
+      },
+      "seconds": 9.9
+    }
+  },
+  "residual_db": [
+    [
+      "A Classic Education - NightOwl",
+      -70.76008321337572
+    ],
+    [
+      "ANiMAL - Clinic A",
+      -73.124168720587
+    ],
+    [
+      "ANiMAL - Easy Tiger",
+      -68.34330273227124
+    ],
+    [
+      "ANiMAL - Rockshow",
+      -68.33284443227089
+    ],
+    [
+      "Actions - Devil's Words",
+      -69.9186149284054
+    ],
+    [
+      "Actions - One Minute Smile",
+      -69.02167301150924
+    ],
+    [
+      "Actions - South Of The Water",
+      -70.75132474903963
+    ],
+    [
+      "Aimee Norwich - Child",
+      -73.27872746983303
+    ],
+    [
+      "Alexander Ross - Goodbye Bolero",
+      -69.10339465904407
+    ],
+    [
+      "Alexander Ross - Velvet Curtain",
+      -67.40716492674062
+    ],
+    [
+      "Angela Thomas Wade - Milk Cow Blues",
+      -68.68503102958206
+    ],
+    [
+      "Atlantis Bound - It Was My Fault For Waiting",
+      -68.63009133376023
+    ],
+    [
+      "Auctioneer - Our Future Faces",
+      -70.05120601548487
+    ],
+    [
+      "AvaLuna - Waterduct",
+      -62.819396934554646
+    ],
+    [
+      "BigTroubles - Phantom",
+      -71.73353994010199
+    ],
+    [
+      "Bill Chudziak - Children Of No-one",
+      -69.40989928746524
+    ],
+    [
+      "Black Bloc - If You Want Success",
+      -68.57663165247678
+    ],
+    [
+      "Celestial Shore - Die For Us",
+      -69.95489986198162
+    ],
+    [
+      "Chris Durban - Celebrate",
+      -69.9032695103597
+    ],
+    [
+      "Clara Berry And Wooldog - Air Traffic",
+      -66.61936091943501
+    ]
+  ]
+}

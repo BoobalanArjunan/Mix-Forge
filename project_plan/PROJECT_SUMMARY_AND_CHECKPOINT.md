@@ -91,7 +91,7 @@ mixforge verify mixes/ --json
 - [x] **Task 2: Distribution Package Validation** — Wheel (`.whl`) and source tarball (`.tar.gz`) built via `python -m build`, validated with `twine check dist/*` (100% PASSED).
 - [x] **Task 3: Git Repository Initialization** — Initial commit `b74e3e7` staged on `main`, remote origin `BoobalanArjunan/mixforge` configured.
 - [x] **Task 4: Synthetic Trial Pipeline** — Verified end-to-end on synthetic stems (`FLOAT` and `PCM_16` error < 1e-7, 0 failures).
-- [ ] **Task 5: Interactive Visual HTML Inspection Report** — Add `--html report.html` to `mixforge verify` (matching SplitSafe standard).
-- [ ] **Task 6: Real-Data Benchmark with MUSDB18-HQ** — Run `scripts/real_data_check.py` and commit `real_check/results.md`.
+- [x] **Task 5: Interactive Visual HTML Inspection Report** — Add `--html report.html` to `mixforge verify` (matching SplitSafe standard, 62/62 unit tests passing).
+- [x] **Task 6: Real-Data Benchmark with MUSDB18-HQ** — Run `scripts/real_data_check.py` on 20 songs (40 mixes, 0 failures), committed `real_check/results.md`.
 - [ ] **Task 7: Remote GitHub Push & CI Verification** — Push `main` to GitHub, confirm multi-OS CI matrix.
 - [ ] **Task 8: PyPI Deployment & Release Tagging** — Deploy to PyPI, tag `v0.1.0a1`, and publish companion PR works.

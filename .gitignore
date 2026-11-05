@@ -74,3 +74,8 @@ Thumbs.db
 *.swp
 *.swo
 *~
+
+# Large generated audio outputs
+real_check/mixes_FLOAT/
+real_check/mixes_PCM_16/
+
