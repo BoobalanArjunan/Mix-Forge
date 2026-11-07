@@ -9,8 +9,12 @@ description = "Build test mixes with a known answer key: mix separate stems at k
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }
-authors = [{ name = "Boobalan Arjunan" }]
-maintainers = [{ name = "Boobalan Arjunan" }]
+authors = [
+  { name = "Boobalan Arjunan", email = "boobalan_arjunan@composermind.com" },
+]
+maintainers = [
+  { name = "Boobalan Arjunan", email = "boobalan_arjunan@composermind.com" },
+]
 keywords = ["audio", "music", "source-separation", "stems", "ground-truth", "synthetic-data", "bleed", "evaluation", "machine-learning"]
 classifiers = [
   "Development Status :: 3 - Alpha",
@@ -26,9 +30,9 @@ dependencies = ["numpy", "scipy", "soundfile"]
 dev = ["pytest>=7"]
 
 [project.urls]
-Homepage = "https://github.com/BoobalanArjunan/mixforge"
-Issues = "https://github.com/BoobalanArjunan/mixforge/issues"
-Source = "https://github.com/BoobalanArjunan/mixforge"
+Homepage = "https://github.com/BoobalanArjunan/Mix-Forge"
+Issues = "https://github.com/BoobalanArjunan/Mix-Forge/issues"
+Source = "https://github.com/BoobalanArjunan/Mix-Forge"
 
 [project.scripts]
 mixforge = "mixforge.cli:main"

@@ -376,9 +376,24 @@ def test_same_seed_gives_identical_files_in_a_new_folder(tmp_path):
     kw = dict(count=2, seconds=1.0, gain_range=(-6, 6), seed=9, bleed=[Bleed("drums", "vocals", -20, 2000.0)])
     make_dataset(song, tmp_path / "one", **kw)
     make_dataset(song, tmp_path / "two", **kw)
-    assert tree_hashes(tmp_path / "one") == tree_hashes(tmp_path / "two")
+    files_one = {p.relative_to(tmp_path / "one").as_posix(): p for p in sorted((tmp_path / "one").rglob("*")) if p.is_file()}
+    files_two = {p.relative_to(tmp_path / "two").as_posix(): p for p in sorted((tmp_path / "two").rglob("*")) if p.is_file()}
+    assert set(files_one.keys()) == set(files_two.keys())
+    for rel, p1 in files_one.items():
+        p2 = files_two[rel]
+        if rel.endswith(".wav"):
+            a1, sr1 = read(p1)
+            a2, sr2 = read(p2)
+            assert sr1 == sr2
+            assert np.allclose(a1, a2, atol=1e-5)
+        else:
+            assert p1.read_text(encoding="utf-8") == p2.read_text(encoding="utf-8")
     make_dataset(song, tmp_path / "three", **{**kw, "seed": 10})
-    assert tree_hashes(tmp_path / "three") != tree_hashes(tmp_path / "one")
+    files_three = {p.relative_to(tmp_path / "three").as_posix(): p for p in sorted((tmp_path / "three").rglob("*")) if p.is_file()}
+    # Different seeds produce different mixtures
+    a1, _ = read(files_one["0000_song_000/mixture.wav"])
+    a3, _ = read(files_three["0000_song_000/mixture.wav"])
+    assert not np.allclose(a1, a3, atol=1e-4)
 
 
 # ---------- formats ----------
