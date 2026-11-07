@@ -47,7 +47,7 @@ def read(path):
 
 
 def tree_hashes(root: Path):
-    return {str(p.relative_to(root)): hashlib.sha1(p.read_bytes()).hexdigest()
+    return {p.relative_to(root).as_posix(): hashlib.sha1(p.read_bytes()).hexdigest()
             for p in sorted(root.rglob("*")) if p.is_file()}
 
 
