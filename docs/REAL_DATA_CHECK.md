@@ -3,7 +3,7 @@
 This tests mixforge on real music stems. It checks that real files (different lengths, sample rates, mono or stereo) go through cleanly, that `mixforge verify` passes on everything made, and that the bleed you ask for is the bleed you get.
 
 1. Get MUSDB18-HQ (search "MUSDB18-HQ" on Zenodo). It is free for non-commercial research. Unzip it; you want the `train` folder, which has one folder per song with `vocals.wav`, `drums.wav`, `bass.wav`, `other.wav` and `mixture.wav`. mixforge does not ship any music.
-2. Install: `pip install --pre mixforge` (or work from a project checkout to get the `scripts/` folder).
+2. Install: `pip install mixforge-audio` (or work from a project checkout to get the `scripts/` folder).
 3. Quick trial: `python scripts/real_data_check.py --stems ~/musdb18hq/train --max-songs 3 --out real_check`
 4. Full run: `python scripts/real_data_check.py --stems ~/musdb18hq/train --max-songs 20 --out real_check`
 5. Open `real_check/results.md`.

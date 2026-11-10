@@ -4,15 +4,13 @@ Make test mixes where you know the right answer.
 
 You give mixforge separate stems (vocals, drums, bass, other). It mixes them at known levels, can add a **known amount of bleed** (for example "a little drums leaking into the vocal"), and keeps the exact originals plus a `recipe.json`. You can then test whether a separation tool, or a bleed detector, gives the right answer, because you know what went in.
 
-> **Status: alpha (0.1.0).** Tested on synthetic audio with known answers, mutation checks, and verified on real music stems from MUSDB18-HQ (see [Real-data check](#real-data-check) below).
+> **Status: 0.1.0.** Tested on synthetic audio with known answers, mutation checks, and verified on real music stems from MUSDB18-HQ (see [Real-data check](#real-data-check) below).
 
 ## Install
 
 ```
-pip install --pre mixforge
+pip install mixforge-audio
 ```
-
-(`--pre` is needed while it is an alpha release.)
 
 ## Quick start
 
@@ -106,7 +104,7 @@ r.mixture, r.stems, r.leaky, r.recipe
 - **This is test material, not music.** The mixes are gain-scaled sums of stems. They are not mastered and do not claim to sound like finished records.
 - **The bleed is simple.** It is a quieter, optionally duller copy of one stem added to another. Real microphone bleed also has delay, room sound and frequency changes that this does not copy. A detector that works here may still struggle on real recordings.
 - **Stems must already be time-aligned** (as in MUSDB18-HQ). mixforge does not align them.
-- **No cross-song remixing yet** (vocals from one song over drums from another).
+- **No cross-song remixing** (vocals from one song over drums from another).
 - Stems are read with `soundfile` (WAV, FLAC, OGG, AIFF, and MP3 where your libsndfile supports it). Not supported: `.stem.mp4` files (use MUSDB18-HQ's WAV version).
 
 ## Related work

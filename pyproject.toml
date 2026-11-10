@@ -3,7 +3,7 @@ requires = ["setuptools>=64"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "mixforge"
+name = "mixforge-audio"
 version = "0.1.0"
 description = "Build test mixes with a known answer key: mix separate stems at known levels, add a known amount of bleed, and keep the exact originals plus a recipe. For testing music source separation."
 readme = "README.md"
