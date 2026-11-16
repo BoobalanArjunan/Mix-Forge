@@ -5,6 +5,7 @@
 \usepackage{algorithmic}
 \usepackage{algorithm}
 \usepackage{graphicx}
+\graphicspath{{figures/}{./}}
 \usepackage{textcomp}
 \usepackage{xcolor}
 \usepackage{booktabs}
@@ -60,9 +61,9 @@
 \author{Boobalan~Arjunan%
 \IEEEcompsocitemizethanks{\IEEEcompsocthanksitem B. Arjunan is with ComposerMind Labs, Chennai, Tamil Nadu, India.\protect\\
 E-mail: boobalan\_arjunan@composermind.com}%
-\thanks{Manuscript submitted to arXiv; under consideration for IEEE publication. Open-source repository: https://github.com/BoobalanArjunan/ComposerMind-AudioIntegrity-Suite}}
+\thanks{ComposerMind Labs Open-Source Research Suite. Source code and benchmark reproduction: \url{https://github.com/BoobalanArjunan/ComposerMind-AudioIntegrity-Suite}}}
 
-\markboth{Preprint Submitted to arXiv / Under Consideration at IEEE Access}%
+\markboth{Preprint --- November 2026}%
 {Arjunan: Building Reliable Audio Datasets for AI/ML Training}
 
 \IEEEtitleabstractindextext{%
@@ -95,7 +96,7 @@ Through empirical investigation across public and commercial audio datasets, we 
 
 \begin{figure*}[t]
 \centering
-\includegraphics[width=0.96\textwidth]{figures/paper1_architecture.pdf}
+\includegraphics[width=0.96\textwidth]{paper1_architecture}
 \caption{Architectural overview of the ComposerMind AudioIntegrity Suite: Seven deterministic digital signal processing tools providing automated, pre-training dataset quality assurance and physical defect repair across two foundational groups.}
 \label{fig:framework_architecture}
 \end{figure*}
@@ -260,8 +261,8 @@ To evaluate real-world scalability and false-alarm behavior, we audited large-sc
 
 \begin{figure*}[t]
 \centering
-\includegraphics[width=0.92\textwidth]{figures/paper1_benchmarks.pdf}
-\caption{Hyperparameter sensitivity and boundary analysis: (a) \texttt{splitsafe} leak recall vs.\ vote threshold $\Theta_{\text{leak}}$ under varying SNR; (b) \texttt{wavewash} MSE reduction as a function of maximum clipping run length $L_{\max}$; (c) \texttt{bandcheck} cutoff detection F1 score vs.\ log-spectral cliff threshold $\Delta_{\text{cliff}}$; (d) Conversational speech F1 score vs.\ inter-channel dominance threshold.}
+\includegraphics[width=0.92\textwidth]{paper1_benchmarks}
+\caption{Hyperparameter sensitivity and boundary analysis: (a) \texttt{splitsafe} leak recall vs.\ vote threshold $\Theta_{\text{leak}}$ under varying SNR; (b) \texttt{wavewash} MSE reduction as a function of maximum clipping run length $L_{\max}$; (c) \texttt{bandcheck} cutoff detection F1 score vs.\ log-spectral cliff threshold $\Delta_{\text{cliff}}$; (d) \texttt{phasecheck} monophonic downmix energy loss $\Delta E_{\text{mono}}$ and detection recall zones as a function of inter-channel Pearson correlation $\rho_{LR}$.}
 \label{fig:ablation_sweeps}
 \end{figure*}
 
