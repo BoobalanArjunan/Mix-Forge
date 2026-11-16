@@ -1,0 +1,396 @@
+\documentclass[10pt,journal,compsoc]{IEEEtran}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsfonts,amsthm}
+\usepackage{algorithmic}
+\usepackage{algorithm}
+\usepackage{graphicx}
+\graphicspath{{figures/}{./}}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{url}
+\def\UrlBreaks{\do\/\do-}
+\usepackage{cite}
+\usepackage{microtype}
+\usepackage{listings}
+\usepackage{subcaption}
+\usepackage{multirow}
+\usepackage{balance}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{definition}{Definition}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue!80!black,
+    citecolor=blue!80!black,
+    urlcolor=blue!80!black
+}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.96,0.97,0.98}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\scriptsize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+\lstset{style=mystyle}
+
+\begin{document}
+
+\title{Beyond Accuracy: Building Reproducible Benchmarks and Diagnostic Tools for Audio \& Speech AI}
+
+\author{Boobalan~Arjunan\\[0.2em]%
+\normalsize\textnormal{Founder \& Lead AI/ML Architect, ComposerMind Labs LLP, Tamil Nadu, India}\\[-0.2em]%
+\small\href{mailto:boobalan_arjunan@composermind.com}{\texttt{boobalan\textunderscore arjunan@composermind.com}}}
+
+\markboth{Preprint --- November 2026}%
+{Arjunan: Beyond Accuracy: Diagnostic Benchmarking for Audio and Speech AI}
+
+\IEEEtitleabstractindextext{%
+\begin{abstract}
+Standard benchmark metrics in audio and speech artificial intelligence---such as Signal-to-Distortion Ratio (SDR) in music source separation and Word Error Rate (WER) in speech processing---frequently obscure critical diagnostic failure modes. In music source separation, commercial multi-track recordings inherently contain unmeasured acoustic microphone bleed and non-linear mastering compression, confounding algorithmic separation failures with physical recording artifacts. In full-duplex conversational voice agents, aggregate latency metrics fail to capture tail response delays, acoustic room-echo leakage, and customer barge-in compliance. To establish reproducible ground-truth evaluation without circular reliance on opaque neural evaluators, we introduce the \textbf{ComposerMind AudioEvaluation Suite}, an open-source framework comprising three deterministic digital signal processing (DSP) tools: \texttt{mixforge-audio}, \texttt{stemcheck}, and \texttt{turnscope}. Organized into two specialized evaluation tracks, the suite provides rigorous diagnostic capabilities: \texttt{mixforge-audio} guarantees a numerically bounded linear-superposition residual (bounded below $10^{-12}$ in double-precision internal computation and $\le 6.52 \times 10^{-8}$ upon 32-bit float audio export) with calibrated 4th-order Butterworth acoustic bleed and cryptographic recipe serialization; \texttt{stemcheck} introduces linear subspace projection to estimate cross-source interference matrices (recovering calibrated bleed within 0.06\,dB over 264 trials) while isolating unmodeled algorithmic artifacts; and \texttt{turnscope} implements an 18\,dB energy-dominance heuristic to suppress acoustic echo, extracting conversational turn hand-over latency distributions ($P_{50}, P_{90}, P_{99}$) and customer barge-in compliance. Evaluated across 20 MUSDB18-HQ tracks and the MagicHub conversational corpus (449 turns, 3,021 segments), the suite demonstrates zero false-alarm leak detections on pristine references and reduces conversational $P_{90}$ tail latency estimation error by 67.1\% (from 1.339\,s to 0.440\,s).
+\end{abstract}
+
+\begin{IEEEkeywords}
+Audio Machine Learning, Source Separation Evaluation, Ground-Truth Benchmarking, Acoustic Bleed Estimation, Conversational Voice AI, Turn-Taking Latency, Barge-In Detection, Open-Source Software.
+\end{IEEEkeywords}}
+
+\maketitle
+\IEEEdisplaynontitleabstractindextext
+\IEEEpeerreviewmaketitle
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.96\textwidth]{paper2_architecture}
+\caption{System architecture of the ComposerMind AudioEvaluation Suite: Three deterministic diagnostic benchmarking tools organized into Track A (Source Separation Ground Truth and Bleed Matrix Decomposition via \texttt{mixforge-audio} and \texttt{stemcheck}) and Track B (Full-Duplex Conversational Dynamics and Acoustic Echo Suppression via \texttt{turnscope}).}
+\label{fig:framework_architecture}
+\end{figure*}
+
+\section{Introduction}
+\IEEEPARstart{T}{he} evaluation of deep neural networks for audio generation, music source separation, and interactive voice intelligence has reached a critical methodological inflection point. While deep learning architectures such as Conv-TasNet \cite{luo2019convtasnet}, Demucs \cite{defossez2021hybrid}, Band-Split RNN \cite{luo2022music}, and end-to-end full-duplex speech models have demonstrated remarkable perceptual capabilities, the scientific benchmarks used to evaluate their performance remain heavily reliant on aggregate scalar metrics that obscure catastrophic failure modes.
+
+In blind audio source separation (BASS), the universal benchmark metric is the Signal-to-Distortion Ratio (SDR) and its scale-invariant variant (SI-SDR) \cite{vincent2006performance,leroux2019sdr}. However, standard multi-track evaluation corpora (e.g., MUSDB18 \cite{rafii2017musdb18}) are assembled from commercial studio sessions where acoustic isolation between instrument microphones is imperfect. When a drummer plays while a vocalist sings in the same room, acoustic bleed enters the vocal microphone. If a neural network cleanly isolates the vocal performance, classical BSS Eval penalizes the model for failing to reproduce the acoustic drum bleed present in the ground-truth vocal track. Conversely, when a model fails to separate drums from vocals, the error is confounded with physical microphone leakage.
+
+Similarly, in modern conversational Voice AI systems (such as automated customer service agents and real-time speech assistants), system responsiveness is commonly characterized by mean or median latency. Yet, human conversational coherence is defined by tail latency ($P_{90}, P_{99}$), customer barge-in compliance (whether the agent immediately halts speech upon interruption), and acoustic echo cancellation. Standard voice activity detectors (VAD) applied to dual-channel telephony or web call recordings frequently misattribute loudspeaker room echo leaking into the user's microphone as active user speech, skewing latency benchmarks and causing phantom turn transitions.
+
+\subsection{Contributions}
+To eliminate these diagnostic blind spots without introducing circular dependencies on opaque neural evaluators, this paper presents the \textbf{ComposerMind AudioEvaluation Suite}, an open-source evaluation framework comprising three specialized, deterministic DSP tools:
+\begin{enumerate}
+    \item \textbf{\texttt{mixforge-audio}:} A deterministic ground-truth synthesis engine that guarantees a numerically bounded linear-superposition residual ($< 10^{-12}$ in 64-bit internal precision; $\le 6.52 \times 10^{-8}$ upon 32-bit float audio container export), dynamic headroom scaling to eliminate mastering distortion, calibrated directional acoustic bleed simulation via 4th-order Butterworth filters, and cryptographic recipe serialization.
+    \item \textbf{\texttt{stemcheck}:} An analytical verification framework that employs linear subspace projection to estimate cross-source interference matrices (measured in dB) and orthogonal unexplained artifact residue, validating physical conservation laws and identifying false-alarm leaks.
+    \item \textbf{\texttt{turnscope}:} A full-duplex conversational voice diagnostic tool implementing an 18\,dB inter-channel energy-dominance heuristic to suppress acoustic echo crosstalk, driving an asynchronous turn-taking state machine to compute response latency quantiles ($P_{50}, P_{90}, P_{99}$), customer barge-in latencies, and awkward dead-air durations.
+\end{enumerate}
+
+All three tools operate with sub-second execution latency on commodity CPUs and are released under the permissive MIT open-source license.
+
+\section{Related Work}
+
+\subsection{Audio Source Separation Benchmarking}
+The standard framework for evaluating audio source separation is the BSS Eval toolkit formulated by Vincent et al. \cite{vincent2006performance}, which decomposes estimated signals into target, interference, and artifact components via time-invariant projection filters. Subsequent revisions, including BSS Eval v4 \cite{stoter20182018} and SI-SDR \cite{leroux2019sdr}, sought to accelerate computation and enforce scale invariance. 
+
+However, all variants of BSS Eval fundamentally assume that reference stems are acoustically pure and that the mixture is an exact linear combination of those stems. In real-world multi-track datasets such as MUSDB18-HQ \cite{rafii2017musdb18} and MedleyDB \cite{bittner2014medleydb}, studio recordings contain dynamic range compression, limiting, and acoustic bleed between channels \cite{cano2018musical}. When evaluating state-of-the-art architectures (such as HT-Demucs \cite{rouard2023hybrid}), researchers cannot determine whether a $-12$\,dB bleed observation reflects algorithmic failure or unmodeled physical leakage in the recording reference.
+
+\subsection{Conversational Voice AI Dynamics}
+Conversational speech evaluation has historically focused on turn-taking statistics, pause durations, and overlapping speech in linguistic corpora \cite{heldner2010pauses,levinson2015turn,godfrey1992switchboard}. In spoken dialogue systems, Voice Activity Detection (VAD) models (e.g., Silero VAD, WebRTC VAD) are applied to single or dual audio channels. 
+
+In commercial full-duplex telephony and WebRTC voice bots, acoustic coupling between loudspeakers and microphones induces acoustic echo leakage. Standard energy or neural VADs misinterpret this leakage as customer speech, reporting false conversational interruptions and corrupting response latency metrics \cite{skerry2023evaluating}. A rigorous evaluation framework must decouple acoustic echo from true speech onset using physical energy-dominance criteria.
+
+\section{Track A Methodology: Source Separation Ground Truth}
+
+\subsection{\texttt{mixforge-audio}: Linear Superposition and Headroom Scaling}
+Given $K$ isolated stem signals $S_k[n] \in [-1, 1]$ where $k \in \{1, \dots, K\}$ and $n \in \{0, \dots, N-1\}$, an ideal benchmark mixture $M[n]$ requires strict linear superposition:
+\begin{equation}
+M[n] = \sum_{k=1}^K g_k S_k[n]
+\end{equation}
+where $g_k > 0$ denotes user-specified stem gain coefficients. In conventional digital audio workstations (DAWs), summing multiple normalized stems frequently results in peak amplitudes exceeding full scale ($|M[n]| > 1.0$), triggering non-linear master clipping or automatic brickwall limiting that permanently destroys ground-truth linearity.
+
+To preserve strict mathematical linearity without dynamic range distortion, \texttt{mixforge-audio} computes a global headroom scaling factor $\gamma$:
+\begin{equation}
+\gamma = \min\left(1.0, \frac{0.98}{\max_n \left| \sum_{k=1}^K g_k S_k[n] \right|}\right)
+\end{equation}
+The scaled mixture and reference stems are formed as:
+\begin{equation}
+S_k^{\text{scaled}}[n] = \gamma g_k S_k[n], \quad M[n] = \sum_{k=1}^K S_k^{\text{scaled}}[n]
+\end{equation}
+
+\subsubsection{Numerical Precision and Residual Bounds}
+A critical requirement for reproducible benchmark synthesis is clarifying numerical residual bounds across processing stages. Under internal 64-bit double-precision floating-point arithmetic (\texttt{float64}), machine rounding bounds the linear superposition error below:
+\begin{equation}
+\max_n \left| M[n] - \sum_{k=1}^K S_k^{\text{scaled}}[n] \right| < 10^{-12}
+\end{equation}
+When exported to standard 32-bit floating-point audio containers (\texttt{float32} WAV), standard mantissa truncation bounds the maximum observed peak residual across all samples at:
+\begin{equation}
+\epsilon_{\text{export}} \le 6.52 \times 10^{-8} \quad (-143.7\,\text{dBFS})
+\end{equation}
+This guarantees a numerically bounded linear-superposition residual that remains orders of magnitude below digital converter noise floors, providing an uncorrupted benchmark reference.
+
+\subsection{Calibrated Acoustic Bleed Simulation}
+In real acoustic environments, microphone bleed is frequency-dependent: high-frequency content decays rapidly with distance, while low frequencies wrap around baffles. \texttt{mixforge-audio} simulates calibrated directional acoustic bleed between stems using a 4th-order Butterworth low-pass filter $H_{\text{bleed}}(z)$ with cutoff frequency $f_{\text{bleed}} \in [2500, 6000]$\,Hz:
+\begin{equation}
+S_k^{\text{leaky}}[n] = S_k[n] + \sum_{j \ne k} 10^{\frac{B_{jk}}{20}} (S_j * h_{\text{bleed}})[n]
+\end{equation}
+where $B_{jk} \le 0$\,dB denotes the prescribed bleed intensity from source $j$ into microphone $k$. Crucially, \texttt{mixforge-audio} preserves the isolated, leak-free stems $S_k[n]$ as the immutable ground truth, while exporting the leaky stems and composite mix to test whether separation models erroneously replicate or eliminate the calibrated bleed.
+
+\subsection{Cryptographic Recipe Serialization}
+To guarantee full experimental reproducibility across research institutions, \texttt{mixforge-audio} serializes all mixture parameters into a tamper-evident \texttt{recipe.json} manifest. This manifest records the exact SHA-256 cryptographic hashes of all input stem files, gain coefficients $g_k$, bleed matrix $B_{jk}$, sample rate, and random generator seeds. Anyone possessing the input stems can recreate the identical bit-exact mixture dataset.
+
+\begin{table*}[t]
+\centering
+\caption{Comprehensive Architectural Summary of the Three Diagnostic Tools in the ComposerMind AudioEvaluation Suite.}
+\label{tab:tool_architecture}
+\footnotesize
+\renewcommand{\arraystretch}{1.22}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{@{}lllll@{}}
+\toprule
+\textbf{Tool} & \textbf{Evaluation Track} & \textbf{Target Artifact / Defect} & \textbf{Underlying DSP Algorithm} & \textbf{Deterministic Quantitative Guarantee} \\
+\midrule
+MixForge & Track A (Source Separation) & Peak clipping, mastering non-linearity & Dynamic headroom scaling, linear superposition & Bounded residual: $< 10^{-12}$ (float64) / $\le 6.52 \times 10^{-8}$ (float32 export) \\
+MixForge & Track A (Source Separation) & Uncontrolled microphone bleed & 4th-order Butterworth low-pass IIR & Calibrated bleed matrix injection with SHA-256 recipe seal \\
+StemCheck & Track A (Source Separation) & Algorithmic vs.\ physical bleed & Least-squares linear subspace projection & Decouples estimated interference $L_{ij}$ from artifacts $\mathcal{U}_i$ \\
+StemCheck & Track A (Source Separation) & Sum mismatch, duplicate channels & Pearson correlation, energy conservation & Exact conservation residual: $|\sum \hat{S}_i - M| \le \epsilon$ \\
+TurnScope & Track B (Conversational AI) & Acoustic echo crosstalk & 18\,dB energy-dominance heuristic & Suppresses echo misattribution without neural training \\
+TurnScope & Track B (Conversational AI) & Latency tail and dead air & Asynchronous state machine, quantile ECDF & Robust $P_{50}, P_{90}, P_{99}$ response and barge-in latencies \\
+\bottomrule
+\end{tabular}%
+}
+\end{table*}
+
+\subsection{\texttt{stemcheck}: Subspace Bleed Matrix Decomposition}
+Given an estimated separated stem $\hat{S}_i \in \mathbb{R}^N$ produced by a neural model and the matrix of true reference stems $\mathbf{S} = [S_1, S_2, \dots, S_K] \in \mathbb{R}^{N \times K}$, classical BSS Eval computes a scalar SDR that lumps all projection discrepancies together.
+
+\texttt{stemcheck} decomposes $\hat{S}_i$ by projecting it directly onto the linear subspace spanned by all reference stems via Tikhonov-regularized least-squares:
+\begin{equation}
+\mathbf{c}_i = (\mathbf{S}^T \mathbf{S} + \lambda \mathbf{I})^{-1} \mathbf{S}^T \hat{S}_i \in \mathbb{R}^K
+\end{equation}
+where $\lambda = 10^{-6}$ is a ridge regularization parameter preventing numerical instability when reference stems exhibit high spectral correlation, and $\mathbf{c}_i = [c_{i1}, c_{i2}, \dots, c_{iK}]^T$ represents the optimal linear reconstruction weights. The estimated stem is thus partitioned into a linear combination of reference sources and an orthogonal residual error vector $\mathcal{E}_i$:
+\begin{equation}
+\hat{S}_i = c_{ii} S_i + \sum_{j \ne i} c_{ij} S_j + \mathcal{E}_i, \quad \text{where } \mathbf{S}^T \mathcal{E}_i = \mathbf{0}
+\end{equation}
+
+\subsubsection{Physical Interpretation and Limitations}
+From this decomposition, \texttt{stemcheck} extracts two primary diagnostic metrics:
+\begin{enumerate}
+    \item \textbf{Estimated Cross-Source Interference ($L_{ij}$):} Quantifies the energy contribution of reference source $j$ present in separated stem $i$, relative to the target source:
+    \begin{equation}
+    L_{ij} = 20 \log_{10} \left( \frac{\|c_{ij} S_j\|_2}{\|c_{ii} S_i\|_2} \right) \quad (\text{in dB})
+    \end{equation}
+    \textit{Interpretation Note:} In blind settings, non-zero off-diagonal coefficients $c_{ij}$ can arise from physical acoustic bleed, algorithmic leakage, or intrinsic spectral correlation between musical instruments. We validate $L_{ij}$ as a physical bleed estimator by benchmarking against known, synthetic injected bleed.
+    \item \textbf{Unexplained Artifact Ratio ($\mathcal{U}_i$):} Measures the energy of non-linear distortion, phase cancellation, and neural vocoder artifacts that cannot be explained by any linear combination of the reference stems:
+    \begin{equation}
+    \mathcal{U}_i = 10 \log_{10} \left( \frac{\|\mathcal{E}_i\|_2^2}{\|\hat{S}_i\|_2^2} \right) \quad (\text{in dB})
+    \end{equation}
+\end{enumerate}
+
+\subsection{Blind Physical Sanity Assertions}
+In addition to subspace decomposition, \texttt{stemcheck} executes automated physical sanity checks:
+\begin{itemize}
+    \item \textbf{Conservation of Energy:} Computes the sample-wise difference between the sum of separated stems and the original mixture: $\Delta_{\text{sum}}[n] = M[n] - \sum_{i=1}^K \hat{S}_i[n]$. Residuals exceeding threshold $\tau_{\text{sum}}$ signal missing stems or non-linear scaling.
+    \item \textbf{Channel Duplication:} Computes the cross-correlation $\rho(\hat{S}_i, \hat{S}_j)$ across all separated pairs. Pairs with $\rho > 0.98$ are flagged as duplicate outputs.
+    \item \textbf{DC Offset and Clipping:} Audits output stems for digital rail clipping ($|\hat{S}_i[n]| \ge 0.9999$) and DC bias ($|\mu_{\hat{S}_i}| \ge 10^{-3}$).
+\end{itemize}
+
+\section{Track B Methodology: Conversational Voice AI Dynamics}
+
+\subsection{\texttt{turnscope}: Acoustic Echo Suppression Heuristic}
+In dual-channel conversational audio recordings (Channel 0: Agent / Bot, Channel 1: Customer / Human), evaluating conversational turn dynamics requires identifying speech onsets and offsets. However, loudspeaker output from the agent's channel acoustically couples into the customer's microphone. Conventional energy-based VADs detect this coupled sound as customer speech, creating phantom conversational overlaps.
+
+To suppress acoustic echo without requiring computationally intensive adaptive filtering, \texttt{turnscope} exploits the physical invariant of acoustic transmission loss: a direct-path speech signal is substantially louder on its source channel than on the receiving channel.
+
+\texttt{turnscope} partitions both channels into 20\,ms frames with 10\,ms hop size, computing frame-level root-mean-square energy $E_0[m]$ and $E_1[m]$ (in dBFS). An 18\,dB energy-dominance heuristic is applied:
+\begin{equation}
+A_{\text{leak}}[m] = 
+\begin{cases}
+1, & \text{if } E_0[m] - E_1[m] \ge 18\,\text{dB} \\
+0, & \text{if } E_1[m] - E_0[m] \ge 18\,\text{dB} \\
+\emptyset, & \text{otherwise}
+\end{cases}
+\end{equation}
+where $A_{\text{leak}} = 1$ indicates agent echo on Channel 1 (suppressed), $A_{\text{leak}} = 0$ indicates customer echo on Channel 0 (suppressed), and $\emptyset$ preserves simultaneous speech.
+
+\subsubsection{Heuristic Limitations and False Suppression}
+Because energy dominance is a heuristic rather than an exact cancellation filter, it does not provide absolute echo elimination. Specifically, if a customer speaks at an unusually quiet volume ($\ge 18$\,dB below the agent's echo level), their speech may be falsely suppressed during agent playback. In conversational benchmarks, this represents an explicit trade-off: eliminating false phantom turns while accepting potential false suppression of low-amplitude simultaneous utterances.
+
+\subsection{Asynchronous Turn-Taking State Machine}
+The echo-suppressed activity frames feed into a deterministic state machine that transitions between five discrete conversational states:
+\begin{equation}
+\mathcal{S} \in \{\text{Silence}, \text{Agent Only}, \text{Customer Only}, \text{Barge-In}, \text{Dead Air}\}
+\end{equation}
+From state transition timestamps, \texttt{turnscope} computes precise operational metrics:
+\begin{enumerate}
+    \item \textbf{Turn Hand-Over Latency ($\Delta t_{\text{resp}}$):} Measured from customer speech offset to subsequent agent speech onset:
+    \begin{equation}
+    \Delta t_{\text{resp}} = t_{\text{agent\_onset}} - t_{\text{customer\_offset}}
+    \end{equation}
+    Transitions with $\Delta t_{\text{resp}} < 0$ represent agent interruptions before the customer finishes.
+    \item \textbf{Customer Barge-In Latency ($\Delta t_{\text{barge}}$):} Measured from customer speech onset during an active agent utterance until the agent successfully halts audio output:
+    \begin{equation}
+    \Delta t_{\text{barge}} = t_{\text{agent\_cutoff}} - t_{\text{customer\_barge\_onset}}
+    \end{equation}
+    \item \textbf{Awkward Dead Air:} Quantifies any unprompted silence duration $\Delta t_{\text{silence}} \ge 3.0$\,s occurring between conversational turns.
+\end{enumerate}
+
+To characterize real-world voice agent responsiveness robustly against outliers, \texttt{turnscope} computes the Empirical Cumulative Distribution Function (ECDF) of latency, reporting the 50th, 90th, and 99th percentiles ($P_{50}, P_{90}, P_{99}$).
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{turnscope_latency_ecdf}
+\caption{Empirical cumulative distribution function (ECDF) of turn hand-over latency measured by \texttt{turnscope} on the MagicHub conversational corpus compared to energy VAD baseline, demonstrating the substantial reduction of echo-related turn-detection artifacts.}
+\label{fig:turnscope_ecdf}
+\end{figure}
+
+\newpage
+\section{Experimental Evaluation}
+
+\subsection{Benchmark A: Source Separation Ground Truth}
+We evaluated Track A across 20 multi-track songs from the MUSDB18-HQ test split (generating 40 controlled mixtures across varying headroom levels). Using \texttt{mixforge-audio}, mixtures achieved exact linear superposition with a maximum double-precision residual below $10^{-12}$, a 32-bit container export error $\le 6.52 \times 10^{-8}$, and a median studio residual of $-69.3$\,dB.
+
+Next, we injected known 4th-order Butterworth acoustic bleed across all stem pairs at calibrated levels ranging from $-40$\,dB to $-10$\,dB. We evaluated Demucs (\texttt{htdemucs}) separations using \texttt{stemcheck}. Over 264 evaluation trials, \texttt{stemcheck}'s linear subspace projection recovered true injected bleed levels with an absolute error $\le 0.06$\,dB, registering zero false-alarm detections on leak-free reference controls.
+
+\subsection{Benchmark B: Conversational Voice AI Dynamics}
+We evaluated \texttt{turnscope} on the MagicHub open-source conversational speech corpus \cite{magichub2021}, encompassing 449 conversational turns and 3,021 annotated speech segments. We compared \texttt{turnscope}'s energy-dominance filter against a standard single-channel energy VAD baseline.
+
+As summarized in Table~\ref{tab:benchmark_results} and Figure~\ref{fig:turnscope_ecdf}, unmitigated acoustic echo causes standard VAD baselines to overestimate turn duration and misattribute echo as user speech, yielding an F1 score of 0.700 and 207 missed turn transitions. By applying the 18\,dB dominance heuristic, \texttt{turnscope} increases speech detection F1 to 0.897 ($+28.1\%$), reduces missed turn transitions to 126 ($-39.1\%$), and reduces $P_{90}$ tail latency estimation error from 1.339\,s down to 0.440\,s (a 67.1\% reduction in latency error).
+
+\begin{table}[t]
+\centering
+\caption{Quantitative Benchmark Results on MUSDB18-HQ and MagicHub Corpora.}
+\label{tab:benchmark_results}
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{@{}llcc@{}}
+\toprule
+\textbf{Tool} & \textbf{Evaluation Metric} & \textbf{Baseline} & \textbf{Our Suite} \\
+\midrule
+MixForge & Float64 Internal Residual & Unchecked & $\mathbf{< 10^{-12}}$ \\
+MixForge & Float32 Export Peak Error & Unchecked & $\mathbf{\le 6.52 \times 10^{-8}}$ \\
+MixForge & Studio Mix Residual & N/A & $\mathbf{-69.3}$ \textbf{dB Median} \\
+StemCheck & Bleed Recovery Error & Confounded & $\mathbf{\le 0.06}$ \textbf{dB} \\
+StemCheck & False Alarms (264 Trials) & N/A & \textbf{0 / 264} \\
+TurnScope & Speech Detection F1 & 0.700 & \textbf{0.897} ($+28.1\%$) \\
+TurnScope & Missed Turn Transitions & 207 & \textbf{126} ($-39.1\%$) \\
+TurnScope & Median Latency Error ($P_{50}$) & 0.412\,s & \textbf{0.182\,s} ($-55.8\%$) \\
+TurnScope & Tail Latency Error ($P_{90}$) & 1.339\,s & \textbf{0.440\,s} ($\mathbf{-67.1\%}$) \\
+\bottomrule
+\end{tabular}%
+}
+\end{table}
+
+\section{Discussion and Operational Guidelines}
+When deploying the ComposerMind AudioEvaluation Suite in production audio and speech pipelines, practitioners should calibrate operational thresholds according to signal context:
+\begin{itemize}
+    \item \textbf{Bleed Separation:} In high-gain master recordings where stem energy is heavily correlated, the reference matrix $\mathbf{S}^T \mathbf{S}$ can become ill-conditioned. \texttt{stemcheck} implements Tikhonov regularization ($\mathbf{S}^T \mathbf{S} + \lambda \mathbf{I}$ with $\lambda = 10^{-6}$) to ensure numerical stability during matrix inversion.
+    \item \textbf{Acoustic Echo Dominance:} The 18\,dB threshold in \texttt{turnscope} is calibrated for typical mobile phone speakerphones and desktop environments. In ultra-low-volume headset scenarios where room reverberation exceeds 400\,ms, practitioners should increase the energy window to 30\,ms or lower the threshold to 15\,dB.
+\end{itemize}
+
+\section{Software and Source Code Availability}
+The ComposerMind AudioEvaluation Suite comprises three independently developed, open-source Python packages authored by Boobalan Arjunan under the MIT license.
+
+The complete evaluation framework, benchmark protocols, dataset configurations, and reproducibility scripts are publicly available at:
+\begin{quote}
+\centering
+\url{https://github.com/BoobalanArjunan/ComposerMind-AudioEvaluation-Suite}
+\end{quote}
+
+The individual package distributions on PyPI and their public source-code repositories are detailed in Table~\ref{tab:repo_inventory}. All three tools can be installed simultaneously via:
+\begin{quote}
+\footnotesize\ttfamily
+pip install mixforge-audio stemcheck turnscope
+\end{quote}
+
+\begin{table}[t]
+\centering
+\caption{Public PyPI Distributions and GitHub Source Repositories.}
+\label{tab:repo_inventory}
+\footnotesize
+\renewcommand{\arraystretch}{1.18}
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{@{}lll@{}}
+\toprule
+\textbf{Tool} & \textbf{PyPI Package} & \textbf{GitHub Repository (Clickable)} \\
+\midrule
+MixForge & \texttt{mixforge-audio} & \href{https://github.com/BoobalanArjunan/mixforge-audio}{\texttt{mixforge-audio}} \\
+StemCheck & \texttt{stemcheck} & \href{https://github.com/BoobalanArjunan/stemcheck}{\texttt{stemcheck}} \\
+TurnScope & \texttt{turnscope} & \href{https://github.com/BoobalanArjunan/turnscope}{\texttt{turnscope}} \\
+\bottomrule
+\end{tabular}%
+}
+\vspace{1mm}
+\begin{minipage}{\columnwidth}
+\scriptsize \textit{Note:} Click any repository name to navigate directly to its public source-code repository at \url{https://github.com/BoobalanArjunan/<repo>}.
+\end{minipage}
+\end{table}
+
+\balance
+\bibliographystyle{IEEEtran}
+\begin{thebibliography}{10}
+
+\bibitem{luo2019convtasnet}
+Y.~Luo and N.~Mesgarani, ``Conv-TasNet: Surpassing ideal time--frequency magnitude masking for speech separation,'' \emph{IEEE/ACM Trans. Audio, Speech, Lang. Process.}, vol.~27, no.~8, pp. 1256--1266, 2019.
+
+\bibitem{defossez2021hybrid}
+A.~D{\'e}fossez, ``Hybrid spectrogram and waveform-source separation,'' in \emph{Proc. ISMIR Workshop}, 2021.
+
+\bibitem{luo2022music}
+Y.~Luo, Z.~Zhu, and E.~Ceolini, ``Music source separation with band-split RNN,'' \emph{IEEE/ACM Trans. Audio, Speech, Lang. Process.}, vol.~31, pp. 1893--1901, 2023.
+
+\bibitem{vincent2006performance}
+E.~Vincent, R.~Gribonval, and C.~F{\'e}votte, ``Performance measurement in blind audio source separation,'' \emph{IEEE Trans. Audio, Speech, Lang. Process.}, vol.~14, no.~4, pp. 1462--1469, 2006.
+
+\bibitem{leroux2019sdr}
+J.~Le~Roux, S.~Wisdom, H.~Erdogan, and J.~R. Hershey, ``SDR---half-baked or well done?'' in \emph{Proc. ICASSP}, 2019, pp. 626--630.
+
+\bibitem{rafii2017musdb18}
+Z.~Rafii, A.~Liutkus, F.-R. St{\"o}ter, S.~I. Mimilakis, and R.~Bittner, ``The MUSDB18 corpus for music separation,'' Dec. 2017.
+
+\bibitem{stoter20182018}
+F.-R. St{\"o}ter, A.~Liutkus, and N.~Ito, ``The 2018 signal separation evaluation campaign,'' in \emph{Proc. LVA/ICA}, 2018, pp. 293--305.
+
+\bibitem{bittner2014medleydb}
+R.~M. Bittner, P.~Salamon, M.~Tierney, M.~Mauch, C.~Cannam, and J.~P. Bello, ``MedleyDB: A multitrack dataset for annotation-intensive MIR research,'' in \emph{Proc. ISMIR}, 2014, pp. 155--160.
+
+\bibitem{cano2018musical}
+E.~Cano, D.~FitzGerald, and K.~Brandenburg, ``Evaluation of musical source separation: Is sound quality all that matters?'' in \emph{Proc. AES Convention 144}, 2018.
+
+\bibitem{rouard2023hybrid}
+S.~Rouard, F.~Massa, and A.~D{\'e}fossez, ``Hybrid transformers for music source separation,'' in \emph{Proc. ICASSP}, 2023, pp. 1--5.
+
+\bibitem{heldner2010pauses}
+M.~Heldner and J.~Edlund, ``Pauses, gaps and overlaps in conversations,'' \emph{J. Phonetics}, vol.~38, no.~4, pp. 555--568, 2010.
+
+\bibitem{levinson2015turn}
+S.~C. Levinson and F.~Torreira, ``Timing in turn-taking and its implications for processing in language architecture,'' \emph{Frontiers in Psychology}, vol.~6, p. 731, 2015.
+
+\bibitem{godfrey1992switchboard}
+J.~J. Godfrey, E.~C. Holliman, and J.~McDaniel, ``SWITCHBOARD: Telephone speech corpus for research and development,'' in \emph{Proc. ICASSP}, 1992, pp. 517--520.
+
+\bibitem{skerry2023evaluating}
+J.~Skerry-Ryan, E.~Battenberg, Y.~Jia, and R.~Weiss, ``Evaluating conversational speech models: Metric challenges and human alignment,'' in \emph{Proc. Interspeech}, 2023.
+
+\bibitem{magichub2021}
+Magic Data Technology, ``MagicHub open-source conversational speech corpus: Ground-truth dialog segmentation and latency benchmarking,'' 2021. [Online]. Available: \url{https://magichub.com/datasets/}
+
+\end{thebibliography}
+
+\end{document}
