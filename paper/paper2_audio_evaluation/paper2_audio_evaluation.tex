@@ -181,11 +181,11 @@ TurnScope & Track B (Conversational AI) & Latency tail and dead air & Asynchrono
 \subsection{\texttt{stemcheck}: Subspace Bleed Matrix Decomposition}
 Given an estimated separated stem $\hat{S}_i \in \mathbb{R}^N$ produced by a neural model and the matrix of true reference stems $\mathbf{S} = [S_1, S_2, \dots, S_K] \in \mathbb{R}^{N \times K}$, classical BSS Eval computes a scalar SDR that lumps all projection discrepancies together.
 
-\texttt{stemcheck} decomposes $\hat{S}_i$ by projecting it directly onto the linear subspace spanned by all reference stems via ordinary least-squares:
+\texttt{stemcheck} decomposes $\hat{S}_i$ by projecting it directly onto the linear subspace spanned by all reference stems via Tikhonov-regularized least-squares:
 \begin{equation}
-\mathbf{c}_i = (\mathbf{S}^T \mathbf{S})^{-1} \mathbf{S}^T \hat{S}_i \in \mathbb{R}^K
+\mathbf{c}_i = (\mathbf{S}^T \mathbf{S} + \lambda \mathbf{I})^{-1} \mathbf{S}^T \hat{S}_i \in \mathbb{R}^K
 \end{equation}
-where $\mathbf{c}_i = [c_{i1}, c_{i2}, \dots, c_{iK}]^T$ represents the optimal linear reconstruction weights. The estimated stem is thus partitioned into a linear combination of reference sources and an orthogonal residual error vector $\mathcal{E}_i$:
+where $\lambda = 10^{-6}$ is a ridge regularization parameter preventing numerical instability when reference stems exhibit high spectral correlation, and $\mathbf{c}_i = [c_{i1}, c_{i2}, \dots, c_{iK}]^T$ represents the optimal linear reconstruction weights. The estimated stem is thus partitioned into a linear combination of reference sources and an orthogonal residual error vector $\mathcal{E}_i$:
 \begin{equation}
 \hat{S}_i = c_{ii} S_i + \sum_{j \ne i} c_{ij} S_j + \mathcal{E}_i, \quad \text{where } \mathbf{S}^T \mathcal{E}_i = \mathbf{0}
 \end{equation}
@@ -257,9 +257,22 @@ To characterize real-world voice agent responsiveness robustly against outliers,
 \begin{figure}[t]
 \centering
 \includegraphics[width=\columnwidth]{turnscope_latency_ecdf}
-\caption{Empirical cumulative distribution function (ECDF) of turn hand-over latency measured by \texttt{turnscope} on the MagicHub conversational corpus compared to energy VAD baseline, demonstrating the elimination of acoustic echo artifacts.}
+\caption{Empirical cumulative distribution function (ECDF) of turn hand-over latency measured by \texttt{turnscope} on the MagicHub conversational corpus compared to energy VAD baseline, demonstrating the substantial reduction of echo-related turn-detection artifacts.}
 \label{fig:turnscope_ecdf}
 \end{figure}
+
+\newpage
+\section{Experimental Evaluation}
+
+\subsection{Benchmark A: Source Separation Ground Truth}
+We evaluated Track A across 20 multi-track songs from the MUSDB18-HQ test split (generating 40 controlled mixtures across varying headroom levels). Using \texttt{mixforge-audio}, mixtures achieved exact linear superposition with a maximum double-precision residual below $10^{-12}$, a 32-bit container export error $\le 6.52 \times 10^{-8}$, and a median studio residual of $-69.3$\,dB.
+
+Next, we injected known 4th-order Butterworth acoustic bleed across all stem pairs at calibrated levels ranging from $-40$\,dB to $-10$\,dB. We evaluated Demucs (\texttt{htdemucs}) separations using \texttt{stemcheck}. Over 264 evaluation trials, \texttt{stemcheck}'s linear subspace projection recovered true injected bleed levels with an absolute error $\le 0.06$\,dB, registering zero false-alarm detections on leak-free reference controls.
+
+\subsection{Benchmark B: Conversational Voice AI Dynamics}
+We evaluated \texttt{turnscope} on the MagicHub open-source conversational speech corpus \cite{magichub2021}, encompassing 449 conversational turns and 3,021 annotated speech segments. We compared \texttt{turnscope}'s energy-dominance filter against a standard single-channel energy VAD baseline.
+
+As summarized in Table~\ref{tab:benchmark_results} and Figure~\ref{fig:turnscope_ecdf}, unmitigated acoustic echo causes standard VAD baselines to overestimate turn duration and misattribute echo as user speech, yielding an F1 score of 0.700 and 207 missed turn transitions. By applying the 18\,dB dominance heuristic, \texttt{turnscope} increases speech detection F1 to 0.897 ($+28.1\%$), reduces missed turn transitions to 126 ($-39.1\%$), and reduces $P_{90}$ tail latency estimation error from 1.339\,s down to 0.440\,s (a 67.1\% reduction in latency error).
 
 \begin{table}[t]
 \centering
@@ -284,17 +297,27 @@ TurnScope & Tail Latency Error ($P_{90}$) & 1.339\,s & \textbf{0.440\,s} ($\math
 }
 \end{table}
 
-\section{Experimental Evaluation}
+\section{Discussion and Operational Guidelines}
+When deploying the ComposerMind AudioEvaluation Suite in production audio and speech pipelines, practitioners should calibrate operational thresholds according to signal context:
+\begin{itemize}
+    \item \textbf{Bleed Separation:} In high-gain master recordings where stem energy is heavily correlated, the reference matrix $\mathbf{S}^T \mathbf{S}$ can become ill-conditioned. \texttt{stemcheck} implements Tikhonov regularization ($\mathbf{S}^T \mathbf{S} + \lambda \mathbf{I}$ with $\lambda = 10^{-6}$) to ensure numerical stability during matrix inversion.
+    \item \textbf{Acoustic Echo Dominance:} The 18\,dB threshold in \texttt{turnscope} is calibrated for typical mobile phone speakerphones and desktop environments. In ultra-low-volume headset scenarios where room reverberation exceeds 400\,ms, practitioners should increase the energy window to 30\,ms or lower the threshold to 15\,dB.
+\end{itemize}
 
-\subsection{Benchmark A: Source Separation Ground Truth}
-We evaluated Track A across 20 multi-track songs from the MUSDB18-HQ test split (generating 40 controlled mixtures across varying headroom levels). Using \texttt{mixforge-audio}, mixtures achieved exact linear superposition with a maximum double-precision residual below $10^{-12}$, a 32-bit container export error $\le 6.52 \times 10^{-8}$, and a median studio residual of $-69.3$\,dB.
+\section{Software and Source Code Availability}
+The ComposerMind AudioEvaluation Suite comprises three independently developed, open-source Python packages authored by Boobalan Arjunan under the MIT license.
 
-Next, we injected known 4th-order Butterworth acoustic bleed across all stem pairs at calibrated levels ranging from $-40$\,dB to $-10$\,dB. We evaluated Demucs (\texttt{htdemucs}) separations using \texttt{stemcheck}. Over 264 evaluation trials, \texttt{stemcheck}'s linear subspace projection recovered true injected bleed levels with an absolute error $\le 0.06$\,dB, registering zero false-alarm detections on leak-free reference controls.
+The complete evaluation framework, benchmark protocols, dataset configurations, and reproducibility scripts are publicly available at:
+\begin{quote}
+\centering
+\url{https://github.com/BoobalanArjunan/ComposerMind-AudioEvaluation-Suite}
+\end{quote}
 
-\subsection{Benchmark B: Conversational Voice AI Dynamics}
-We evaluated \texttt{turnscope} on the MagicHub open-source conversational speech corpus \cite{magichub2021}, encompassing 449 conversational turns and 3,021 annotated speech segments. We compared \texttt{turnscope}'s energy-dominance filter against a standard single-channel energy VAD baseline.
-
-As summarized in Table~\ref{tab:benchmark_results} and Figure~\ref{fig:turnscope_ecdf}, unmitigated acoustic echo causes standard VAD baselines to overestimate turn duration and misattribute echo as user speech, yielding an F1 score of 0.700 and 207 missed turn transitions. By applying the 18\,dB dominance heuristic, \texttt{turnscope} increases speech detection F1 to 0.897 ($+28.1\%$), reduces missed turn transitions to 126 ($-39.1\%$), and reduces $P_{90}$ tail latency estimation error from 1.339\,s down to 0.440\,s (a 67.1\% reduction in latency error).
+The individual package distributions on PyPI and their public source-code repositories are detailed in Table~\ref{tab:repo_inventory}. All three tools can be installed simultaneously via:
+\begin{quote}
+\footnotesize\ttfamily
+pip install mixforge-audio stemcheck turnscope
+\end{quote}
 
 \begin{table}[t]
 \centering
@@ -318,28 +341,6 @@ TurnScope & \texttt{turnscope} & \href{https://github.com/BoobalanArjunan/turnsc
 \scriptsize \textit{Note:} Click any repository name to navigate directly to its public source-code repository at \url{https://github.com/BoobalanArjunan/<repo>}.
 \end{minipage}
 \end{table}
-
-\section{Discussion and Operational Guidelines}
-When deploying the ComposerMind AudioEvaluation Suite in production audio and speech pipelines, practitioners should calibrate operational thresholds according to signal context:
-\begin{itemize}
-    \item \textbf{Bleed Separation:} In high-gain master recordings where stem energy is heavily correlated, the reference matrix $\mathbf{S}^T \mathbf{S}$ can become ill-conditioned. \texttt{stemcheck} implements Tikhonov regularization ($\mathbf{S}^T \mathbf{S} + \lambda \mathbf{I}$ with $\lambda = 10^{-6}$) to ensure numerical stability during matrix inversion.
-    \item \textbf{Acoustic Echo Dominance:} The 18\,dB threshold in \texttt{turnscope} is calibrated for typical mobile phone speakerphones and desktop environments. In ultra-low-volume headset scenarios where room reverberation exceeds 400\,ms, practitioners should increase the energy window to 30\,ms or lower the threshold to 15\,dB.
-\end{itemize}
-
-\section{Software and Source Code Availability}
-The ComposerMind AudioEvaluation Suite comprises three independently developed, open-source Python packages authored by Boobalan Arjunan under the MIT license.
-
-The complete evaluation framework, benchmark protocols, dataset configurations, and reproducibility scripts are publicly available at:
-\begin{quote}
-\centering
-\url{https://github.com/BoobalanArjunan/ComposerMind-AudioEvaluation-Suite}
-\end{quote}
-
-The individual package distributions on PyPI and their public source-code repositories are detailed in Table~\ref{tab:repo_inventory}. All three tools can be installed simultaneously via:
-\begin{quote}
-\footnotesize\ttfamily
-pip install mixforge-audio stemcheck turnscope
-\end{quote}
 
 \balance
 \bibliographystyle{IEEEtran}
