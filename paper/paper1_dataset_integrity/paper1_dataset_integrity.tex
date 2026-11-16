@@ -1,6 +1,7 @@
 \documentclass[10pt,journal,compsoc]{IEEEtran}
 
 \usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
 \usepackage{amsmath,amssymb,amsfonts,amsthm}
 \usepackage{algorithmic}
 \usepackage{algorithm}
@@ -62,7 +63,7 @@
 
 \author{Boobalan~Arjunan\\[0.2em]%
 \normalsize\textnormal{Founder \& Lead AI/ML Architect, ComposerMind Labs LLP, Tamil Nadu, India}\\[-0.2em]%
-\small\href{mailto:boobalan_arjunan@composermind.com}{\nolinkurl{boobalan_arjunan@composermind.com}}}
+\small\href{mailto:boobalan_arjunan@composermind.com}{\texttt{boobalan\textunderscore arjunan@composermind.com}}}
 
 \markboth{Preprint --- November 2026}%
 {Arjunan: Building Reliable Audio Datasets for AI/ML Training}
@@ -184,7 +185,7 @@ Digital clipping occurs when $|x[n]| \ge x_{\text{rail}} - 10^{-4}$. Contiguous 
 \begin{equation}
 p(t) = a_0 + a_1 t + a_2 t^2 + a_3 t^3, \quad t = \frac{n - n_{\text{start}} + 1}{L + 1}
 \end{equation}
-constrained to match boundary values and finite-difference derivatives $d_{\text{start}}, d_{\text{end}}$. Runs with $L > 16$ are quarantined as \texttt{CLIPPING\_HEAVY}. DC offset is eliminated via a 20\,Hz zero-phase high-pass filter:
+constrained to match boundary values and finite-difference derivatives $d_{\text{start}}, d_{\text{end}}$. Runs with $L > 16$ are quarantined as \texttt{CLIPPING\_HEAVY}. DC offset is eliminated via a 20\,Hz first-order high-pass filter implemented bidirectionally (forward-backward filtering via \texttt{scipy.signal.filtfilt} to achieve zero phase distortion):
 \begin{equation}
 H_{\text{dc}}(z) = \frac{1 + \alpha}{2} \cdot \frac{1 - z^{-1}}{1 - \alpha z^{-1}}, \quad \alpha = \frac{1 - \tan(\pi f_c / f_s)}{1 + \tan(\pi f_c / f_s)}
 \end{equation}
