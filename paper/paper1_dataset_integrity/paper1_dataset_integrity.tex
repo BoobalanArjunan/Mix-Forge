@@ -287,13 +287,19 @@ An honest accounting of failure modes is essential for engineering robust audio 
 \section{Conclusion}
 We presented the ComposerMind AudioIntegrity Suite, an open-source framework of seven deterministic DSP quality assurance tools designed to audit, sanitize, and verify audio machine learning datasets before model training. By formulating closed-form acoustic invariants and publishing reproducible benchmarks, the framework protects downstream models from silent data corruption while running at hundreds of times real-time on commodity CPUs.
 
-\section*{Software Availability}
-All seven tools are released under the open-source MIT license on PyPI:
+\section*{Software and Source Code Availability}
+The ComposerMind AudioIntegrity Suite comprises seven independently developed, open-source Python packages: \textit{WaveWash}, \textit{SplitSafe}, \textit{BandCheck}, \textit{PhaseCheck}, \textit{DriftCheck-Audio}, \textit{TempoCheck}, and \textit{TonicFind}.
+
+The complete benchmark framework, experimental protocols, ground-truth datasets, and reproducibility resources are publicly available at:
+\begin{center}
+\url{https://github.com/BoobalanArjunan/ComposerMind-AudioIntegrity-Suite}
+\end{center}
+The individual package source-code repositories and their corresponding PyPI distributions are documented in the project's repository README and can be installed individually or in batch:
 \begin{quote}
 \footnotesize\ttfamily
 pip install wavewash splitsafe bandcheck phasecheck driftcheck-audio tempocheck tonicfind
 \end{quote}
-Benchmark code, test runners, and synthetic ground-truth suites are maintained at \url{https://github.com/BoobalanArjunan/ComposerMind-AudioIntegrity-Suite}.
+All seven tools were developed by Boobalan Arjunan and are published under the open-source MIT license.
 
 \balance
 \bibliographystyle{IEEEtran}

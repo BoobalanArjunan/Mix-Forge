@@ -140,12 +140,21 @@ To thoroughly characterize detection boundaries and failure modes, we evaluated 
 
 ---
 
-## 5. Software Availability
+## 5. Software and Source Code Availability
 
-The seven tools are released under the MIT license on PyPI:
+The ComposerMind AudioIntegrity Suite comprises seven independently developed, open-source Python packages: `wavewash`, `splitsafe`, `bandcheck`, `phasecheck`, `driftcheck-audio`, `tempocheck`, and `tonicfind`.
+
+The complete benchmark framework, experimental protocols, synthetic ground-truth datasets, and reproducibility resources are publicly available at:
+
+👉 **Benchmark Repository & Suite Hub:** [https://github.com/BoobalanArjunan/ComposerMind-AudioIntegrity-Suite](https://github.com/BoobalanArjunan/ComposerMind-AudioIntegrity-Suite)
+
+The individual package source-code repositories and their corresponding PyPI distributions are documented in the project's README and can be installed via PyPI:
+
 ```bash
 pip install wavewash splitsafe bandcheck phasecheck driftcheck-audio tempocheck tonicfind
 ```
+
+All seven tools were developed by Boobalan Arjunan and are published under the open-source MIT license.
 
 Benchmark code, datasets, and reproduction harnesses are maintained at:  
 👉 **GitHub:** [https://github.com/BoobalanArjunan/ComposerMind-AudioIntegrity-Suite](https://github.com/BoobalanArjunan/ComposerMind-AudioIntegrity-Suite)
