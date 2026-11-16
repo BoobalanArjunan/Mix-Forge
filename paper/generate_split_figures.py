@@ -24,7 +24,7 @@ ax.add_patch(bg)
 # Header
 ax.text(7.0, 6.65, "ComposerMind AudioIntegrity Suite: 7 Quality Assurance Tools", 
         ha='center', va='center', fontsize=13, fontweight='bold', color="#0F172A")
-ax.text(7.0, 6.35, "Pre-Training Dataset Hygiene • Physical DSP Invariants • Zero Neural Biases • Pure CPU", 
+ax.text(7.0, 6.35, "Pre-Training Dataset Hygiene • Physical DSP Invariants • Deterministic Gates • Commodity CPU Execution", 
         ha='center', va='center', fontsize=9, fontstyle='italic', color="#475569")
 
 # Top raw input
@@ -50,7 +50,7 @@ ax.text(3.6, 4.7, "GROUP I: SIGNAL QUALITY & PARTITION HYGIENE", ha='center', va
 tools_g1 = [
     ("WaveWash", "Cubic Hermite Spline De-Clipping & BS.1770", "71.8% MSE drop on clipped speech; DC removal; zero false flags"),
     ("SplitSafe", "Landmark Peak Hashing & Time Voting", "100% leak recall on 5,323 LibriSpeech files; speaker isolation"),
-    ("BandCheck", "Log-Spectral Slope Cliff Derivative", "100% detection of 8/11/16 kHz upsampling & MP3/AAC cutoffs")
+    ("BandCheck", "Log-Spectral Slope Cliff Derivative", "100% brickwall detection on 185 tracks; 85.7% recall on edge suite")
 ]
 y = 4.05
 for name, algo, desc in tools_g1:
@@ -72,9 +72,9 @@ ax.add_patch(h2_box)
 ax.text(10.4, 4.7, "GROUP II: HARMONIC, TEMPORAL & SPATIAL INTEGRITY", ha='center', va='center', fontsize=8.5, fontweight='bold', color="#FFFFFF", zorder=3)
 
 tools_g2 = [
-    ("TempoCheck", "Onset Flux Autocorrelation Tempogram", "Harmonic ratio matching (0.5x, 2.0x, 1.5x); rubato discovery"),
-    ("TonicFind", "12-Bin Chroma & Krumhansl-Kessler Profiles", "100% key accuracy; A440 detuning compensation (+-50 cents)"),
-    ("PhaseCheck", "Sliding Pearson Phase & Mono Downmix", "100% 180° inverted polarity recall; flags mono phase drop"),
+    ("TempoCheck", "Onset Flux Autocorrelation Tempogram", "100% Acc2 harmonic tempo validation; flags metric doubling/halving"),
+    ("TonicFind", "12-Bin Chroma & Krumhansl-Kessler Profiles", "100% key accuracy on 25 stems; A440 detune comp (+-50 cents)"),
+    ("PhaseCheck", "Sliding Pearson Phase & Mono Downmix", "100% recall on 180° polarity flips; flags mono phase drop (< -3 dB)"),
     ("DriftCheck", "Band Energy Cross-Correlation & Permutation", "Catches clock drift (ms/min) & frame mismatch; p < 0.01")
 ]
 y = 4.05
