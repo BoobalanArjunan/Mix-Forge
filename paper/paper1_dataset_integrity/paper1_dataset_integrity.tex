@@ -79,6 +79,13 @@ Audio Machine Learning, Dataset Hygiene, Data Contamination, Signal Processing, 
 \IEEEdisplaynontitleabstractindextext
 \IEEEpeerreviewmaketitle
 
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.96\textwidth]{paper1_architecture}
+\caption{Architectural overview of the ComposerMind AudioIntegrity Suite: Seven deterministic digital signal processing tools providing automated, pre-training dataset quality assurance and physical defect repair across two foundational groups.}
+\label{fig:framework_architecture}
+\end{figure*}
+
 \section{Introduction}
 \IEEEPARstart{T}{he} scale of audio machine learning (Audio ML) training datasets has expanded by orders of magnitude over the past five years. Foundational speech models such as Whisper \cite{radford2023whisper} and Conformer \cite{gulati2020conformer}, audio generation models such as AudioCraft \cite{copet2024audiocraft} and Stable Audio \cite{evans2024stableaudio}, and music representation networks ingest tens of thousands of hours of audio scraped from video platforms, podcast feeds, broadcast archives, and commercial libraries.
 
@@ -94,17 +101,10 @@ Through empirical investigation across public and commercial audio datasets, we 
     \item \textbf{Temporal Transcript Drift:} Speech corpora paired with subtitle or ASR alignment manifests exhibiting cumulative clock drift (e.g., 25\,fps vs.\ 23.976\,fps video pull-down mismatches, creating drift of $\approx 163$\,ms/min) that causes models to train on misaligned phonemes or pure background noise.
 \end{enumerate}
 
-\begin{figure*}[t]
-\centering
-\includegraphics[width=0.96\textwidth]{paper1_architecture}
-\caption{Architectural overview of the ComposerMind AudioIntegrity Suite: Seven deterministic digital signal processing tools providing automated, pre-training dataset quality assurance and physical defect repair across two foundational groups.}
-\label{fig:framework_architecture}
-\end{figure*}
-
 \subsection{The Epistemic Hazard of Neural Quality Evaluators}
 A widespread trend among ML practitioners is to deploy auxiliary deep neural models (e.g., neural VADs, speech-language foundation models, or embedding classifiers) to filter audio training sets. We argue that relying on neural evaluators to audit data for training downstream neural models introduces an epistemic circularity:
 \begin{itemize}
-    \item \textbf{Inherited Bias & Hallucination:} The auditing network's own inductive biases and blind spots are transferred directly into the dataset filtering stage.
+    \item \textbf{Inherited Bias \& Hallucination:} The auditing network's own inductive biases and blind spots are transferred directly into the dataset filtering stage.
     \item \textbf{Lack of Physical Interpretability:} Neural evaluators produce opaque scalar scores (e.g., ``quality = 0.42'') without identifying the root acoustic failure mode (e.g., ``the file contains a 25\,dB brickwall cutoff at 11.025\,kHz'').
     \item \textbf{Prohibitive Compute Overhead:} Running multi-billion parameter neural feature extractors over terabytes of audio requires expensive GPU clusters, making continuous integration (CI/CD) dataset gating economically impractical.
 \end{itemize}
@@ -138,22 +138,22 @@ The ComposerMind AudioIntegrity Suite comprises seven standalone, interoperable 
 \centering
 \caption{Comprehensive Architectural Summary of the Seven Tools in the ComposerMind AudioIntegrity Suite.}
 \label{tab:suite_summary}
-\resizebox{\textwidth}{!}{
-\begin{tabular}{@{}llllllp{5.5cm}@{}}
+\footnotesize
+\setlength{\tabcolsep}{3.5pt}
+\begin{tabular}{@{}llclp{3.2cm}p{3.0cm}p{4.3cm}@{}}
 \toprule
-\textbf{Tool} & \textbf{Group} & \textbf{Version} & \textbf{Primary Target} & \textbf{Underlying DSP Algorithm} & \textbf{Key Benchmark Dataset} & \textbf{Primary Quantitative Guarantee} \\
+\textbf{Tool} & \textbf{Group} & \textbf{Ver.} & \textbf{Primary Target} & \textbf{Underlying DSP Algorithm} & \textbf{Key Benchmark Dataset} & \textbf{Primary Quantitative Guarantee} \\
 \midrule
-\texttt{splitsafe} & I. Signal/Partition & v0.1.1 & Train/Test Data Leakage & Landmark Spectral Peak Hashing & LibriSpeech (5,323 files) & 100.0\% leak recall; 0.0\% false positive rate; 55s CPU runtime. \\
-\texttt{wavewash} & I. Signal/Partition & v0.2.0 & Audio QC \& De-clipping & Hermite Spline \& BS.1770 LUFS & LibriSpeech \& 34-Entry Corpus & 71.8\% MSE distortion drop; zero false flags on clean audio. \\
-\texttt{bandcheck} & I. Signal/Partition & v0.1.1 & Bandwidth \& Fake Upsampling & Log Power Spectral Cliff Slope & 185 Upsampled \& 34-Entry Suite & 100.0\% brickwall detection; 85.7\% recall on complex synthetic edge cases. \\
+\texttt{splitsafe} & I. Signal/Part. & v0.1.1 & Data Leakage & Landmark Spectral Peak Hashing & LibriSpeech (5,323 files) & 100.0\% leak recall; 0.0\% FPR; 55s CPU runtime. \\
+\texttt{wavewash} & I. Signal/Part. & v0.2.0 & Audio QC / Clip & Hermite Spline \& BS.1770 LUFS & LibriSpeech \& 34-Entry Corpus & 71.8\% MSE drop; zero false flags on clean audio. \\
+\texttt{bandcheck} & I. Signal/Part. & v0.1.1 & Fake Upsampling & Log Power Spectral Cliff Slope & 185 Upsampled \& 34-Entry Suite & 100.0\% brickwall cutoff detection; 85.7\% recall. \\
 \midrule
-\texttt{tempocheck} & II. Harmonic/Spatial & v0.1.0 & BPM Label Verification & Onset Flux Autocorrelation & 200 Rhythm / 50 Multi-tracks & 100.0\% harmonic accuracy (Acc2); 88.0\% rejection of wrong BPM tags. \\
-\texttt{tonicfind} & II. Harmonic/Spatial & v0.1.0 & Musical Key \& Camelot & 12-Bin Chroma \& Krumhansl-Kessler & 25 Multi-Genre Key Stems & 100.0\% exact match across 24 keys; 1.000 MIREX score; A440 detune comp. \\
-\texttt{phasecheck} & II. Harmonic/Spatial & v0.1.0 & Stereo Phase \& Mono Downmix & Pearson Cross-Channel Correlation & Synthetic Polarized \& Studio Stems & 100.0\% detection of 180$^\circ$ inverted polarity; exact mono downmix loss. \\
-\texttt{driftcheck-audio} & II. Harmonic/Spatial & v0.1.0 & Transcript Timestamp Drift & Energy Window Cross-Correlation & LibriSpeech (6 long talks) & 100.0\% planted offset recall; $p < 0.01$ permutation null testing. \\
+\texttt{tempocheck} & II. Harmonic & v0.1.0 & BPM Verification & Onset Flux Autocorrelation & 200 Rhythm / 50 Multi-tracks & 100.0\% harmonic accuracy (Acc2); 88.0\% rejection. \\
+\texttt{tonicfind} & II. Harmonic & v0.1.0 & Musical Key & 12-Bin Chroma \& Krumhansl-Kessler & 25 Multi-Genre Key Stems & 100.0\% exact match across 24 keys; 1.000 MIREX score. \\
+\texttt{phasecheck} & II. Spatial & v0.1.0 & Stereo Phase & Pearson Cross-Channel Correlation & Synthetic Polarized \& Stems & 100.0\% detection of 180$^\circ$ inverted polarity. \\
+\texttt{driftcheck} & II. Temporal & v0.1.0 & Timestamp Drift & Energy Window Cross-Correlation & LibriSpeech (6 long talks) & 100.0\% planted offset recall; $p < 0.01$ null testing. \\
 \bottomrule
 \end{tabular}
-}
 \end{table*}
 
 \section{Group I Methodology: Signal Quality and Partition Hygiene}
@@ -168,7 +168,7 @@ Given audio signal $x[n]$ sampled at $f_s$, the Short-Time Fourier Transform (ST
 \end{equation}
 An adaptive threshold retains the top $K_{\text{dens}} = 30$ peaks/second. Each anchor peak $(t_1, f_1)$ is paired with succeeding peaks $(t_2, f_2)$ in target zone $\delta t = t_2 - t_1 \in [100\,\text{ms}, 3000\,\text{ms}]$ and $|f_2 - f_1| \le 2000$\,Hz. Each pair generates a compact 32-bit hash:
 \begin{equation}
-h = (f_1 \ \& \ 0x1FF) \ll 23 \ \mid \ (f_2 \ \& \ 0x1FF) \ll 14 \ \mid \ (\delta t \ \& \ 0x3FFF)
+h = (f_1 \mathbin{\&} \text{0x1FF}) \ll 23 \mathrel{|} (f_2 \mathbin{\&} \text{0x1FF}) \ll 14 \mathrel{|} (\delta t \mathbin{\&} \text{0x3FFF})
 \end{equation}
 
 \subsubsection{Time-Displacement Histogram Voting}
@@ -230,25 +230,29 @@ We evaluate the framework across two distinct experimental environments: (1) a d
 \subsection{Benchmark A: The 34-Entry Synthetic Ground-Truth Corpus}
 To rigorously characterize tool sensitivity under challenging edge conditions, we constructed a 34-entry multi-genre synthetic test suite featuring known, planted acoustic degradations alongside pristine references. Table~\ref{tab:34_benchmark} reports precision, recall, and F1 scores.
 
-\begin{table}[h]
+\begin{table}[t]
 \centering
-\caption{Detailed Precision, Recall, and F1 Performance on the 34-Entry Synthetic Ground-Truth Suite.}
+\caption{Precision, Recall, and F1 Performance on the 34-Entry Synthetic Ground-Truth Suite.}
 \label{tab:34_benchmark}
-\resizebox{\columnwidth}{!}{
-\begin{tabular}{@{}lccccc@{}}
+\small
+\setlength{\tabcolsep}{3.5pt}
+\begin{tabular}{@{}llccc@{}}
 \toprule
-\textbf{Tool} & \textbf{Ground-Truth Target} & \textbf{Precision} & \textbf{Recall} & \textbf{F1 Score} & \textbf{Key Failure Case / Root Cause} \\
+\textbf{Tool} & \textbf{Ground-Truth Condition} & \textbf{Prec. (\%)} & \textbf{Rec. (\%)} & \textbf{F1} \\
 \midrule
-\texttt{splitsafe} & Planted Cross-Split Copies & \textbf{100.0\%} & \textbf{100.0\%} & \textbf{1.000} & None (minimum coherent votes $\ge 42$). \\
-\texttt{wavewash} & Hard Clipping ($L \le 16$) & \textbf{100.0\%} & \textbf{100.0\%} & \textbf{1.000} & None ($L > 16$ safely quarantined). \\
-\texttt{bandcheck} & Artificial Low-Pass Cutoff & 60.0\% & 85.7\% & 0.706 & Natural acoustic roll-off on warm double bass. \\
-\texttt{tempocheck} & Erroneous Labeled BPM & 88.0\% & \textbf{100.0\%} & 0.936 & Metric half-time/double-time ambiguities. \\
-\texttt{tonicfind} & Mislabeled Musical Key & \textbf{100.0\%} & \textbf{100.0\%} & \textbf{1.000} & None ($\pm 50$ cents detuning compensated). \\
-\texttt{phasecheck} & Out-of-Phase / Polarity & \textbf{100.0\%} & 50.0\% & 0.667 & Subtle stereo widening without full $180^\circ$ flip. \\
-\texttt{driftcheck} & Video Clock Drift & \textbf{100.0\%} & \textbf{100.0\%} & \textbf{1.000} & None (permutation test $p < 0.01$). \\
+\texttt{splitsafe} & Planted Cross-Split Copies & \textbf{100.0} & \textbf{100.0} & \textbf{1.000} \\
+\texttt{wavewash} & Hard Clipping ($L \le 16$) & \textbf{100.0} & \textbf{100.0} & \textbf{1.000} \\
+\texttt{bandcheck} & Artificial Low-Pass Cutoff & 60.0 & 85.7 & 0.706 \\
+\texttt{tempocheck} & Erroneous Labeled BPM & 88.0 & \textbf{100.0} & 0.936 \\
+\texttt{tonicfind} & Mislabeled Musical Key & \textbf{100.0} & \textbf{100.0} & \textbf{1.000} \\
+\texttt{phasecheck} & Out-of-Phase / Polarity & \textbf{100.0} & 50.0 & 0.667 \\
+\texttt{driftcheck} & Video Clock Drift & \textbf{100.0} & \textbf{100.0} & \textbf{1.000} \\
 \bottomrule
 \end{tabular}
-}
+\vspace{1mm}
+\begin{minipage}{\columnwidth}
+\scriptsize \textit{Note:} BandCheck recall reflects acoustic bass roll-off edge cases (60.0\% precision); PhaseCheck achieves 100\% recall on $180^\circ$ polarity inversions and 50.0\% on subtle stereo widening.
+\end{minipage}
 \end{table}
 
 \subsection{Benchmark B: Large-Scale Corpus Audits}
@@ -261,7 +265,7 @@ To evaluate real-world scalability and false-alarm behavior, we audited large-sc
 
 \begin{figure*}[t]
 \centering
-\includegraphics[width=0.92\textwidth]{paper1_benchmarks}
+\includegraphics[width=0.88\textwidth]{paper1_benchmarks}
 \caption{Hyperparameter sensitivity and boundary analysis: (a) \texttt{splitsafe} leak recall vs.\ vote threshold $\Theta_{\text{leak}}$ under varying SNR; (b) \texttt{wavewash} MSE reduction as a function of maximum clipping run length $L_{\max}$; (c) \texttt{bandcheck} cutoff detection F1 score vs.\ log-spectral cliff threshold $\Delta_{\text{cliff}}$; (d) \texttt{phasecheck} monophonic downmix energy loss $\Delta E_{\text{mono}}$ and detection recall zones as a function of inter-channel Pearson correlation $\rho_{LR}$.}
 \label{fig:ablation_sweeps}
 \end{figure*}
@@ -284,6 +288,7 @@ All seven tools are released under the MIT license:
 \end{center}
 Benchmark code and suites are maintained at: \url{https://github.com/BoobalanArjunan/ComposerMind-AudioIntegrity-Suite}.
 
+\balance
 \bibliographystyle{IEEEtran}
 \begin{thebibliography}{10}
 \bibitem{radford2023whisper}
