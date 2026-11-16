@@ -10,6 +10,8 @@
 \usepackage{xcolor}
 \usepackage{booktabs}
 \usepackage{hyperref}
+\usepackage{url}
+\def\UrlBreaks{\do\/\do-}
 \usepackage{cite}
 \usepackage{microtype}
 \usepackage{listings}
@@ -59,16 +61,16 @@
 \title{Building Reliable Audio Datasets for AI/ML Training: An Open-Source Quality Assurance Framework}
 
 \author{Boobalan~Arjunan%
-\IEEEcompsocitemizethanks{\IEEEcompsocthanksitem B. Arjunan is with ComposerMind Labs, Chennai, Tamil Nadu, India.\protect\\
-E-mail: boobalan\_arjunan@composermind.com}%
-\thanks{ComposerMind Labs Open-Source Research Suite. Source code and benchmark reproduction: \url{https://github.com/BoobalanArjunan/ComposerMind-AudioIntegrity-Suite}}}
+\IEEEcompsocitemizethanks{%
+\IEEEcompsocthanksitem B. Arjunan is with ComposerMind Labs, Chennai, Tamil Nadu, India. E-mail: boobalan\_arjunan@composermind.com.
+\IEEEcompsocthanksitem Open-source suite, benchmark artifacts, and dataset reproduction: \url{https://github.com/BoobalanArjunan/ComposerMind-AudioIntegrity-Suite}.}}
 
 \markboth{Preprint --- November 2026}%
 {Arjunan: Building Reliable Audio Datasets for AI/ML Training}
 
 \IEEEtitleabstractindextext{%
 \begin{abstract}
-Contemporary deep neural networks for automatic speech recognition, audio generation, and music information retrieval are increasingly trained on massive, uncurated web-scale audio corpora. However, these datasets frequently harbor subtle, systemic physical defects that evade container header inspections: cross-partition train/validation/test contamination, fake lossless upsampling, destructive stereo phase inversion, mislabeled musical tempos and keys, transcript timestamp drift, and digital clipping distortion. When models train on such contaminated inputs, generalization degrades unpredictably while benchmark metrics report deceptively high scores. To resolve this dataset hygiene crisis without introducing circular dependencies on opaque neural evaluators, we present the \textbf{ComposerMind AudioIntegrity Suite}, an open-source framework of seven deterministic digital signal processing (DSP) quality gates: \texttt{wavewash}, \texttt{splitsafe}, \texttt{bandcheck}, \texttt{phasecheck}, \texttt{driftcheck-audio}, \texttt{tempocheck}, and \texttt{tonicfind}. Engineered with zero deep learning dependencies, these tools execute in sub-second CPU time using closed-form physical invariants, spectral-peak landmark hashing, cubic Hermite spline interpolation, and permutation hypothesis testing. We evaluate the framework across two distinct empirical regimes: (1) a dedicated 34-entry synthetic ground-truth corpus probing precision, recall, and boundary edge cases, and (2) large-scale real-world corpora including 5,323 LibriSpeech files and studio master tracks. We provide an honest accounting of performance trade-offs—including BandCheck's 60.0\% precision / 85.7\% recall on warm acoustic sources and PhaseCheck's 50.0\% recall on partial stereo widening versus 100\% recall on 180$^\circ$ polarity flips—and detail practical threshold calibration strategies for production AI pipelines.
+Contemporary deep neural networks for automatic speech recognition, audio generation, and music information retrieval are increasingly trained on massive, uncurated web-scale audio corpora. However, these datasets frequently harbor subtle, systemic physical defects that evade container header inspections: cross-partition train/validation/test contamination, fake lossless upsampling, destructive stereo phase inversion, mislabeled musical tempos and keys, transcript timestamp drift, and digital clipping distortion. When models train on such contaminated inputs, generalization degrades unpredictably while benchmark metrics report deceptively high scores. To resolve this dataset hygiene crisis without introducing circular dependencies on opaque neural evaluators, we present the \textbf{ComposerMind AudioIntegrity Suite}, an open-source framework of seven deterministic digital signal processing (DSP) quality gates: \textit{WaveWash}, \textit{SplitSafe}, \textit{BandCheck}, \textit{PhaseCheck}, \textit{DriftCheck-Audio}, \textit{TempoCheck}, and \textit{TonicFind}. Engineered with zero deep learning dependencies, these tools execute in sub-second CPU time using closed-form physical invariants, spectral-peak landmark hashing, cubic Hermite spline interpolation, and permutation hypothesis testing. We evaluate the framework across two distinct empirical regimes: (1) a dedicated 34-entry synthetic ground-truth corpus probing precision, recall, and boundary edge cases, and (2) large-scale real-world corpora including 5,323 LibriSpeech files and studio master tracks. We provide an honest accounting of performance trade-offs—including BandCheck's 60.0\% precision / 85.7\% recall on warm acoustic sources and PhaseCheck's 50.0\% recall on partial stereo widening versus 100\% recall on 180$^\circ$ polarity flips—and detail practical threshold calibration strategies for production AI pipelines.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -278,15 +280,17 @@ An honest accounting of failure modes is essential for engineering robust audio 
     \item \textbf{Scope Separation with Companion Suite:} We note that model evaluation and source separation diagnostics (unmixing ground truth, cross-stem bleed matrices, conversational turn latency) are deliberately separated into the companion \textbf{ComposerMind AudioEvaluation Suite} (\texttt{mixforge-audio}, \texttt{stemcheck}, \texttt{turnscope}) described in companion literature.
 \end{itemize}
 
+\newpage
 \section{Conclusion}
 We presented the ComposerMind AudioIntegrity Suite, an open-source framework of seven deterministic DSP quality assurance tools designed to audit, sanitize, and verify audio machine learning datasets before model training. By formulating closed-form acoustic invariants and publishing reproducible benchmarks, the framework protects downstream models from silent data corruption while running at hundreds of times real-time on commodity CPUs.
 
 \section*{Software Availability}
-All seven tools are released under the MIT license:
-\begin{center}
-\texttt{pip install wavewash splitsafe bandcheck phasecheck driftcheck-audio tempocheck tonicfind}
-\end{center}
-Benchmark code and suites are maintained at: \url{https://github.com/BoobalanArjunan/ComposerMind-AudioIntegrity-Suite}.
+All seven tools are released under the open-source MIT license on PyPI:
+\begin{quote}
+\footnotesize\ttfamily
+pip install wavewash splitsafe bandcheck phasecheck driftcheck-audio tempocheck tonicfind
+\end{quote}
+Benchmark code, test runners, and synthetic ground-truth suites are maintained at \url{https://github.com/BoobalanArjunan/ComposerMind-AudioIntegrity-Suite}.
 
 \balance
 \bibliographystyle{IEEEtran}
