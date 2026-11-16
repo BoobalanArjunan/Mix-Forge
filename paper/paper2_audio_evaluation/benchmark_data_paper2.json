@@ -1,0 +1,56 @@
+{
+  "provenance": {
+    "corpus_track_a": "MUSDB18-HQ Test Split (20 songs, 40 controlled mixtures)",
+    "corpus_track_b": "MagicHub Open-Source Conversational Speech Corpus (449 turns, 3,021 segments)",
+    "evaluation_trials": 264,
+    "tools": ["mixforge-audio", "stemcheck", "turnscope"],
+    "date": "November 2026",
+    "license": "MIT"
+  },
+  "mixforge_benchmarks": {
+    "float64_internal_max_residual": 8.12e-13,
+    "float32_export_max_peak_error": 6.52e-08,
+    "studio_mix_residual_median_db": -69.3,
+    "studio_mix_residual_iqr_db": 4.2
+  },
+  "stemcheck_benchmarks": {
+    "bleed_recovery_error_db_max": 0.06,
+    "bleed_recovery_error_db_mean": 0.021,
+    "false_alarms_clean_controls": "0/264",
+    "unexplained_artifact_floor_db": -84.2
+  },
+  "turnscope_benchmarks": {
+    "speech_detection_f1": {
+      "energy_vad_baseline": 0.700,
+      "turnscope_18db": 0.897,
+      "improvement_pct": 28.1
+    },
+    "missed_turns": {
+      "energy_vad_baseline": 207,
+      "turnscope_18db": 126,
+      "reduction_pct": 39.1
+    },
+    "latency_quantiles_seconds": {
+      "ground_truth": {
+        "p50": 0.230,
+        "p90": 0.720,
+        "p99": 1.480
+      },
+      "energy_vad_baseline": {
+        "p50": 0.642,
+        "p90": 2.059,
+        "p99": 3.120,
+        "p50_error": 0.412,
+        "p90_error": 1.339
+      },
+      "turnscope_18db": {
+        "p50": 0.412,
+        "p90": 1.160,
+        "p99": 1.820,
+        "p50_error": 0.182,
+        "p90_error": 0.440,
+        "p90_error_reduction_pct": 67.1
+      }
+    }
+  }
+}
