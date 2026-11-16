@@ -162,18 +162,20 @@ To guarantee full experimental reproducibility across research institutions, \te
 \label{tab:tool_architecture}
 \footnotesize
 \renewcommand{\arraystretch}{1.22}
-\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}p{2.2cm}p{2.6cm}p{3.2cm}p{3.8cm}p{4.2cm}@{}}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{@{}lllll@{}}
 \toprule
 \textbf{Tool} & \textbf{Evaluation Track} & \textbf{Target Artifact / Defect} & \textbf{Underlying DSP Algorithm} & \textbf{Deterministic Quantitative Guarantee} \\
 \midrule
-\texttt{mixforge-audio} & Track A (Source Separation) & Peak clipping, mastering non-linearity & Dynamic headroom scaling, linear superposition & Bounded residual: $< 10^{-12}$ (float64) / $\le 6.52 \times 10^{-8}$ (float32 export) \\
-\texttt{mixforge-audio} & Track A (Source Separation) & Uncontrolled microphone bleed & 4th-order Butterworth low-pass IIR & Calibrated bleed matrix injection with SHA-256 recipe seal \\
-\texttt{stemcheck} & Track A (Source Separation) & Algorithmic vs.\ physical bleed & Least-squares linear subspace projection & Decouples estimated interference $L_{ij}$ from artifacts $\mathcal{U}_i$ \\
-\texttt{stemcheck} & Track A (Source Separation) & Sum mismatch, duplicate channels & Pearson correlation, energy conservation & Exact conservation residual: $|\sum \hat{S}_i - M| \le \epsilon$ \\
-\texttt{turnscope} & Track B (Conversational AI) & Acoustic echo crosstalk & 18\,dB energy-dominance heuristic & Suppresses echo misattribution without neural training \\
-\texttt{turnscope} & Track B (Conversational AI) & Latency tail and dead air & Asynchronous state machine, quantile ECDF & Robust $P_{50}, P_{90}, P_{99}$ response and barge-in latencies \\
+MixForge & Track A (Source Separation) & Peak clipping, mastering non-linearity & Dynamic headroom scaling, linear superposition & Bounded residual: $< 10^{-12}$ (float64) / $\le 6.52 \times 10^{-8}$ (float32 export) \\
+MixForge & Track A (Source Separation) & Uncontrolled microphone bleed & 4th-order Butterworth low-pass IIR & Calibrated bleed matrix injection with SHA-256 recipe seal \\
+StemCheck & Track A (Source Separation) & Algorithmic vs.\ physical bleed & Least-squares linear subspace projection & Decouples estimated interference $L_{ij}$ from artifacts $\mathcal{U}_i$ \\
+StemCheck & Track A (Source Separation) & Sum mismatch, duplicate channels & Pearson correlation, energy conservation & Exact conservation residual: $|\sum \hat{S}_i - M| \le \epsilon$ \\
+TurnScope & Track B (Conversational AI) & Acoustic echo crosstalk & 18\,dB energy-dominance heuristic & Suppresses echo misattribution without neural training \\
+TurnScope & Track B (Conversational AI) & Latency tail and dead air & Asynchronous state machine, quantile ECDF & Robust $P_{50}, P_{90}, P_{99}$ response and barge-in latencies \\
 \bottomrule
-\end{tabular*}
+\end{tabular}%
+}
 \end{table*}
 
 \subsection{\texttt{stemcheck}: Subspace Bleed Matrix Decomposition}
@@ -263,23 +265,23 @@ To characterize real-world voice agent responsiveness robustly against outliers,
 \centering
 \caption{Quantitative Benchmark Results on MUSDB18-HQ and MagicHub Corpora.}
 \label{tab:benchmark_results}
-\footnotesize
-\renewcommand{\arraystretch}{1.18}
-\begin{tabular*}{\columnwidth}{@{\extracolsep{\fill}}llcc@{}}
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{@{}llcc@{}}
 \toprule
 \textbf{Tool} & \textbf{Evaluation Metric} & \textbf{Baseline} & \textbf{Our Suite} \\
 \midrule
-\texttt{mixforge-audio} & Float64 Internal Residual & Unchecked & $\mathbf{< 10^{-12}}$ \\
-\texttt{mixforge-audio} & Float32 Export Peak Error & Unchecked & $\mathbf{\le 6.52 \times 10^{-8}}$ \\
-\texttt{mixforge-audio} & Studio Mix Residual & N/A & $\mathbf{-69.3}$ \textbf{dB Median} \\
-\texttt{stemcheck} & Bleed Recovery Error & Confounded & $\mathbf{\le 0.06}$ \textbf{dB} \\
-\texttt{stemcheck} & False Alarms (264 Trials) & N/A & \textbf{0 / 264} \\
-\texttt{turnscope} & Speech Detection F1 & 0.700 & \textbf{0.897} ($+28.1\%$) \\
-\texttt{turnscope} & Missed Turn Transitions & 207 & \textbf{126} ($-39.1\%$) \\
-\texttt{turnscope} & Median Latency Error ($P_{50}$) & 0.412\,s & \textbf{0.182\,s} ($-55.8\%$) \\
-\texttt{turnscope} & Tail Latency Error ($P_{90}$) & 1.339\,s & \textbf{0.440\,s} ($\mathbf{-67.1\%}$) \\
+MixForge & Float64 Internal Residual & Unchecked & $\mathbf{< 10^{-12}}$ \\
+MixForge & Float32 Export Peak Error & Unchecked & $\mathbf{\le 6.52 \times 10^{-8}}$ \\
+MixForge & Studio Mix Residual & N/A & $\mathbf{-69.3}$ \textbf{dB Median} \\
+StemCheck & Bleed Recovery Error & Confounded & $\mathbf{\le 0.06}$ \textbf{dB} \\
+StemCheck & False Alarms (264 Trials) & N/A & \textbf{0 / 264} \\
+TurnScope & Speech Detection F1 & 0.700 & \textbf{0.897} ($+28.1\%$) \\
+TurnScope & Missed Turn Transitions & 207 & \textbf{126} ($-39.1\%$) \\
+TurnScope & Median Latency Error ($P_{50}$) & 0.412\,s & \textbf{0.182\,s} ($-55.8\%$) \\
+TurnScope & Tail Latency Error ($P_{90}$) & 1.339\,s & \textbf{0.440\,s} ($\mathbf{-67.1\%}$) \\
 \bottomrule
-\end{tabular*}
+\end{tabular}%
+}
 \end{table}
 
 \section{Experimental Evaluation}
@@ -300,7 +302,8 @@ As summarized in Table~\ref{tab:benchmark_results} and Figure~\ref{fig:turnscope
 \label{tab:repo_inventory}
 \footnotesize
 \renewcommand{\arraystretch}{1.18}
-\begin{tabular*}{\columnwidth}{@{\extracolsep{\fill}}lll@{}}
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{@{}lll@{}}
 \toprule
 \textbf{Tool} & \textbf{PyPI Package} & \textbf{GitHub Repository (Clickable)} \\
 \midrule
@@ -308,7 +311,8 @@ MixForge & \texttt{mixforge-audio} & \href{https://github.com/BoobalanArjunan/mi
 StemCheck & \texttt{stemcheck} & \href{https://github.com/BoobalanArjunan/stemcheck}{\texttt{stemcheck}} \\
 TurnScope & \texttt{turnscope} & \href{https://github.com/BoobalanArjunan/turnscope}{\texttt{turnscope}} \\
 \bottomrule
-\end{tabular*}
+\end{tabular}%
+}
 \vspace{1mm}
 \begin{minipage}{\columnwidth}
 \scriptsize \textit{Note:} Click any repository name to navigate directly to its public source-code repository at \url{https://github.com/BoobalanArjunan/<repo>}.
