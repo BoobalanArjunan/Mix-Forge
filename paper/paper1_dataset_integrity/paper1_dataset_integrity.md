@@ -142,19 +142,28 @@ To thoroughly characterize detection boundaries and failure modes, we evaluated 
 
 ## 5. Software and Source Code Availability
 
-The ComposerMind AudioIntegrity Suite comprises seven independently developed, open-source Python packages: `wavewash`, `splitsafe`, `bandcheck`, `phasecheck`, `driftcheck-audio`, `tempocheck`, and `tonicfind`.
+The ComposerMind AudioIntegrity Suite comprises seven independently developed, open-source Python packages authored by Boobalan Arjunan under the MIT license.
 
-The complete benchmark framework, experimental protocols, synthetic ground-truth datasets, and reproducibility resources are publicly available at:
+The central benchmark reproduction framework, experimental protocols, synthetic ground-truth datasets, and test runners are publicly available at:
 
 👉 **Benchmark Repository & Suite Hub:** [https://github.com/BoobalanArjunan/ComposerMind-AudioIntegrity-Suite](https://github.com/BoobalanArjunan/ComposerMind-AudioIntegrity-Suite)
 
-The individual package source-code repositories and their corresponding PyPI distributions are documented in the project's README and can be installed via PyPI:
+### Individual Tool Source Repositories & PyPI Packages
+
+| Tool | PyPI Distribution | Public Source-Code Repository |
+| :--- | :--- | :--- |
+| **WaveWash** | [`wavewash`](https://pypi.org/project/wavewash/) | [https://github.com/BoobalanArjunan/wavewash](https://github.com/BoobalanArjunan/wavewash) |
+| **SplitSafe** | [`splitsafe`](https://pypi.org/project/splitsafe/) | [https://github.com/BoobalanArjunan/splitsafe](https://github.com/BoobalanArjunan/splitsafe) |
+| **BandCheck** | [`bandcheck`](https://pypi.org/project/bandcheck/) | [https://github.com/BoobalanArjunan/Bandcheck](https://github.com/BoobalanArjunan/Bandcheck) |
+| **PhaseCheck** | [`phasecheck`](https://pypi.org/project/phasecheck/) | [https://github.com/BoobalanArjunan/Phasecheck](https://github.com/BoobalanArjunan/Phasecheck) |
+| **DriftCheck** | [`driftcheck-audio`](https://pypi.org/project/driftcheck-audio/) | [https://github.com/BoobalanArjunan/Driftcheck](https://github.com/BoobalanArjunan/Driftcheck) |
+| **TempoCheck** | [`tempocheck`](https://pypi.org/project/tempocheck/) | [https://github.com/BoobalanArjunan/Tempocheck](https://github.com/BoobalanArjunan/Tempocheck) |
+| **TonicFind** | [`tonicfind`](https://pypi.org/project/tonicfind/) | [https://github.com/BoobalanArjunan/Tonicfind](https://github.com/BoobalanArjunan/Tonicfind) |
+
+All seven tools can be installed simultaneously via:
 
 ```bash
 pip install wavewash splitsafe bandcheck phasecheck driftcheck-audio tempocheck tonicfind
 ```
 
 All seven tools were developed by Boobalan Arjunan and are published under the open-source MIT license.
-
-Benchmark code, datasets, and reproduction harnesses are maintained at:  
-👉 **GitHub:** [https://github.com/BoobalanArjunan/ComposerMind-AudioIntegrity-Suite](https://github.com/BoobalanArjunan/ComposerMind-AudioIntegrity-Suite)

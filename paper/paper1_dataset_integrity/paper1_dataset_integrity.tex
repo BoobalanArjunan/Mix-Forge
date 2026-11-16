@@ -60,11 +60,12 @@
 
 \title{Building Reliable Audio Datasets for AI/ML Training: An Open-Source Quality Assurance Framework}
 
-\author{Boobalan~Arjunan%
+\author{Boobalan~Arjunan\\[0.2em]%
+\normalsize\textnormal{Founder \& Lead AI/ML Architect, ComposerMind Labs LLP, Tamil Nadu, India}\\[-0.2em]%
+\small\texttt{boobalan\_arjunan@composermind.com}%
 \IEEEcompsocitemizethanks{%
-\IEEEcompsocthanksitem B. Arjunan is Founder \& Lead AI/ML Architect with ComposerMind Labs LLP, Tamil Nadu, India.\protect\\
-Email: boobalan\_arjunan@composermind.com.
-\IEEEcompsocthanksitem Open-source suite, benchmark artifacts, and dataset reproduction: \url{https://github.com/BoobalanArjunan/ComposerMind-AudioIntegrity-Suite}.}}
+\IEEEcompsocthanksitem \textbf{Boobalan Arjunan} is Founder \& Lead AI/ML Architect with ComposerMind Labs LLP, Tamil Nadu, India. Email: boobalan\_arjunan@composermind.com.
+\IEEEcompsocthanksitem Suite benchmark repository and reproduction hub: \url{https://github.com/BoobalanArjunan/ComposerMind-AudioIntegrity-Suite}.}}
 
 \markboth{Preprint --- November 2026}%
 {Arjunan: Building Reliable Audio Datasets for AI/ML Training}
@@ -288,18 +289,42 @@ An honest accounting of failure modes is essential for engineering robust audio 
 We presented the ComposerMind AudioIntegrity Suite, an open-source framework of seven deterministic DSP quality assurance tools designed to audit, sanitize, and verify audio machine learning datasets before model training. By formulating closed-form acoustic invariants and publishing reproducible benchmarks, the framework protects downstream models from silent data corruption while running at hundreds of times real-time on commodity CPUs.
 
 \section*{Software and Source Code Availability}
-The ComposerMind AudioIntegrity Suite comprises seven independently developed, open-source Python packages: \textit{WaveWash}, \textit{SplitSafe}, \textit{BandCheck}, \textit{PhaseCheck}, \textit{DriftCheck-Audio}, \textit{TempoCheck}, and \textit{TonicFind}.
+The ComposerMind AudioIntegrity Suite comprises seven independently developed, open-source Python packages authored by Boobalan Arjunan under the MIT license.
 
-The complete benchmark framework, experimental protocols, ground-truth datasets, and reproducibility resources are publicly available at:
+The central benchmark reproduction framework, experimental protocols, synthetic ground-truth datasets, and test runners are publicly available at:
 \begin{center}
 \url{https://github.com/BoobalanArjunan/ComposerMind-AudioIntegrity-Suite}
 \end{center}
-The individual package source-code repositories and their corresponding PyPI distributions are documented in the project's repository README and can be installed individually or in batch:
+
+All seven individual tools are hosted in public source-code repositories on GitHub and distributed on the Python Package Index (PyPI), as documented in Table~\ref{tab:repo_inventory}.
+
+\begin{table}[h]
+\centering
+\caption{Public Source-Code Repositories and PyPI Distributions for the Seven Suite Tools.}
+\label{tab:repo_inventory}
+\footnotesize
+\renewcommand{\arraystretch}{1.15}
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}lll@{}}
+\toprule
+\textbf{Tool} & \textbf{PyPI Package} & \textbf{Public Source-Code Repository} \\
+\midrule
+WaveWash & \texttt{wavewash} & \url{https://github.com/BoobalanArjunan/wavewash} \\
+SplitSafe & \texttt{splitsafe} & \url{https://github.com/BoobalanArjunan/splitsafe} \\
+BandCheck & \texttt{bandcheck} & \url{https://github.com/BoobalanArjunan/Bandcheck} \\
+PhaseCheck & \texttt{phasecheck} & \url{https://github.com/BoobalanArjunan/Phasecheck} \\
+DriftCheck & \texttt{driftcheck-audio} & \url{https://github.com/BoobalanArjunan/Driftcheck} \\
+TempoCheck & \texttt{tempocheck} & \url{https://github.com/BoobalanArjunan/Tempocheck} \\
+TonicFind & \texttt{tonicfind} & \url{https://github.com/BoobalanArjunan/Tonicfind} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+All seven tools can be installed simultaneously via:
 \begin{quote}
 \footnotesize\ttfamily
 pip install wavewash splitsafe bandcheck phasecheck driftcheck-audio tempocheck tonicfind
 \end{quote}
-All seven tools were developed by Boobalan Arjunan and are published under the open-source MIT license.
 
 \balance
 \bibliographystyle{IEEEtran}
