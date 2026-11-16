@@ -141,12 +141,13 @@ The ComposerMind AudioIntegrity Suite comprises seven standalone, interoperable 
 \caption{Comprehensive Architectural Summary of the Seven Tools in the ComposerMind AudioIntegrity Suite.}
 \label{tab:suite_summary}
 \footnotesize
+\renewcommand{\arraystretch}{1.15}
 \setlength{\tabcolsep}{3.5pt}
 \begin{tabular}{@{}llclp{3.6cm}p{2.6cm}p{4.3cm}@{}}
 \toprule
 \textbf{Tool} & \textbf{Group} & \textbf{Ver.} & \textbf{Primary Target} & \textbf{Underlying DSP Algorithm} & \textbf{Key Benchmark Dataset} & \textbf{Observed Benchmark Result} \\
 \midrule
-\texttt{splitsafe} & I. Signal/Part. & v0.1.1 & Data Leakage & Landmark Spectral Peak Hashing & LibriSpeech (5,323 files) & 100.0\% leak recall; 0.0\% FPR; 55s CPU runtime. \\
+\texttt{splitsafe} & I. Signal/Part. & v0.1.1 & Data Leakage & Landmark Spectral Peak Hashing & LibriSpeech (5,323 files) & 100.0\% recall on 56 leaks (0 FPR on 5,323 files); 55s CPU. \\
 \texttt{wavewash} & I. Signal/Part. & v0.2.0 & Audio QC / Clip & Hermite Spline \& BS.1770 LUFS & LibriSpeech \& 34-Entry Corpus & 71.8\% MSE drop; zero false flags on clean audio. \\
 \texttt{bandcheck} & I. Signal/Part. & v0.1.1 & Fake Upsampling & Log Power Spectral Cliff Slope & 185 Upsampled \& 34-Entry Suite & 100.0\% brickwall cutoff detection; 85.7\% recall. \\
 \midrule
@@ -268,7 +269,7 @@ To evaluate real-world scalability and false-alarm behavior, we audited large-sc
 \begin{figure*}[t]
 \centering
 \includegraphics[width=0.88\textwidth]{paper1_benchmarks}
-\caption{Hyperparameter sensitivity and boundary analysis: (a) \texttt{splitsafe} leak recall vs.\ vote threshold $\Theta_{\text{leak}}$ under varying SNR; (b) \texttt{wavewash} MSE reduction as a function of maximum clipping run length $L_{\max}$; (c) \texttt{bandcheck} cutoff detection F1 score vs.\ log-spectral cliff threshold $\Delta_{\text{cliff}}$; (d) \texttt{phasecheck} monophonic downmix energy loss $\Delta E_{\text{mono}}$ and detection recall zones as a function of inter-channel Pearson correlation $\rho_{LR}$.}
+\caption{Hyperparameter sensitivity and boundary analysis: (a) \texttt{splitsafe} leak recall vs.\ vote threshold $\Theta_{\text{leak}}$ under varying SNR; (b) \texttt{wavewash} MSE reduction as a function of maximum clipping run length $L_{\max}$; (c) \texttt{bandcheck} cutoff detection F1 score vs.\ log-spectral cliff threshold $\Delta_{\text{cliff}}$; (d) \texttt{phasecheck} monophonic downmix energy loss $\Delta E_{\text{mono}}$ and detection recall zones as a function of inter-channel Pearson correlation $\rho_{LR}$. Complete numerical sweep arrays and reproduction scripts are archived in \texttt{benchmark\_curves\_data.json} and \texttt{generate\_paper1\_figures.py}.}
 \label{fig:ablation_sweeps}
 \end{figure*}
 

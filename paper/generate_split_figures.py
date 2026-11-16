@@ -49,7 +49,7 @@ ax.text(3.6, 4.7, "GROUP I: SIGNAL QUALITY & PARTITION HYGIENE", ha='center', va
 
 tools_g1 = [
     ("WaveWash", "Cubic Hermite Spline De-Clipping & BS.1770", "71.8% MSE drop on clipped speech; DC removal; zero false flags"),
-    ("SplitSafe", "Landmark Peak Hashing & Time Voting", "100% leak recall on 5,323 LibriSpeech files; speaker isolation"),
+    ("SplitSafe", "Landmark Peak Hashing & Time Voting", "Audited 5,323 LibriSpeech files; detected 56/56 planted leaks (0 FPR)"),
     ("BandCheck", "Log-Spectral Slope Cliff Derivative", "100% brickwall detection on 185 tracks; 85.7% recall on edge suite")
 ]
 y = 4.05
