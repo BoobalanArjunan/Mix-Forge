@@ -1,0 +1,87 @@
+{
+  "benchmark_title": "ComposerMind AudioIntegrity Suite 34-Entry Synthetic Ground-Truth Evaluation Corpus",
+  "repository": "https://github.com/BoobalanArjunan/ComposerMind-AudioIntegrity-Suite",
+  "total_test_cases": 34,
+  "per_tool_results": {
+    "splitsafe": {
+      "target_condition": "Planted cross-partition evaluation leaks (gain-shifted, trimmed, resampled)",
+      "true_positives": 8,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "true_negatives": 26,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "detection_criterion": "Aligned coherent votes >= 42 in temporal displacement histogram"
+    },
+    "wavewash": {
+      "target_condition": "Hard digital clipping (run lengths L <= 16 samples vs L > 16 quarantine)",
+      "true_positives": 8,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "true_negatives": 26,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "detection_criterion": "Contiguous rail runs reconstructed via PCHIP cubic Hermite splines"
+    },
+    "bandcheck": {
+      "target_condition": "Artificial brickwall low-pass cutoff / fake lossless upsampling",
+      "true_positives": 6,
+      "false_positives": 4,
+      "false_negatives": 1,
+      "true_negatives": 23,
+      "precision": 0.6,
+      "recall": 0.857,
+      "f1_score": 0.706,
+      "detection_criterion": "Log power spectral cliff drop >= 25 dB below 0.60 Nyquist",
+      "failure_analysis": "Natural steep acoustic roll-off on warm solo double bass mimics low-pass cliff (4 false positives); 1 complex roll-off boundary missed (1 false negative)"
+    },
+    "tempocheck": {
+      "target_condition": "Erroneous user-supplied BPM metadata tags",
+      "true_positives": 22,
+      "false_positives": 3,
+      "false_negatives": 0,
+      "true_negatives": 9,
+      "precision": 0.88,
+      "recall": 1.0,
+      "f1_score": 0.936,
+      "detection_criterion": "Autocorrelation tempogram ratio r = BPM_meas / BPM_label",
+      "failure_analysis": "Metric octave doubling/halving ambiguities in polyrhythmic passages"
+    },
+    "tonicfind": {
+      "target_condition": "Mislabeled musical key / non-standard concert pitch detuning",
+      "true_positives": 24,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "true_negatives": 10,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "detection_criterion": "Detuning-compensated 12-bin chroma correlation against Krumhansl-Kessler templates"
+    },
+    "phasecheck": {
+      "target_condition": "Inter-channel stereo phase inversion / out-of-phase widening",
+      "true_positives": 4,
+      "false_positives": 0,
+      "false_negatives": 4,
+      "true_negatives": 26,
+      "precision": 1.0,
+      "recall": 0.5,
+      "f1_score": 0.667,
+      "detection_criterion": "Sliding Pearson correlation rho_LR < -0.85 (hard flip) or mono downmix loss Delta E_mono < -3.0 dB",
+      "failure_analysis": "100% recall (4/4) on hard 180-degree inverted polarity; 0% recall (0/4) on subtle stereo widening (rho in [-0.2, 0]) where mono downmix loss does not exceed 3.0 dB"
+    },
+    "driftcheck": {
+      "target_condition": "Transcript clock drift / video pull-down frame mismatch (163 ms/min)",
+      "true_positives": 6,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "true_negatives": 28,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "detection_criterion": "Windowed speech-energy cross-correlation slope with permutation test p < 0.01"
+    }
+  }
+}
