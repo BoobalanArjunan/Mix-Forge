@@ -1,7 +1,9 @@
 # Beyond Accuracy: Building Reproducible Benchmarks and Diagnostic Tools for Audio & Speech AI
 
-**Author:** Boobalan Arjunan (`boobalan_arjunan@composermind.com`)  
-**Affiliation:** ComposerMind Labs, Chennai, Tamil Nadu, India  
+**Author:** Boobalan Arjunan  
+**Role:** Founder & Lead AI/ML Architect  
+**Affiliation:** ComposerMind Labs LLP, Tamil Nadu, India  
+**Email:** `boobalan_arjunan@composermind.com`  
 **Repository:** [ComposerMind-AudioEvaluation-Suite](https://github.com/BoobalanArjunan/ComposerMind-AudioEvaluation-Suite)  
 **Primary arXiv Category:** `cs.SD` (Sound) / `cs.AI` (Artificial Intelligence)  
 **Target Submission:** DAFx / AES / ISMIR  

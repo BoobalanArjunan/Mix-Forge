@@ -1,7 +1,9 @@
 # Building Reliable Audio Datasets for AI/ML Training: An Open-Source Quality Assurance Framework
 
-**Author:** Boobalan Arjunan (`boobalan_arjunan@composermind.com`)  
-**Affiliation:** ComposerMind Labs, Chennai, Tamil Nadu, India  
+**Author:** Boobalan Arjunan  
+**Role:** Founder & Lead AI/ML Architect  
+**Affiliation:** ComposerMind Labs LLP, Tamil Nadu, India  
+**Email:** `boobalan_arjunan@composermind.com`  
 **Official Repository & Benchmark Hub:** [ComposerMind-AudioIntegrity-Suite](https://github.com/BoobalanArjunan/ComposerMind-AudioIntegrity-Suite)  
 **Primary Subject Category:** `cs.SD` (Sound) | **Cross-List:** `eess.AS` (Audio and Speech Processing)  
 **Target Publication:** IEEE Access / IEEE TASLP  
