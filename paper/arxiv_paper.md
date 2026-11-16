@@ -54,6 +54,8 @@ Despite these architectural triumphs, model performance remains critically bottl
                                         +----------------------------------+
 ```
 
+![Figure 1: Architectural Overview of the 10-Tool Ecosystem](figures/ecosystem_architecture.png)
+
 ### 1.1 The Seven Modalities of Silent Acoustic Contamination
 
 Through empirical investigation across prominent public and proprietary audio corpora, we identify seven pervasive failure modes:
@@ -409,6 +411,8 @@ Filtered activity streams drive an asynchronous state machine:
 2. **Customer Barge-In:** Customer onset occurring while the agent is speaking ($t_{\text{cust\_start}} < t_{\text{agent\_end}}$).
 3. **Agent Interruption:** Agent onset occurring during active customer speech.
 4. **Dead Air:** Silent intervals where both channels are inactive for $>3.0$ s.
+
+![Figure 2: Empirical Cumulative Distribution Function (ECDF) of Turn Response Latency](figures/turnscope_latency_ecdf.png)
 
 ---
 

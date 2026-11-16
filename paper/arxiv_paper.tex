@@ -81,7 +81,7 @@ Despite these architectural triumphs, model performance remains critically bottl
 
 \begin{figure*}[t]
 \centering
-\fbox{\rule{0pt}{2.4in} \rule{0.96\textwidth}{0pt}}
+\includegraphics[width=0.98\textwidth]{figures/ecosystem_architecture.pdf}
 \caption{Architectural overview of the 10-tool deterministic Audio ML quality control and evaluation ecosystem across four foundational pillars: (I) Dataset Partitioning \& Signal Quality (\texttt{splitsafe}, \texttt{wavewash}, \texttt{bandcheck}), (II) Musical \& Harmonic Integrity (\texttt{tempocheck}, \texttt{tonicfind}, \texttt{phasecheck}), (III) Ground-Truth Generation \& Source Separation (\texttt{mixforge-audio}, \texttt{stemcheck}), and (IV) Speech Alignment \& Conversational Dynamics (\texttt{driftcheck-audio}, \texttt{turnscope}).}
 \label{fig:ecosystem_architecture}
 \end{figure*}
@@ -922,7 +922,7 @@ P90 Tail Latency Error & 1.339\,s & \textbf{0.440\,s} & $\mathbf{-67.1\%}$ \\
 
 \begin{figure}[t]
 \centering
-\fbox{\rule{0pt}{1.8in} \rule{0.45\textwidth}{0pt}}
+\includegraphics[width=\columnwidth]{figures/turnscope_latency_ecdf.pdf}
 \caption{Empirical cumulative distribution function (ECDF) of conversational turn hand-over latency measured by \texttt{turnscope} on the MagicHub corpus compared to threshold baselines.}
 \label{fig:turnscope_latency}
 \end{figure}
