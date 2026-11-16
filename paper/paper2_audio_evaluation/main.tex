@@ -187,7 +187,7 @@ Given an estimated separated stem $\hat{S}_i \in \mathbb{R}^N$ produced by a neu
 \end{equation}
 where $\lambda = 10^{-6}$ is a ridge regularization parameter preventing numerical instability when reference stems exhibit high spectral correlation, and $\mathbf{c}_i = [c_{i1}, c_{i2}, \dots, c_{iK}]^T$ represents the optimal linear reconstruction weights. The estimated stem is thus partitioned into a linear combination of reference sources and an orthogonal residual error vector $\mathcal{E}_i$:
 \begin{equation}
-\hat{S}_i = c_{ii} S_i + \sum_{j \ne i} c_{ij} S_j + \mathcal{E}_i, \quad \text{where } \mathbf{S}^T \mathcal{E}_i = \mathbf{0}
+\hat{S}_i = c_{ii} S_i + \sum_{j \ne i} c_{ij} S_j + \mathcal{E}_i, \quad \text{where } \mathbf{S}^T \mathcal{E}_i = \lambda \mathbf{c}_i
 \end{equation}
 
 \subsubsection{Physical Interpretation and Limitations}

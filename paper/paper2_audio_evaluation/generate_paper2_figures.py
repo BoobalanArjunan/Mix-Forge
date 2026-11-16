@@ -75,7 +75,7 @@ ax.text(6.55, 3.45, "turnscope", fontsize=10.0, fontweight='bold', color="#B4530
 ax.text(7.7, 3.45, "[Echo Suppression & Turn Latency Engine]", fontsize=8.0, color="#64748B", zorder=3)
 ax.text(6.55, 3.12, "• 18 dB Energy-Dominance Heuristic:", fontsize=8.0, fontweight='semibold', color="#1E293B", zorder=3)
 ax.text(6.75, 2.90, "Suppresses acoustic loudspeaker-to-mic echo crosstalk", fontsize=7.5, color="#475569", zorder=3)
-ax.text(6.75, 2.70, "Eliminates phantom turns; raises speech detection F1 to 0.897", fontsize=7.2, color="#475569", zorder=3)
+ax.text(6.75, 2.70, "Reduces phantom turn detections; raises speech detection F1 to 0.897", fontsize=7.2, color="#475569", zorder=3)
 ax.text(6.55, 2.40, "• Asynchronous State Machine:", fontsize=8.0, fontweight='semibold', color="#1E293B", zorder=3)
 ax.text(6.75, 2.18, "Transitions: Silence \u2192 Agent \u2192 Customer \u2192 Overlap \u2192 Dead Air", fontsize=7.5, color="#475569", zorder=3)
 ax.text(6.55, 1.88, "• Conversational Tail Latency & Barge-In Metrics:", fontsize=8.0, fontweight='semibold', color="#1E293B", zorder=3)
