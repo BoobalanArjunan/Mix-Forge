@@ -1,7 +1,7 @@
 # Building Reliable Audio Datasets for AI/ML Training: An Open-Source Quality Assurance Framework
 
 **Author:** Boobalan Arjunan  
-**Role:** Opensource Developer  
+**Role:** Independent Researcher & Open-Source Developer  
 **Location:** Tamil Nadu, India  
 **Email:** `boobalan.it@gmail.com`  
 **Official Repository & Benchmark Hub:** [Opensource-AudioIntegrity-Suite](https://github.com/BoobalanArjunan/Opensource-AudioIntegrity-Suite)  

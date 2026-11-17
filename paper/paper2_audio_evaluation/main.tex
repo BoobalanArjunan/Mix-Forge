@@ -62,7 +62,7 @@
 \title{Beyond Accuracy: Building Reproducible Benchmarks and Diagnostic Tools for Audio \& Speech AI}
 
 \author{Boobalan~Arjunan\\[0.2em]%
-\normalsize\textnormal{Opensource Developer, Tamil Nadu, India}\\[-0.2em]%
+\normalsize\textnormal{Independent Researcher \& Open-Source Developer, Tamil Nadu, India}\\[-0.2em]%
 \small\href{mailto:boobalan.it@gmail.com}{\texttt{boobalan.it@gmail.com}}}
 
 \markboth{Preprint --- November 2026}%
@@ -144,7 +144,7 @@ When exported to standard 32-bit floating-point audio containers (\texttt{float3
 \begin{equation}
 \epsilon_{\text{export}} \le 6.52 \times 10^{-8} \quad (-143.7\,\text{dBFS})
 \end{equation}
-These observed residual bounds remain orders of magnitude below standard 24-bit fixed-point quantization noise floors ($\approx -144$\,dBFS) and typical physical digital-to-analog converter dynamic ranges, ensuring that benchmark references introduce negligible numerical noise into downstream neural model evaluations.
+These empirically observed residual bounds indicate that the numerical error introduced during mixture synthesis and floating-point export is small relative to full scale, supporting the use of the generated mixtures as reproducible benchmark references.
 
 \subsection{Calibrated Acoustic Bleed Simulation}
 In real acoustic environments, microphone bleed is frequency-dependent: high-frequency content decays rapidly with distance, while low frequencies wrap around baffles. \texttt{mixforge-audio} simulates calibrated directional acoustic bleed between stems using a 4th-order Butterworth low-pass filter $H_{\text{bleed}}(z)$ with cutoff frequency $f_{\text{bleed}} \in [2500, 6000]$\,Hz:
@@ -391,7 +391,7 @@ J.~J. Godfrey, E.~C. Holliman, and J.~McDaniel, ``SWITCHBOARD: Telephone speech 
 G.~Skantze, ``Turn-taking in conversational systems and human-robot interaction: A review,'' \emph{Comput. Speech Lang.}, vol.~67, p. 101178, 2021.
 
 \bibitem{magichub2021}
-Magic Data Technology, ``MagicHub open-source conversational speech corpus: Ground-truth dialog segmentation and latency benchmarking,'' 2021. [Online]. Available: \url{https://magichub.com/datasets/}
+Z.~Yang, Y.~Chen, L.~Luo, R.~Yang, L.~Ye, G.~Cheng, J.~Xu, Y.~Jin, Q.~Zhang, P.~Zhang, L.~Xie, and Y.~Yan, ``Open source MagicData-RAMC: A rich annotated Mandarin conversational (RAMC) speech dataset,'' in \emph{Proc. Interspeech}, 2022, pp. 4088--4092. [Online]. Available: \url{https://magichub.com/datasets/}
 
 \end{thebibliography}
 

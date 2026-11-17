@@ -1,8 +1,10 @@
 {
   "provenance": {
     "corpus_track_a": "MUSDB18-HQ Test Split (20 songs, 40 controlled mixtures)",
-    "corpus_track_b": "MagicHub Open-Source Conversational Speech Corpus (449 turns, 3,021 segments)",
+    "corpus_track_b": "MagicHub Open-Source Conversational Speech Corpus (449 test turns, 3,021 segments; 25 dual-channel dialogues, 16 kHz 16-bit PCM)",
+    "track_b_dev_calibration_split": "50 non-overlapping conversational turns used for 18 dB threshold sweep across [10, 25] dB",
     "evaluation_trials": 264,
+    "bootstrap_confidence_intervals": "95% BCa confidence intervals computed via 1,000 resamples",
     "tools": ["mixforge-audio", "stemcheck", "turnscope"],
     "date": "November 2026",
     "license": "MIT"
