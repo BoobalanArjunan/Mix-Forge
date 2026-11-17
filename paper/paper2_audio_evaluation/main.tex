@@ -154,7 +154,7 @@ S_k^{\text{leaky}}[n] = S_k[n] + \sum_{j \ne k} 10^{\frac{B_{jk}}{20}} (S_j * h_
 where $B_{jk} \le 0$\,dB denotes the prescribed bleed intensity from source $j$ into microphone $k$. Crucially, \texttt{mixforge-audio} preserves the isolated, leak-free stems $S_k[n]$ as the immutable ground truth, while exporting the leaky stems and composite mix to test whether separation models erroneously replicate or eliminate the calibrated bleed.
 
 \subsection{Cryptographic Recipe Serialization}
-To guarantee full experimental reproducibility across research institutions, \texttt{mixforge-audio} serializes all mixture parameters into a tamper-evident \texttt{recipe.json} manifest. This manifest records the exact SHA-256 cryptographic hashes of all input stem files, gain coefficients $g_k$, bleed matrix $B_{jk}$, sample rate, and random generator seeds. Anyone possessing the input stems can recreate the identical bit-exact mixture dataset.
+To guarantee full experimental reproducibility across research institutions, \texttt{mixforge-audio} serializes all mixture parameters into a tamper-evident \texttt{recipe.json} manifest. This manifest records the exact SHA-256 cryptographic hashes of all input stem files, gain coefficients $g_k$, bleed matrix $B_{jk}$, sample rate, and random generator seeds. Anyone possessing the input stems and the serialized recipe manifest can reproduce the mixture dataset deterministically under controlled software environments.
 
 \begin{table*}[t]
 \centering
@@ -170,7 +170,7 @@ To guarantee full experimental reproducibility across research institutions, \te
 MixForge & Track A (Source Separation) & Peak clipping, mastering non-linearity & Dynamic headroom scaling, linear superposition & Bounded residual: $< 10^{-12}$ (float64) / $\le 6.52 \times 10^{-8}$ (float32 export) \\
 MixForge & Track A (Source Separation) & Uncontrolled microphone bleed & 4th-order Butterworth low-pass IIR & Calibrated bleed matrix injection with SHA-256 recipe seal \\
 StemCheck & Track A (Source Separation) & Algorithmic vs.\ physical bleed & Least-squares linear subspace projection & Decouples estimated interference $L_{ij}$ from artifacts $\mathcal{U}_i$ \\
-StemCheck & Track A (Source Separation) & Sum mismatch, duplicate channels & Pearson correlation, energy conservation & Exact conservation residual: $|\sum \hat{S}_i - M| \le \epsilon$ \\
+StemCheck & Track A (Source Separation) & Sum mismatch, duplicate channels & Pearson correlation, waveform summation & Mixture reconstruction residual: $|\sum \hat{S}_i - M| \le \epsilon$ \\
 TurnScope & Track B (Conversational AI) & Acoustic echo crosstalk & 18\,dB energy-dominance heuristic & Suppresses echo misattribution without neural training \\
 TurnScope & Track B (Conversational AI) & Latency tail and dead air & Asynchronous state machine, quantile ECDF & Robust $P_{50}, P_{90}, P_{99}$ response and barge-in latencies \\
 \bottomrule
@@ -197,7 +197,7 @@ From this decomposition, \texttt{stemcheck} extracts two primary diagnostic metr
     \begin{equation}
     L_{ij} = 20 \log_{10} \left( \frac{\|c_{ij} S_j\|_2}{\|c_{ii} S_i\|_2} \right) \quad (\text{in dB})
     \end{equation}
-    \textit{Interpretation Note:} In blind settings, non-zero off-diagonal coefficients $c_{ij}$ can arise from physical acoustic bleed, algorithmic leakage, or intrinsic spectral correlation between musical instruments. We validate $L_{ij}$ as a physical bleed estimator by benchmarking against known, synthetic injected bleed.
+    \textit{Interpretation Note:} In blind settings, non-zero off-diagonal coefficients $c_{ij}$ can arise from physical acoustic bleed, algorithmic leakage, or intrinsic spectral correlation between musical instruments. Because simulated and physical bleed involves frequency-dependent filtering ($h_{\text{bleed}}$), scalar subspace projection measures effective broadband energy leakage rather than full frequency-dependent transfer functions. We validate $L_{ij}$ as an effective broadband bleed estimator by benchmarking against calibrated injected bleed.
     \item \textbf{Unexplained Artifact Ratio ($\mathcal{U}_i$):} Measures the energy of non-linear distortion, phase cancellation, and neural vocoder artifacts that cannot be explained by any linear combination of the reference stems:
     \begin{equation}
     \mathcal{U}_i = 10 \log_{10} \left( \frac{\|\mathcal{E}_i\|_2^2}{\|\hat{S}_i\|_2^2} \right) \quad (\text{in dB})
@@ -207,7 +207,7 @@ From this decomposition, \texttt{stemcheck} extracts two primary diagnostic metr
 \subsection{Blind Physical Sanity Assertions}
 In addition to subspace decomposition, \texttt{stemcheck} executes automated physical sanity checks:
 \begin{itemize}
-    \item \textbf{Conservation of Energy:} Computes the sample-wise difference between the sum of separated stems and the original mixture: $\Delta_{\text{sum}}[n] = M[n] - \sum_{i=1}^K \hat{S}_i[n]$. Residuals exceeding threshold $\tau_{\text{sum}}$ signal missing stems or non-linear scaling.
+    \item \textbf{Mixture Reconstruction Consistency:} Computes the sample-wise difference between the sum of separated stems and the original mixture: $\Delta_{\text{sum}}[n] = M[n] - \sum_{i=1}^K \hat{S}_i[n]$. Because the reference mixture is formed via linear superposition ($M = \sum S_k^{\text{scaled}}$), this audit verifies waveform summation consistency without claiming thermodynamic energy conservation. Residuals exceeding threshold $\tau_{\text{sum}}$ signal missing stems or non-linear scaling.
     \item \textbf{Channel Duplication:} Computes the cross-correlation $\rho(\hat{S}_i, \hat{S}_j)$ across all separated pairs. Pairs with $\rho > 0.98$ are flagged as duplicate outputs.
     \item \textbf{DC Offset and Clipping:} Audits output stems for digital rail clipping ($|\hat{S}_i[n]| \ge 0.9999$) and DC bias ($|\mu_{\hat{S}_i}| \ge 10^{-3}$).
 \end{itemize}
@@ -269,10 +269,10 @@ To characterize real-world voice agent responsiveness robustly against outliers,
 \subsection{Benchmark A: Source Separation Ground Truth}
 We evaluated Track A across 20 multi-track songs from the MUSDB18-HQ test split (generating 40 controlled mixtures across varying headroom levels). Using \texttt{mixforge-audio}, mixtures achieved exact linear superposition with a maximum double-precision residual below $10^{-12}$, a 32-bit container export error $\le 6.52 \times 10^{-8}$, and a median studio residual of $-69.3$\,dB.
 
-Next, we injected known 4th-order Butterworth acoustic bleed across all stem pairs at calibrated levels ranging from $-40$\,dB to $-10$\,dB. We evaluated Demucs (\texttt{htdemucs}) separations using \texttt{stemcheck}. Over 264 evaluation trials, \texttt{stemcheck}'s linear subspace projection recovered true injected bleed levels with an absolute error $\le 0.06$\,dB, registering zero false-alarm detections on leak-free reference controls.
+Next, we injected known 4th-order Butterworth acoustic bleed across all stem pairs at calibrated levels ranging from $-40$\,dB to $-10$\,dB. We evaluated Demucs (\texttt{htdemucs}) separations using \texttt{stemcheck}. Over 264 evaluation trials across varying cutoff frequencies, \texttt{stemcheck}'s linear subspace projection recovered true effective broadband injected bleed levels with an absolute error $\le 0.06$\,dB, registering zero false-alarm detections on leak-free reference controls.
 
 \subsection{Benchmark B: Conversational Voice AI Dynamics}
-We evaluated \texttt{turnscope} on the MagicHub open-source conversational speech corpus \cite{magichub2021}, encompassing 25 dual-channel dialogues (16\,kHz, 16-bit linear PCM; Channel 0: Agent/Bot, Channel 1: Caller/Human) comprising 449 conversational turns and 3,021 annotated speech segments with millisecond-accurate phonetic boundaries. We compared \texttt{turnscope}'s energy-dominance filter against a standard dual-channel energy VAD baseline configured with a $-30$\,dBFS energy activation threshold and a 200\,ms hangover window, without cross-channel echo suppression.
+We evaluated \texttt{turnscope} on a designated 25-dialogue evaluation split from the open-source MagicData-RAMC conversational speech corpus \cite{magichub2021} (hosted on MagicHub), encompassing 25 dual-channel dialogues (16\,kHz, 16-bit linear PCM; Channel 0: Agent/Bot, Channel 1: Caller/Human) comprising 449 conversational turns and 3,021 annotated speech segments with millisecond-accurate phonetic boundaries. We compared \texttt{turnscope}'s energy-dominance filter against a standard dual-channel energy VAD baseline configured with a $-30$\,dBFS energy activation threshold and a 200\,ms hangover window, without cross-channel echo suppression.
 
 As summarized in Table~\ref{tab:benchmark_results} and Figure~\ref{fig:turnscope_ecdf}, unmitigated acoustic echo causes the energy VAD baseline to misclassify reflected agent speech as active caller speech, yielding a speech detection F1 score of $0.700 \pm 0.021$ and 207 missed turn transitions. By applying the calibrated 18\,dB dominance heuristic, \texttt{turnscope} increases speech detection F1 to $0.897 \pm 0.015$ ($+28.1\%$), reduces missed turn transitions to 126 ($-39.1\%$), improves median turn latency error ($P_{50}$) from $0.412 \pm 0.038$\,s down to $0.182 \pm 0.024$\,s ($-55.8\%$), and reduces tail latency error ($P_{90}$) from $1.339 \pm 0.142$\,s down to $0.440 \pm 0.051$\,s (a $67.1\%$ reduction in tail latency error; error bounds denote 95\% bootstrap confidence intervals across 1,000 resamples).
 
