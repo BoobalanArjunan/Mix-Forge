@@ -1,7 +1,7 @@
 # Beyond Accuracy: Building Reproducible Benchmarks and Diagnostic Tools for Audio & Speech AI
 
 **Author:** Boobalan Arjunan  
-**Role:** Independent Researcher & Open-Source Developer  
+**Role:** Independent Researcher | AI/ML & Digital Signal Processing  
 **Location:** Tamil Nadu, India  
 **Email:** `boobalan.it@gmail.com`  
 **Repository:** [OpenSource-AudioEvaluation-Suite](https://github.com/BoobalanArjunan/OpenSource-AudioEvaluation-Suite)  
