@@ -130,7 +130,7 @@ with gr.Blocks(title="Mix-Forge: Ground Truth Audio Synthesizer", theme=gr.theme
     gr.Markdown("""
     # Mix-Forge: Ground-Truth Multi-Track Audio Synthesizer
     ### *Deterministic Multi-Track Mixes with Built-in Answer Keys & Calibrated Bleed*
-    Developed by **Boobalan Arjunan** &bull; **ComposerMind Labs**
+    Developed by **Boobalan Arjunan** &bull; **OpenSource Labs**
     """)
 
     with gr.Row():

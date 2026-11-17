@@ -20,4 +20,4 @@ Build test audio mixes where you always know the exact answer key. Designed for 
 - **Calibrated Acoustic Bleed:** Injects physical, frequency-shaped microphone spill (e.g. drums leaking into vocal mic).
 - **Self-Auditing Verification:** Mathematically proves files have not been modified or clipped.
 
-*Created by **Boobalan Arjunan** ([boobalan.it@gmail.com](mailto:boobalan.it@gmail.com)) &bull; ComposerMind Labs*
+*Created by **Boobalan Arjunan** ([boobalan.it@gmail.com](mailto:boobalan.it@gmail.com)) &bull; OpenSource Labs*

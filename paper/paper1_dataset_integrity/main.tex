@@ -62,15 +62,15 @@
 \title{Building Reliable Audio Datasets for AI/ML Training: An Open-Source Quality Assurance Framework}
 
 \author{Boobalan~Arjunan\\[0.2em]%
-\normalsize\textnormal{Founder \& Lead AI/ML Architect, ComposerMind Labs LLP, Tamil Nadu, India}\\[-0.2em]%
-\small\href{mailto:boobalan_arjunan@composermind.com}{\texttt{boobalan\textunderscore arjunan@composermind.com}}}
+\normalsize\textnormal{Opensource Developer, Tamil Nadu, India}\\[-0.2em]%
+\small\href{mailto:boobalan.it@gmail.com}{\texttt{boobalan.it@gmail.com}}}
 
 \markboth{Preprint --- November 2026}%
 {Arjunan: Building Reliable Audio Datasets for AI/ML Training}
 
 \IEEEtitleabstractindextext{%
 \begin{abstract}
-Contemporary deep neural networks for automatic speech recognition, audio generation, and music information retrieval are increasingly trained on massive, uncurated web-scale audio corpora. However, these datasets frequently harbor subtle, systemic physical defects that evade container header inspections: cross-partition train/validation/test contamination, fake lossless upsampling, destructive stereo phase inversion, mislabeled musical tempos and keys, transcript timestamp drift, and digital clipping distortion. When models train on such contaminated inputs, generalization degrades unpredictably while benchmark metrics report deceptively high scores. To resolve this dataset hygiene crisis without introducing circular dependencies on opaque neural evaluators, we present the \textbf{ComposerMind AudioIntegrity Suite}, an open-source framework of seven deterministic digital signal processing (DSP) quality gates: \textit{WaveWash}, \textit{SplitSafe}, \textit{BandCheck}, \textit{PhaseCheck}, \textit{DriftCheck-Audio}, \textit{TempoCheck}, and \textit{TonicFind}. Engineered with zero deep learning dependencies, these tools execute with sub-second per-file latency on commodity CPUs (processing typical audio clips in 5--45\,ms and auditing 5,323 LibriSpeech files in 55.4\,s for cross-partition hashing) using closed-form physical invariants, spectral-peak landmark hashing, cubic Hermite spline interpolation, and permutation hypothesis testing. We evaluate the framework across two distinct empirical regimes: (1) a dedicated 34-entry synthetic ground-truth corpus probing precision, recall, and boundary edge cases, and (2) large-scale real-world corpora including 5,323 LibriSpeech files and studio master tracks. We provide an honest accounting of performance trade-offs—including BandCheck's 60.0\% precision / 85.7\% recall on warm acoustic sources and PhaseCheck's 50.0\% recall on partial stereo widening versus 100\% recall on 180$^\circ$ polarity flips—and detail practical threshold calibration strategies for production AI pipelines.
+Contemporary deep neural networks for automatic speech recognition, audio generation, and music information retrieval are increasingly trained on massive, uncurated web-scale audio corpora. However, these datasets frequently harbor subtle, systemic physical defects that evade container header inspections: cross-partition train/validation/test contamination, fake lossless upsampling, destructive stereo phase inversion, mislabeled musical tempos and keys, transcript timestamp drift, and digital clipping distortion. When models train on such contaminated inputs, generalization degrades unpredictably while benchmark metrics report deceptively high scores. To resolve this dataset hygiene crisis without introducing circular dependencies on opaque neural evaluators, we present the \textbf{OpenSource AudioIntegrity Suite}, an open-source framework of seven deterministic digital signal processing (DSP) quality gates: \textit{WaveWash}, \textit{SplitSafe}, \textit{BandCheck}, \textit{PhaseCheck}, \textit{DriftCheck-Audio}, \textit{TempoCheck}, and \textit{TonicFind}. Engineered with zero deep learning dependencies, these tools execute with sub-second per-file latency on commodity CPUs (processing typical audio clips in 5--45\,ms and auditing 5,323 LibriSpeech files in 55.4\,s for cross-partition hashing) using closed-form physical invariants, spectral-peak landmark hashing, cubic Hermite spline interpolation, and permutation hypothesis testing. We evaluate the framework across two distinct empirical regimes: (1) a dedicated 34-entry synthetic ground-truth corpus probing precision, recall, and boundary edge cases, and (2) large-scale real-world corpora including 5,323 LibriSpeech files and studio master tracks. We provide an honest accounting of performance trade-offs—including BandCheck's 60.0\% precision / 85.7\% recall on warm acoustic sources and PhaseCheck's 50.0\% recall on partial stereo widening versus 100\% recall on 180$^\circ$ polarity flips—and detail practical threshold calibration strategies for production AI pipelines.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -84,7 +84,7 @@ Audio Machine Learning, Dataset Hygiene, Data Contamination, Signal Processing, 
 \begin{figure*}[t]
 \centering
 \includegraphics[width=0.96\textwidth]{paper1_architecture}
-\caption{Architectural overview of the ComposerMind AudioIntegrity Suite: Seven deterministic digital signal processing tools providing automated, pre-training dataset quality assurance and physical defect repair across two foundational groups.}
+\caption{Architectural overview of the OpenSource AudioIntegrity Suite: Seven deterministic digital signal processing tools providing automated, pre-training dataset quality assurance and physical defect repair across two foundational groups.}
 \label{fig:framework_architecture}
 \end{figure*}
 
@@ -112,7 +112,7 @@ A widespread trend among ML practitioners is to deploy auxiliary deep neural mod
 \end{itemize}
 
 \subsection{Contributions}
-To establish an uncompromised, reproducible scientific standard for audio dataset hygiene, this paper presents the \textbf{ComposerMind AudioIntegrity Suite}, an open-source framework of seven deterministic DSP tools:
+To establish an uncompromised, reproducible scientific standard for audio dataset hygiene, this paper presents the \textbf{OpenSource AudioIntegrity Suite}, an open-source framework of seven deterministic DSP tools:
 \begin{enumerate}
     \item \textbf{Mathematical Invariant Formulation:} We formalize closed-form mathematical equations and algorithms for data leakage detection, derivative-continuous spline de-clipping, log-spectral cliff analysis, harmonic-tolerant tempograms, detuning-compensated chromagrams, inter-channel Pearson phase correlation, and energy-window permutation drift testing.
     \item \textbf{Dual Empirical Validation:} We validate the suite across both a 34-entry synthetic ground-truth corpus probing precision/recall boundaries and large-scale public datasets (5,323 LibriSpeech files, studio multi-tracks).
@@ -134,11 +134,11 @@ Automated tempo and key estimation have a rich literature in MIR. Scheirer \cite
 Stereo phase correlation meters have long been standard in audio broadcast mastering \cite{brixen2010audio}. Destructive monophonic acoustic cancellation is a well-documented risk when multi-microphone phase alignment is neglected. However, contemporary spatial audio generation and audio diffusion models frequently ingest raw stereo web audio without checking inter-channel phase correlation. \texttt{phasecheck} formalizes multi-band inter-channel Pearson correlation to audit stereo datasets before model training.
 
 \section{System Architecture}
-The ComposerMind AudioIntegrity Suite comprises seven standalone, interoperable Python libraries organized into two foundational groups, illustrated in Figure~\ref{fig:framework_architecture} and summarized in Table~\ref{tab:suite_summary}.
+The OpenSource AudioIntegrity Suite comprises seven standalone, interoperable Python libraries organized into two foundational groups, illustrated in Figure~\ref{fig:framework_architecture} and summarized in Table~\ref{tab:suite_summary}.
 
 \begin{table*}[t]
 \centering
-\caption{Comprehensive Architectural Summary of the Seven Tools in the ComposerMind AudioIntegrity Suite.}
+\caption{Comprehensive Architectural Summary of the Seven Tools in the OpenSource AudioIntegrity Suite.}
 \label{tab:suite_summary}
 \footnotesize
 \renewcommand{\arraystretch}{1.15}
@@ -278,20 +278,20 @@ An honest accounting of failure modes is essential for engineering robust audio 
 \begin{itemize}
     \item \textbf{BandCheck False Positives on Warm Acoustic Sources (60.0\% Precision):} Natural acoustic instruments (e.g., solo double bass, bowed cello, or muted horns) exhibit steep natural spectral roll-off above 8--10\,kHz. When evaluated with aggressive cliff thresholds ($\Delta S \ge 20$\,dB), natural acoustic roll-off can mimic brickwall filters. We recommend a conservative threshold of $\Delta_{\text{cliff}} = 25$\,dB coupled with active-frame energy gating.
     \item \textbf{PhaseCheck Partial Recall on Subtle Widening (50.0\% Recall):} While \texttt{phasecheck} achieves 100\% recall on hard 180$^\circ$ inverted polarity ($\bar{\rho}_{LR} \approx -1.0$), subtle spatial widening (where $\rho_{LR} \in [-0.2, 0.0]$) does not always trigger mono fold-down energy losses $>3.0$\,dB, resulting in lower recall on subtle spatial widening bugs.
-    \item \textbf{Scope Separation with Companion Suite:} We note that model evaluation and source separation diagnostics (unmixing ground truth, cross-stem bleed matrices, conversational turn latency) are deliberately separated into the companion \textbf{ComposerMind AudioEvaluation Suite} (\texttt{mixforge-audio}, \texttt{stemcheck}, \texttt{turnscope}) described in companion literature.
+    \item \textbf{Scope Separation with Companion Suite:} We note that model evaluation and source separation diagnostics (unmixing ground truth, cross-stem bleed matrices, conversational turn latency) are deliberately separated into the companion \textbf{OpenSource AudioEvaluation Suite} (\texttt{mixforge-audio}, \texttt{stemcheck}, \texttt{turnscope}) described in companion literature.
     \item \textbf{Acoustic Quality Assurance vs.\ Downstream Task Benchmarking:} This work rigorously establishes the detection precision, recall, and physical signal restoration performance of the seven quality gates against controlled ground-truth defects. While purging cross-split leakage, restoring clipped samples, and rejecting fake lossless audio provides verified data hygiene, downstream model performance gains (e.g., ASR word error rate or generative vocoder fidelity under sanitized vs.\ contaminated training) vary by architecture and capacity, representing an important avenue for domain-specific downstream studies.
 \end{itemize}
 
 \newpage
 \section{Conclusion}
-We presented the ComposerMind AudioIntegrity Suite, an open-source framework of seven deterministic DSP quality assurance tools designed to audit, sanitize, and verify audio machine learning datasets before model training. By formulating closed-form acoustic invariants and publishing reproducible benchmarks, the framework protects downstream models from silent data corruption while running at hundreds of times real-time on commodity CPUs.
+We presented the OpenSource AudioIntegrity Suite, an open-source framework of seven deterministic DSP quality assurance tools designed to audit, sanitize, and verify audio machine learning datasets before model training. By formulating closed-form acoustic invariants and publishing reproducible benchmarks, the framework protects downstream models from silent data corruption while running at hundreds of times real-time on commodity CPUs.
 
 \section*{Software and Source Code Availability}
-The ComposerMind AudioIntegrity Suite comprises seven independently developed, open-source Python packages authored by Boobalan Arjunan under the MIT license.
+The OpenSource AudioIntegrity Suite comprises seven independently developed, open-source Python packages authored by Boobalan Arjunan under the MIT license.
 
 The central benchmark reproduction framework, experimental protocols, synthetic ground-truth datasets, and test runners are publicly available at:
 \begin{center}
-\url{https://github.com/BoobalanArjunan/ComposerMind-AudioIntegrity-Suite}
+\url{https://github.com/BoobalanArjunan/Opensource-AudioIntegrity-Suite}
 \end{center}
 
 All seven individual tools are hosted in public source-code repositories on GitHub and distributed on the Python Package Index (PyPI), as documented in Table~\ref{tab:repo_inventory}.

@@ -1,6 +1,6 @@
 {
-  "benchmark_title": "ComposerMind AudioIntegrity Suite 34-Entry Synthetic Ground-Truth Evaluation Corpus",
-  "repository": "https://github.com/BoobalanArjunan/ComposerMind-AudioIntegrity-Suite",
+  "benchmark_title": "OpenSource AudioIntegrity Suite 34-Entry Synthetic Ground-Truth Evaluation Corpus",
+  "repository": "https://github.com/BoobalanArjunan/Opensource-AudioIntegrity-Suite",
   "total_test_cases": 34,
   "per_tool_results": {
     "splitsafe": {

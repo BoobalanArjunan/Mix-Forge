@@ -22,7 +22,7 @@ bg = patches.Rectangle((0, 0), 14, 7.0, facecolor="#F8FAFC", edgecolor="none", z
 ax.add_patch(bg)
 
 # Header
-ax.text(7.0, 6.65, "ComposerMind AudioIntegrity Suite: 7 Quality Assurance Tools", 
+ax.text(7.0, 6.65, "OpenSource AudioIntegrity Suite: 7 Quality Assurance Tools", 
         ha='center', va='center', fontsize=13, fontweight='bold', color="#0F172A")
 ax.text(7.0, 6.35, "Pre-Training Dataset Hygiene • Physical DSP Invariants • Deterministic Gates • Commodity CPU Execution", 
         ha='center', va='center', fontsize=9, fontstyle='italic', color="#475569")
@@ -114,7 +114,7 @@ ax.axis('off')
 bg = patches.Rectangle((0, 0), 12, 6.5, facecolor="#F8FAFC", edgecolor="none", zorder=0)
 ax.add_patch(bg)
 
-ax.text(6.0, 6.15, "ComposerMind AudioEvaluation Suite: 3 Diagnostic Benchmarking Tools", 
+ax.text(6.0, 6.15, "OpenSource AudioEvaluation Suite: 3 Diagnostic Benchmarking Tools", 
         ha='center', va='center', fontsize=12.5, fontweight='bold', color="#0F172A")
 ax.text(6.0, 5.85, "Reproducible Ground Truth • Subspace Bleed Decomposition • Full-Duplex Conversational Dynamics", 
         ha='center', va='center', fontsize=8.8, fontstyle='italic', color="#475569")

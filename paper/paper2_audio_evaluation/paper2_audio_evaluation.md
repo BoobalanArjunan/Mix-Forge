@@ -1,10 +1,10 @@
 # Beyond Accuracy: Building Reproducible Benchmarks and Diagnostic Tools for Audio & Speech AI
 
 **Author:** Boobalan Arjunan  
-**Role:** Founder & Lead AI/ML Architect  
-**Affiliation:** ComposerMind Labs LLP, Tamil Nadu, India  
-**Email:** `boobalan_arjunan@composermind.com`  
-**Repository:** [ComposerMind-AudioEvaluation-Suite](https://github.com/BoobalanArjunan/ComposerMind-AudioEvaluation-Suite)  
+**Role:** Opensource Developer  
+**Location:** Tamil Nadu, India  
+**Email:** `boobalan.it@gmail.com`  
+**Repository:** [OpenSource-AudioEvaluation-Suite](https://github.com/BoobalanArjunan/OpenSource-AudioEvaluation-Suite)  
 **Primary arXiv Category:** `cs.SD` (Sound) / `cs.AI` (Artificial Intelligence)  
 **Target Submission:** DAFx / AES / ISMIR  
 
@@ -14,13 +14,13 @@
 
 Standard benchmark metrics in audio and speech artificial intelligence—such as Signal-to-Distortion Ratio (SDR) in music source separation and Word Error Rate (WER) in speech processing—obscure critical diagnostic failure modes. In source separation, commercial multi-track recordings inherently contain unmeasured acoustic microphone bleed and non-linear mastering compression, confounding algorithmic separation failures with physical recording artifacts. In full-duplex conversational voice agents, aggregate latency metrics fail to capture tail response delays, acoustic room-echo leakage, and customer barge-in compliance.
 
-To establish reproducible ground-truth evaluation without black-box neural metrics, we introduce the **ComposerMind AudioEvaluation Suite**, comprising three deterministic DSP tools: `mixforge-audio`, `stemcheck`, and `turnscope`. `mixforge-audio` guarantees mathematically exact linear superposition ($	ext{Mix} = \sum 	ext{Stems}$, float residual $\le 6.52 	imes 10^{-8}$) with calibrated 4th-order Butterworth acoustic bleed and cryptographic recipe serialization. `stemcheck` introduces linear subspace projection to decompose separation error into a physical cross-stem bleed matrix (dB) versus unmodeled algorithmic artifacts. `turnscope` implements an 18 dB energy-dominance filter to suppress acoustic echo, extracting conversational turn hand-over latency distributions (P50, P90, P99) and customer barge-ins. Evaluated on MUSDB18-HQ and the MagicHub full-duplex corpus, the suite decouples bleed within 0.06 dB and reduces P90 tail latency error by 67.1%.
+To establish reproducible ground-truth evaluation without black-box neural metrics, we introduce the **OpenSource AudioEvaluation Suite**, comprising three deterministic DSP tools: `mixforge-audio`, `stemcheck`, and `turnscope`. `mixforge-audio` guarantees mathematically exact linear superposition ($	ext{Mix} = \sum 	ext{Stems}$, float residual $\le 6.52 	imes 10^{-8}$) with calibrated 4th-order Butterworth acoustic bleed and cryptographic recipe serialization. `stemcheck` introduces linear subspace projection to decompose separation error into a physical cross-stem bleed matrix (dB) versus unmodeled algorithmic artifacts. `turnscope` implements an 18 dB energy-dominance filter to suppress acoustic echo, extracting conversational turn hand-over latency distributions (P50, P90, P99) and customer barge-ins. Evaluated on MUSDB18-HQ and the MagicHub full-duplex corpus, the suite decouples bleed within 0.06 dB and reduces P90 tail latency error by 67.1%.
 
 ---
 
 ## 1. System Architecture: The Three Evaluation Tools
 
-![Figure 1: ComposerMind AudioEvaluation Suite Architecture](figures/paper2_architecture.png)
+![Figure 1: OpenSource AudioEvaluation Suite Architecture](figures/paper2_architecture.png)
 
 ### Track A: Source Separation Ground Truth & Bleed Decomposition (2 Tools)
 1. **`mixforge-audio`**: Generates test mixtures with mathematically exact linear superposition ($	ext{Mix} = \sum 	ext{Stems}$). In double precision arithmetic, residual error is bounded below $10^{-12}$. Implements dynamic headroom scaling ($\gamma = \min(1.0, 0.98 / P_{\max})$) to prevent clipping without dynamic range compression. Injects directional acoustic bleed via calibrated 4th-order Butterworth low-pass filtering. Serializes all parameters, gains, and seeds into tamper-evident `recipe.json`.
@@ -35,7 +35,7 @@ To establish reproducible ground-truth evaluation without black-box neural metri
 
 ## 2. Quantitative Benchmark Results
 
-| Metric / Evaluation Dimension | Standard Baseline | ComposerMind AudioEvaluation Suite | Relative Improvement |
+| Metric / Evaluation Dimension | Standard Baseline | OpenSource AudioEvaluation Suite | Relative Improvement |
 | :--- | :---: | :---: | :---: |
 | **`mixforge-audio` Linear Sum Residual** | Unchecked | $\mathbf{\le 6.52 	imes 10^{-8}}$ | Double precision verified |
 | **`mixforge-audio` Studio Mix Residual** | N/A | $\mathbf{-69.3}$ **dB Median** | Translucent to studio mixes |
@@ -51,4 +51,4 @@ To establish reproducible ground-truth evaluation without black-box neural metri
 ## 3. Software Availability
 
 Open-source under MIT license:  
-👉 **GitHub Repository:** [https://github.com/BoobalanArjunan/ComposerMind-AudioEvaluation-Suite](https://github.com/BoobalanArjunan/ComposerMind-AudioEvaluation-Suite)
+👉 **GitHub Repository:** [https://github.com/BoobalanArjunan/OpenSource-AudioEvaluation-Suite](https://github.com/BoobalanArjunan/OpenSource-AudioEvaluation-Suite)

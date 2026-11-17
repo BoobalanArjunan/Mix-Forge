@@ -3,9 +3,9 @@ import os
 
 paper1_md = """# Building Reliable Audio Datasets for AI/ML Training: An Open-Source Quality Assurance Framework
 
-**Author:** Boobalan Arjunan (`boobalan_arjunan@composermind.com`)  
-**Affiliation:** ComposerMind Labs, Chennai, Tamil Nadu, India  
-**Repository:** [ComposerMind-AudioIntegrity-Suite](https://github.com/BoobalanArjunan/ComposerMind-AudioIntegrity-Suite)  
+**Author:** Boobalan Arjunan (`boobalan.it@gmail.com`)  
+**Affiliation:** OpenSource Labs, Chennai, Tamil Nadu, India  
+**Repository:** [Opensource-AudioIntegrity-Suite](https://github.com/BoobalanArjunan/Opensource-AudioIntegrity-Suite)  
 **Primary arXiv Category:** `cs.SD` (Sound) / `eess.AS` (Audio and Speech Processing)  
 **Target Submission:** IEEE Access / IEEE TASLP  
 
@@ -15,13 +15,13 @@ paper1_md = """# Building Reliable Audio Datasets for AI/ML Training: An Open-So
 
 Deep neural networks for speech recognition, audio synthesis, and music information retrieval are increasingly trained on massive web-scale corpora. However, uncurated audio datasets frequently harbor insidious physical defects: cross-partition train/test data leakage, fake lossless upsampling, destructive stereo phase inversion, mislabeled musical tempos and keys, transcript timestamp drift, and digital clipping distortion. When models train on such contaminated inputs, performance degrades unpredictably while benchmark metrics report inflated scores.
 
-To resolve this dataset hygiene crisis without introducing circular dependencies on opaque neural evaluators, we present the **ComposerMind AudioIntegrity Suite**, an open-source framework of seven deterministic digital signal processing (DSP) quality gates: `wavewash`, `splitsafe`, `bandcheck`, `phasecheck`, `driftcheck-audio`, `tempocheck`, and `tonicfind`. Engineered with zero deep learning dependencies, these tools execute in sub-second CPU time using closed-form physical invariants, spectral-peak landmark hashing, cubic Hermite spline interpolation, and permutation hypothesis testing. Evaluated on canonical benchmarks including 5,323 LibriSpeech recordings and synthetic ground-truth stress suites, the framework achieves 100% adversarial leak detection, 71.8% clipping MSE reduction, and zero false alarms on clean studio data.
+To resolve this dataset hygiene crisis without introducing circular dependencies on opaque neural evaluators, we present the **OpenSource AudioIntegrity Suite**, an open-source framework of seven deterministic digital signal processing (DSP) quality gates: `wavewash`, `splitsafe`, `bandcheck`, `phasecheck`, `driftcheck-audio`, `tempocheck`, and `tonicfind`. Engineered with zero deep learning dependencies, these tools execute in sub-second CPU time using closed-form physical invariants, spectral-peak landmark hashing, cubic Hermite spline interpolation, and permutation hypothesis testing. Evaluated on canonical benchmarks including 5,323 LibriSpeech recordings and synthetic ground-truth stress suites, the framework achieves 100% adversarial leak detection, 71.8% clipping MSE reduction, and zero false alarms on clean studio data.
 
 ---
 
 ## 1. System Architecture: The Seven Integrity Tools
 
-![Figure 1: ComposerMind AudioIntegrity Suite Architecture](figures/paper1_architecture.png)
+![Figure 1: OpenSource AudioIntegrity Suite Architecture](figures/paper1_architecture.png)
 
 ### Group I: Signal Quality & Partition Hygiene (3 Tools)
 1. **`splitsafe`**: Combinatorial landmark spectral peak hashing and time-displacement histogram voting. Detects evaluation duplicates down to 3s sub-clips, resampled to 11 kHz, or gain-shifted by $-12$ dB. Enforces strict speaker isolation across train/val/test splits.
@@ -68,7 +68,7 @@ if not report.passed:
 ## 4. Software Availability
 
 Open-source under MIT license:  
-👉 **GitHub Repository:** [https://github.com/BoobalanArjunan/ComposerMind-AudioIntegrity-Suite](https://github.com/BoobalanArjunan/ComposerMind-AudioIntegrity-Suite)
+👉 **GitHub Repository:** [https://github.com/BoobalanArjunan/Opensource-AudioIntegrity-Suite](https://github.com/BoobalanArjunan/Opensource-AudioIntegrity-Suite)
 """
 
 with open("paper/paper1_dataset_integrity/paper1_dataset_integrity.md", "w") as f:
@@ -76,9 +76,9 @@ with open("paper/paper1_dataset_integrity/paper1_dataset_integrity.md", "w") as 
 
 paper2_md = """# Beyond Accuracy: Building Reproducible Benchmarks and Diagnostic Tools for Audio & Speech AI
 
-**Author:** Boobalan Arjunan (`boobalan_arjunan@composermind.com`)  
-**Affiliation:** ComposerMind Labs, Chennai, Tamil Nadu, India  
-**Repository:** [ComposerMind-AudioEvaluation-Suite](https://github.com/BoobalanArjunan/ComposerMind-AudioEvaluation-Suite)  
+**Author:** Boobalan Arjunan (`boobalan.it@gmail.com`)  
+**Affiliation:** OpenSource Labs, Chennai, Tamil Nadu, India  
+**Repository:** [OpenSource-AudioEvaluation-Suite](https://github.com/BoobalanArjunan/OpenSource-AudioEvaluation-Suite)  
 **Primary arXiv Category:** `cs.SD` (Sound) / `cs.AI` (Artificial Intelligence)  
 **Target Submission:** DAFx / AES / ISMIR  
 
@@ -88,13 +88,13 @@ paper2_md = """# Beyond Accuracy: Building Reproducible Benchmarks and Diagnosti
 
 Standard benchmark metrics in audio and speech artificial intelligence—such as Signal-to-Distortion Ratio (SDR) in music source separation and Word Error Rate (WER) in speech processing—obscure critical diagnostic failure modes. In source separation, commercial multi-track recordings inherently contain unmeasured acoustic microphone bleed and non-linear mastering compression, confounding algorithmic separation failures with physical recording artifacts. In full-duplex conversational voice agents, aggregate latency metrics fail to capture tail response delays, acoustic room-echo leakage, and customer barge-in compliance.
 
-To establish reproducible ground-truth evaluation without black-box neural metrics, we introduce the **ComposerMind AudioEvaluation Suite**, comprising three deterministic DSP tools: `mixforge-audio`, `stemcheck`, and `turnscope`. `mixforge-audio` guarantees mathematically exact linear superposition ($\text{Mix} = \sum \text{Stems}$, float residual $\le 6.52 \times 10^{-8}$) with calibrated 4th-order Butterworth acoustic bleed and cryptographic recipe serialization. `stemcheck` introduces linear subspace projection to decompose separation error into a physical cross-stem bleed matrix (dB) versus unmodeled algorithmic artifacts. `turnscope` implements an 18 dB energy-dominance filter to suppress acoustic echo, extracting conversational turn hand-over latency distributions (P50, P90, P99) and customer barge-ins. Evaluated on MUSDB18-HQ and the MagicHub full-duplex corpus, the suite decouples bleed within 0.06 dB and reduces P90 tail latency error by 67.1%.
+To establish reproducible ground-truth evaluation without black-box neural metrics, we introduce the **OpenSource AudioEvaluation Suite**, comprising three deterministic DSP tools: `mixforge-audio`, `stemcheck`, and `turnscope`. `mixforge-audio` guarantees mathematically exact linear superposition ($\text{Mix} = \sum \text{Stems}$, float residual $\le 6.52 \times 10^{-8}$) with calibrated 4th-order Butterworth acoustic bleed and cryptographic recipe serialization. `stemcheck` introduces linear subspace projection to decompose separation error into a physical cross-stem bleed matrix (dB) versus unmodeled algorithmic artifacts. `turnscope` implements an 18 dB energy-dominance filter to suppress acoustic echo, extracting conversational turn hand-over latency distributions (P50, P90, P99) and customer barge-ins. Evaluated on MUSDB18-HQ and the MagicHub full-duplex corpus, the suite decouples bleed within 0.06 dB and reduces P90 tail latency error by 67.1%.
 
 ---
 
 ## 1. System Architecture: The Three Evaluation Tools
 
-![Figure 1: ComposerMind AudioEvaluation Suite Architecture](figures/paper2_architecture.png)
+![Figure 1: OpenSource AudioEvaluation Suite Architecture](figures/paper2_architecture.png)
 
 ### Track A: Source Separation Ground Truth & Bleed Decomposition (2 Tools)
 1. **`mixforge-audio`**: Generates test mixtures with mathematically exact linear superposition ($\text{Mix} = \sum \text{Stems}$). In double precision arithmetic, residual error is bounded below $10^{-12}$. Implements dynamic headroom scaling ($\gamma = \min(1.0, 0.98 / P_{\max})$) to prevent clipping without dynamic range compression. Injects directional acoustic bleed via calibrated 4th-order Butterworth low-pass filtering. Serializes all parameters, gains, and seeds into tamper-evident `recipe.json`.
@@ -109,7 +109,7 @@ To establish reproducible ground-truth evaluation without black-box neural metri
 
 ## 2. Quantitative Benchmark Results
 
-| Metric / Evaluation Dimension | Standard Baseline | ComposerMind AudioEvaluation Suite | Relative Improvement |
+| Metric / Evaluation Dimension | Standard Baseline | OpenSource AudioEvaluation Suite | Relative Improvement |
 | :--- | :---: | :---: | :---: |
 | **`mixforge-audio` Linear Sum Residual** | Unchecked | $\mathbf{\le 6.52 \times 10^{-8}}$ | Double precision verified |
 | **`mixforge-audio` Studio Mix Residual** | N/A | $\mathbf{-69.3}$ **dB Median** | Translucent to studio mixes |
@@ -125,7 +125,7 @@ To establish reproducible ground-truth evaluation without black-box neural metri
 ## 3. Software Availability
 
 Open-source under MIT license:  
-👉 **GitHub Repository:** [https://github.com/BoobalanArjunan/ComposerMind-AudioEvaluation-Suite](https://github.com/BoobalanArjunan/ComposerMind-AudioEvaluation-Suite)
+👉 **GitHub Repository:** [https://github.com/BoobalanArjunan/OpenSource-AudioEvaluation-Suite](https://github.com/BoobalanArjunan/OpenSource-AudioEvaluation-Suite)
 """
 
 with open("paper/paper2_audio_evaluation/paper2_audio_evaluation.md", "w") as f:

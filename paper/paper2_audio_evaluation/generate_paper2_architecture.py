@@ -18,7 +18,7 @@ ax.set_facecolor('#FFFFFF')
 title_box = patches.FancyBboxPatch((0.5, 4.45), 11.0, 0.65, boxstyle="round,pad=0.03,rounding_size=0.08",
                                   facecolor="#0F172A", edgecolor="none", zorder=2)
 ax.add_patch(title_box)
-ax.text(6.0, 4.85, "ComposerMind AudioEvaluation Suite: Diagnostic Benchmarking Architecture",
+ax.text(6.0, 4.85, "OpenSource AudioEvaluation Suite: Diagnostic Benchmarking Architecture",
         ha='center', va='center', fontsize=11.5, fontweight='bold', color="#FFFFFF", zorder=3)
 ax.text(6.0, 4.58, "Model Evaluation • Decoupled Bleed Diagnostics • Conversational Tail Latency",
         ha='center', va='center', fontsize=8.5, color="#94A3B8", zorder=3)
@@ -94,7 +94,7 @@ ax.text(6.75, 0.95, "Reduces P90 tail latency estimation error by 67.1% (1.34s \
 footer = patches.FancyBboxPatch((0.5, 0.1), 11.0, 0.38, boxstyle="round,pad=0.02,rounding_size=0.06",
                                 facecolor="#F1F5F9", edgecolor="#CBD5E1", lw=0.8, zorder=1)
 ax.add_patch(footer)
-ax.text(6.0, 0.28, "Suite Benchmark Hub: https://github.com/BoobalanArjunan/ComposerMind-AudioEvaluation-Suite • MIT License",
+ax.text(6.0, 0.28, "Suite Benchmark Hub: https://github.com/BoobalanArjunan/OpenSource-AudioEvaluation-Suite • MIT License",
         ha='center', va='center', fontsize=7.8, fontweight='medium', color="#334155", zorder=2)
 
 plt.tight_layout()

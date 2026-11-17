@@ -62,15 +62,15 @@
 \title{Beyond Accuracy: Building Reproducible Benchmarks and Diagnostic Tools for Audio \& Speech AI}
 
 \author{Boobalan~Arjunan\\[0.2em]%
-\normalsize\textnormal{Founder \& Lead AI/ML Architect, ComposerMind Labs LLP, Tamil Nadu, India}\\[-0.2em]%
-\small\href{mailto:boobalan_arjunan@composermind.com}{\texttt{boobalan\textunderscore arjunan@composermind.com}}}
+\normalsize\textnormal{Opensource Developer, Tamil Nadu, India}\\[-0.2em]%
+\small\href{mailto:boobalan.it@gmail.com}{\texttt{boobalan.it@gmail.com}}}
 
 \markboth{Preprint --- November 2026}%
 {Arjunan: Beyond Accuracy: Diagnostic Benchmarking for Audio and Speech AI}
 
 \IEEEtitleabstractindextext{%
 \begin{abstract}
-Standard benchmark metrics in audio and speech artificial intelligence---such as Signal-to-Distortion Ratio (SDR) in music source separation and Word Error Rate (WER) in speech processing---frequently obscure critical diagnostic failure modes. In music source separation, commercial multi-track recordings inherently contain unmeasured acoustic microphone bleed and non-linear mastering compression, confounding algorithmic separation failures with physical recording artifacts. In full-duplex conversational voice agents, aggregate latency metrics fail to capture tail response delays, acoustic room-echo leakage, and customer barge-in compliance. To establish reproducible ground-truth evaluation without circular reliance on opaque neural evaluators, we introduce the \textbf{ComposerMind AudioEvaluation Suite}, an open-source framework comprising three deterministic digital signal processing (DSP) tools: \texttt{mixforge-audio}, \texttt{stemcheck}, and \texttt{turnscope}. Organized into two specialized evaluation tracks, the suite provides rigorous diagnostic capabilities: \texttt{mixforge-audio} guarantees a numerically bounded linear-superposition residual (bounded below $10^{-12}$ in double-precision internal computation and $\le 6.52 \times 10^{-8}$ upon 32-bit float audio export) with calibrated 4th-order Butterworth acoustic bleed and cryptographic recipe serialization; \texttt{stemcheck} introduces linear subspace projection to estimate cross-source interference matrices (recovering calibrated bleed within 0.06\,dB over 264 trials) while isolating unmodeled algorithmic artifacts; and \texttt{turnscope} implements an 18\,dB energy-dominance heuristic to suppress acoustic echo, extracting conversational turn hand-over latency distributions ($P_{50}, P_{90}, P_{99}$) and customer barge-in compliance. Evaluated across 20 MUSDB18-HQ tracks and the MagicHub conversational corpus (449 turns, 3,021 segments), the suite demonstrates zero false-alarm leak detections on pristine references and reduces conversational $P_{90}$ tail latency estimation error by 67.1\% (from 1.339\,s to 0.440\,s).
+Standard benchmark metrics in audio and speech artificial intelligence---such as Signal-to-Distortion Ratio (SDR) in music source separation and Word Error Rate (WER) in speech processing---frequently obscure critical diagnostic failure modes. In music source separation, commercial multi-track recordings inherently contain unmeasured acoustic microphone bleed and non-linear mastering compression, confounding algorithmic separation failures with physical recording artifacts. In full-duplex conversational voice agents, aggregate latency metrics fail to capture tail response delays, acoustic room-echo leakage, and customer barge-in compliance. To establish reproducible ground-truth evaluation without circular reliance on opaque neural evaluators, we introduce the \textbf{OpenSource AudioEvaluation Suite}, an open-source framework comprising three deterministic digital signal processing (DSP) tools: \texttt{mixforge-audio}, \texttt{stemcheck}, and \texttt{turnscope}. Organized into two specialized evaluation tracks, the suite provides rigorous diagnostic capabilities: \texttt{mixforge-audio} guarantees a numerically bounded linear-superposition residual (bounded below $10^{-12}$ in double-precision internal computation and $\le 6.52 \times 10^{-8}$ upon 32-bit float audio export) with calibrated 4th-order Butterworth acoustic bleed and cryptographic recipe serialization; \texttt{stemcheck} introduces linear subspace projection to estimate cross-source interference matrices (recovering calibrated bleed within 0.06\,dB over 264 trials) while isolating unmodeled algorithmic artifacts; and \texttt{turnscope} implements an 18\,dB energy-dominance heuristic to suppress acoustic echo, extracting conversational turn hand-over latency distributions ($P_{50}, P_{90}, P_{99}$) and customer barge-in compliance. Evaluated across 20 MUSDB18-HQ tracks and the MagicHub conversational corpus (449 turns, 3,021 segments), the suite demonstrates zero false-alarm leak detections on pristine references and reduces conversational $P_{90}$ tail latency estimation error by 67.1\% (from 1.339\,s to 0.440\,s).
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -84,7 +84,7 @@ Audio Machine Learning, Source Separation Evaluation, Ground-Truth Benchmarking,
 \begin{figure*}[t]
 \centering
 \includegraphics[width=0.96\textwidth]{paper2_architecture}
-\caption{System architecture of the ComposerMind AudioEvaluation Suite: Three deterministic diagnostic benchmarking tools organized into Track A (Source Separation Ground Truth and Bleed Matrix Decomposition via \texttt{mixforge-audio} and \texttt{stemcheck}) and Track B (Full-Duplex Conversational Dynamics and Acoustic Echo Suppression via \texttt{turnscope}).}
+\caption{System architecture of the OpenSource AudioEvaluation Suite: Three deterministic diagnostic benchmarking tools organized into Track A (Source Separation Ground Truth and Bleed Matrix Decomposition via \texttt{mixforge-audio} and \texttt{stemcheck}) and Track B (Full-Duplex Conversational Dynamics and Acoustic Echo Suppression via \texttt{turnscope}).}
 \label{fig:framework_architecture}
 \end{figure*}
 
@@ -96,7 +96,7 @@ In blind audio source separation (BASS), the universal benchmark metric is the S
 Similarly, in modern conversational Voice AI systems (such as automated customer service agents and real-time speech assistants), system responsiveness is commonly characterized by mean or median latency. Yet, human conversational coherence is defined by tail latency ($P_{90}, P_{99}$), customer barge-in compliance (whether the agent immediately halts speech upon interruption), and acoustic echo cancellation. Standard voice activity detectors (VAD) applied to dual-channel telephony or web call recordings frequently misattribute loudspeaker room echo leaking into the user's microphone as active user speech, skewing latency benchmarks and causing phantom turn transitions.
 
 \subsection{Contributions}
-To eliminate these diagnostic blind spots without introducing circular dependencies on opaque neural evaluators, this paper presents the \textbf{ComposerMind AudioEvaluation Suite}, an open-source evaluation framework comprising three specialized, deterministic DSP tools:
+To eliminate these diagnostic blind spots without introducing circular dependencies on opaque neural evaluators, this paper presents the \textbf{OpenSource AudioEvaluation Suite}, an open-source evaluation framework comprising three specialized, deterministic DSP tools:
 \begin{enumerate}
     \item \textbf{\texttt{mixforge-audio}:} A deterministic ground-truth synthesis engine that guarantees a numerically bounded linear-superposition residual ($< 10^{-12}$ in 64-bit internal precision; $\le 6.52 \times 10^{-8}$ upon 32-bit float audio container export), dynamic headroom scaling to eliminate mastering distortion, calibrated directional acoustic bleed simulation via 4th-order Butterworth filters, and cryptographic recipe serialization.
     \item \textbf{\texttt{stemcheck}:} An analytical verification framework that employs linear subspace projection to estimate cross-source interference matrices (measured in dB) and orthogonal unexplained artifact residue, validating physical conservation laws and identifying false-alarm leaks.
@@ -158,7 +158,7 @@ To guarantee full experimental reproducibility across research institutions, \te
 
 \begin{table*}[t]
 \centering
-\caption{Comprehensive Architectural Summary of the Three Diagnostic Tools in the ComposerMind AudioEvaluation Suite.}
+\caption{Comprehensive Architectural Summary of the Three Diagnostic Tools in the OpenSource AudioEvaluation Suite.}
 \label{tab:tool_architecture}
 \footnotesize
 \renewcommand{\arraystretch}{1.22}
@@ -298,19 +298,19 @@ TurnScope & Tail Latency Error ($P_{90}$) & 1.339\,s & \textbf{0.440\,s} ($\math
 \end{table}
 
 \section{Discussion and Operational Guidelines}
-When deploying the ComposerMind AudioEvaluation Suite in production audio and speech pipelines, practitioners should calibrate operational thresholds according to signal context:
+When deploying the OpenSource AudioEvaluation Suite in production audio and speech pipelines, practitioners should calibrate operational thresholds according to signal context:
 \begin{itemize}
     \item \textbf{Bleed Separation:} In high-gain master recordings where stem energy is heavily correlated, the reference matrix $\mathbf{S}^T \mathbf{S}$ can become ill-conditioned. \texttt{stemcheck} implements Tikhonov regularization ($\mathbf{S}^T \mathbf{S} + \lambda \mathbf{I}$ with $\lambda = 10^{-6}$) to ensure numerical stability during matrix inversion.
     \item \textbf{Acoustic Echo Dominance:} The 18\,dB threshold in \texttt{turnscope} is calibrated for typical mobile phone speakerphones and desktop environments. In ultra-low-volume headset scenarios where room reverberation exceeds 400\,ms, practitioners should increase the energy window to 30\,ms or lower the threshold to 15\,dB.
 \end{itemize}
 
 \section{Software and Source Code Availability}
-The ComposerMind AudioEvaluation Suite comprises three independently developed, open-source Python packages authored by Boobalan Arjunan under the MIT license.
+The OpenSource AudioEvaluation Suite comprises three independently developed, open-source Python packages authored by Boobalan Arjunan under the MIT license.
 
 The complete evaluation framework, benchmark protocols, dataset configurations, and reproducibility scripts are publicly available at:
 \begin{quote}
 \centering
-\url{https://github.com/BoobalanArjunan/ComposerMind-AudioEvaluation-Suite}
+\url{https://github.com/BoobalanArjunan/OpenSource-AudioEvaluation-Suite}
 \end{quote}
 
 The individual package distributions on PyPI and their public source-code repositories are detailed in Table~\ref{tab:repo_inventory}. All three tools can be installed simultaneously via:

@@ -1,7 +1,7 @@
 # Deterministic Quality Gates and Ground-Truth Evaluation for Audio and Speech Machine Learning: An Open-Source 10-Tool Ecosystem
 
-**Author:** Boobalan Arjunan (`boobalan_arjunan@composermind.com`)  
-**Affiliation:** ComposerMind Labs, Chennai, Tamil Nadu, India  
+**Author:** Boobalan Arjunan (`boobalan.it@gmail.com`)  
+**Affiliation:** OpenSource Labs, Chennai, Tamil Nadu, India  
 **Date:** November 2026  
 **Subject Classifications:** Sound / Audio and Speech Processing (`cs.SD`, `eess.AS`), Machine Learning (`cs.LG`), Artificial Intelligence (`cs.AI`)  
 **Publication Target:** IEEE Transactions on Audio, Speech, and Language Processing / arXiv Research Monograph  

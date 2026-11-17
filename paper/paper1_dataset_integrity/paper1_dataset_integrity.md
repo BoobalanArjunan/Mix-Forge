@@ -1,10 +1,10 @@
 # Building Reliable Audio Datasets for AI/ML Training: An Open-Source Quality Assurance Framework
 
 **Author:** Boobalan Arjunan  
-**Role:** Founder & Lead AI/ML Architect  
-**Affiliation:** ComposerMind Labs LLP, Tamil Nadu, India  
-**Email:** `boobalan_arjunan@composermind.com`  
-**Official Repository & Benchmark Hub:** [ComposerMind-AudioIntegrity-Suite](https://github.com/BoobalanArjunan/ComposerMind-AudioIntegrity-Suite)  
+**Role:** Opensource Developer  
+**Location:** Tamil Nadu, India  
+**Email:** `boobalan.it@gmail.com`  
+**Official Repository & Benchmark Hub:** [Opensource-AudioIntegrity-Suite](https://github.com/BoobalanArjunan/Opensource-AudioIntegrity-Suite)  
 **Primary Subject Category:** `cs.SD` (Sound) | **Cross-List:** `eess.AS` (Audio and Speech Processing)  
 **Target Publication:** IEEE Access / IEEE TASLP  
 
@@ -14,7 +14,7 @@
 
 Contemporary deep neural networks for automatic speech recognition, audio generation, and music information retrieval are increasingly trained on massive, uncurated web-scale audio corpora. However, these datasets frequently harbor subtle, systemic physical defects that evade container header inspections: cross-partition train/validation/test contamination, fake lossless upsampling, destructive stereo phase inversion, mislabeled musical tempos and keys, transcript timestamp drift, and digital clipping distortion. When models train on such contaminated inputs, generalization degrades unpredictably while benchmark metrics report deceptively high scores.
 
-To resolve this dataset hygiene crisis without introducing circular dependencies on opaque neural evaluators, we present the **ComposerMind AudioIntegrity Suite**, an open-source framework of seven deterministic digital signal processing (DSP) quality gates: `wavewash`, `splitsafe`, `bandcheck`, `phasecheck`, `driftcheck-audio`, `tempocheck`, and `tonicfind`. Engineered with zero deep learning dependencies, these tools execute in sub-second CPU time using closed-form physical invariants, spectral-peak landmark hashing, cubic Hermite spline interpolation, and permutation hypothesis testing. We evaluate the framework across two distinct empirical regimes: (1) a dedicated 34-entry synthetic ground-truth corpus probing precision, recall, and boundary edge cases, and (2) large-scale real-world corpora including 5,323 LibriSpeech files and studio master tracks. We provide an honest accounting of performance trade-offs—including BandCheck's 60.0% precision / 85.7% recall on warm acoustic sources and PhaseCheck's 50.0% recall on partial stereo widening versus 100% recall on 180° polarity flips—and detail practical threshold calibration strategies for production AI pipelines.
+To resolve this dataset hygiene crisis without introducing circular dependencies on opaque neural evaluators, we present the **OpenSource AudioIntegrity Suite**, an open-source framework of seven deterministic digital signal processing (DSP) quality gates: `wavewash`, `splitsafe`, `bandcheck`, `phasecheck`, `driftcheck-audio`, `tempocheck`, and `tonicfind`. Engineered with zero deep learning dependencies, these tools execute in sub-second CPU time using closed-form physical invariants, spectral-peak landmark hashing, cubic Hermite spline interpolation, and permutation hypothesis testing. We evaluate the framework across two distinct empirical regimes: (1) a dedicated 34-entry synthetic ground-truth corpus probing precision, recall, and boundary edge cases, and (2) large-scale real-world corpora including 5,323 LibriSpeech files and studio master tracks. We provide an honest accounting of performance trade-offs—including BandCheck's 60.0% precision / 85.7% recall on warm acoustic sources and PhaseCheck's 50.0% recall on partial stereo widening versus 100% recall on 180° polarity flips—and detail practical threshold calibration strategies for production AI pipelines.
 
 ---
 
@@ -53,7 +53,7 @@ Audio machine learning models require tens of thousands of hours of acoustic dat
                                                         +----------------------------------+
 ```
 
-![Figure 1: ComposerMind AudioIntegrity Suite Architecture](figures/paper1_architecture.png)
+![Figure 1: OpenSource AudioIntegrity Suite Architecture](figures/paper1_architecture.png)
 
 ---
 
@@ -105,7 +105,7 @@ Audio machine learning models require tens of thousands of hours of acoustic dat
 
 ### 3.1 Benchmark A: The 34-Entry Synthetic Ground-Truth Corpus
 
-To thoroughly characterize detection boundaries and failure modes, we evaluated the framework on the 34-entry multi-genre synthetic test suite hosted in the [ComposerMind-AudioIntegrity-Suite](https://github.com/BoobalanArjunan/ComposerMind-AudioIntegrity-Suite) repository:
+To thoroughly characterize detection boundaries and failure modes, we evaluated the framework on the 34-entry multi-genre synthetic test suite hosted in the [Opensource-AudioIntegrity-Suite](https://github.com/BoobalanArjunan/Opensource-AudioIntegrity-Suite) repository:
 
 | Tool | Ground-Truth Target | Precision | Recall | F1 Score | Verified Failure Mode & Root Cause |
 | :--- | :--- | :---: | :---: | :---: | :--- |
@@ -136,17 +136,17 @@ To thoroughly characterize detection boundaries and failure modes, we evaluated 
    * *Failure Mechanism*: While `phasecheck` achieves 100% recall on 180° inverted polarity ($\bar{\rho}_{LR} \approx -1.0$), subtle spatial widening (where $\rho_{LR} \in [-0.2, 0.0]$) does not always cause $>3.0$ dB mono downmix loss.
    * *Mitigation*: Users evaluating spatial audio models should inspect the sub-bass correlation specifically ($\rho_{\text{sub}} < 0$).
 3. **Scope Demarcation with Companion Suite:**
-   * Evaluation of music source separation (unmixing ground truth, cross-stem bleed matrices) and full-duplex conversational voice AI (turn-taking latency) are addressed in the companion **ComposerMind AudioEvaluation Suite** (`mixforge-audio`, `stemcheck`, `turnscope`).
+   * Evaluation of music source separation (unmixing ground truth, cross-stem bleed matrices) and full-duplex conversational voice AI (turn-taking latency) are addressed in the companion **OpenSource AudioEvaluation Suite** (`mixforge-audio`, `stemcheck`, `turnscope`).
 
 ---
 
 ## 5. Software and Source Code Availability
 
-The ComposerMind AudioIntegrity Suite comprises seven independently developed, open-source Python packages authored by Boobalan Arjunan under the MIT license.
+The OpenSource AudioIntegrity Suite comprises seven independently developed, open-source Python packages authored by Boobalan Arjunan under the MIT license.
 
 The central benchmark reproduction framework, experimental protocols, synthetic ground-truth datasets, and test runners are publicly available at:
 
-👉 **Benchmark Repository & Suite Hub:** [https://github.com/BoobalanArjunan/ComposerMind-AudioIntegrity-Suite](https://github.com/BoobalanArjunan/ComposerMind-AudioIntegrity-Suite)
+👉 **Benchmark Repository & Suite Hub:** [https://github.com/BoobalanArjunan/Opensource-AudioIntegrity-Suite](https://github.com/BoobalanArjunan/Opensource-AudioIntegrity-Suite)
 
 ### Individual Tool Source Repositories & PyPI Packages
 

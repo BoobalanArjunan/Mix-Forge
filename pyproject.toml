@@ -10,10 +10,10 @@ readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }
 authors = [
-  { name = "Boobalan Arjunan", email = "boobalan_arjunan@composermind.com" },
+  { name = "Boobalan Arjunan", email = "boobalan.it@gmail.com" },
 ]
 maintainers = [
-  { name = "Boobalan Arjunan", email = "boobalan_arjunan@composermind.com" },
+  { name = "Boobalan Arjunan", email = "boobalan.it@gmail.com" },
 ]
 keywords = ["audio", "music", "source-separation", "stems", "ground-truth", "synthetic-data", "bleed", "evaluation", "machine-learning"]
 classifiers = [
